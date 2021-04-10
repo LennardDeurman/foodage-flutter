@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/camera/main.dart';
+import 'package:foodage/ui/camera/camera_screen.dart';
 
 void main() {
   runApp(MyApp());
