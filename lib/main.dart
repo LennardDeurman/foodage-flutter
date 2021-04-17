@@ -5,6 +5,10 @@ void main() {
   runApp(MyApp());
 }
 
+class FDGColors {
+  static const Color darkRed = Color.fromRGBO(157, 3, 3, 1);
+}
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -26,6 +30,32 @@ class MyApp extends StatelessWidget {
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        primaryColor: FDGColors.darkRed,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: FDGColors.darkRed,
+            textStyle: Theme.of(context).textTheme.button
+          )
+        ),
+        textTheme: TextTheme(
+          button: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: Colors.white
+          ),
+          subtitle2: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: "Lato",
+            color: Color.fromRGBO(186, 186, 186, 1),
+            fontSize: 11
+          ),
+          caption: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontFamily: "Montserrat",
+            color: Color.fromRGBO(108, 105, 105, 1),
+            fontSize: 13
+          )
+        )
       ),
       home: FoodCamera(),
     );
