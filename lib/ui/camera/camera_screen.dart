@@ -84,12 +84,18 @@ class _SelectFromGalleryButton extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Container(
-            width: this.width,
-            height: this.imageHeight,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Material(
+              child: InkWell(
+                onTap: () {
+
+                },
+                child: Container(
+                  width: this.width,
+                  height: this.imageHeight,
+                ),
+              ),
             ),
           ),
           Container(
@@ -113,6 +119,7 @@ class _SelectFromGalleryButton extends StatelessWidget {
 }
 
 class _CameraCaptureBar extends StatelessWidget {
+
 
   @override
   Widget build(BuildContext context) {
