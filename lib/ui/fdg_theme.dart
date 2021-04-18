@@ -1,12 +1,6 @@
 
 import 'package:flutter/material.dart';
-
-class _Fonts {
-
-  final montserrat = "Montserrat";
-  final lato = "Lato";
-
-}
+import 'package:google_fonts/google_fonts.dart';
 
 class _Colors {
 
@@ -24,8 +18,6 @@ class FDGTheme {
   _Colors _colors;
   _Colors get colors => _colors;
 
-  _Fonts _fonts;
-  _Fonts get fonts => _fonts;
 
   factory FDGTheme() {
     if (_instance == null) _instance = FDGTheme._internal();
@@ -33,9 +25,8 @@ class FDGTheme {
   }
 
   FDGTheme._internal() {
-    _fonts = _Fonts();
     _colors = _Colors();
-  }
+  } 
 
   Color get primarySwatch {
     return Colors.red;
@@ -46,34 +37,38 @@ class FDGTheme {
   }
 
   TextTheme get textTheme {
-    final headlineStyle = TextStyle( //Appbar title
-        fontFamily: FDGTheme().fonts.montserrat,
-        fontSize: 20,
-        fontWeight: FontWeight.w500
+    final headlineStyle = GoogleFonts.montserrat(
+      textStyle: TextStyle( //Appbar title
+          fontSize: 20,
+          fontWeight: FontWeight.w500
+      )
     );
 
     return TextTheme(
-        button: TextStyle( //Default theme for most buttons
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-            fontFamily: FDGTheme().fonts.montserrat
+        button: GoogleFonts.montserrat(
+          textStyle: TextStyle( //Default theme for most buttons
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+          )
         ),
         headline1: headlineStyle,
         headline2: headlineStyle.copyWith(fontSize: 16),
         headline3: headlineStyle.copyWith(fontSize: 14),
         headline4: headlineStyle.copyWith(fontSize: 11),
-        subtitle1: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontFamily: FDGTheme().fonts.lato,
-            color: colors.lightGrey, //Color.fromRGBO(186, 186, 186, 1)
-            fontSize: 12
+        subtitle1: GoogleFonts.lato(
+          textStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: colors.lightGrey, //Color.fromRGBO(186, 186, 186, 1)
+              fontSize: 12
+          ),
         ),
-        caption: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontFamily: fonts.montserrat,
-            color: colors.grey, //Color.fromRGBO(108, 105, 105, 1)
-            fontSize: 14
+        caption: GoogleFonts.montserrat(
+          textStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: colors.grey, //Color.fromRGBO(108, 105, 105, 1)
+              fontSize: 14
+          )
         )
     );
   }
