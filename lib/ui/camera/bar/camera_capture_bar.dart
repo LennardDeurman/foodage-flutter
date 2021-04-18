@@ -87,7 +87,10 @@ class _SelectFromGalleryButton extends StatelessWidget {
           Container(
             child: Text(
               "Selecteren uit gallerij",
-              style: Theme.of(context).textTheme.caption,
+              style: Theme.of(context).textTheme.bodyText1.copyWith(
+                color: Colors.white,
+                fontSize: 11
+              ),
               textAlign: TextAlign.center,
             ),
             margin: EdgeInsets.only(
