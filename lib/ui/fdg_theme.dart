@@ -67,13 +67,13 @@ class FDGTheme {
             fontWeight: FontWeight.bold,
             fontFamily: FDGTheme().fonts.lato,
             color: colors.lightGrey, //Color.fromRGBO(186, 186, 186, 1)
-            fontSize: 11
+            fontSize: 12
         ),
         caption: TextStyle(
             fontWeight: FontWeight.bold,
             fontFamily: fonts.montserrat,
             color: colors.grey, //Color.fromRGBO(108, 105, 105, 1)
-            fontSize: 13
+            fontSize: 14
         )
     );
   }

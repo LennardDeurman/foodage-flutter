@@ -132,7 +132,7 @@ class FoodCameraState extends State<FoodCamera> {
                                               bottom: 3
                                             ),
                                           ),
-                                          Text("3 geselecteerd", style: Theme.of(context).textTheme.subtitle2)
+                                          Text("3 geselecteerd", style: Theme.of(context).textTheme.subtitle1)
                                         ],
                                       ),
                                     )
