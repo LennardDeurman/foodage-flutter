@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:foodage/ui/camera/bar/camera_bar.dart';
 import 'package:foodage/ui/extensions.dart';
+import 'package:foodage/ui/fdg_theme.dart';
 
 class _CaptureButton extends StatelessWidget {
   final double size;
@@ -89,7 +91,7 @@ class _SelectFromGalleryButton extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             margin: EdgeInsets.only(
-                top: 8,
+              top: 8,
             ),
           )
         ],
@@ -105,9 +107,7 @@ class CameraCaptureBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color.fromRGBO(95, 95, 95, 1),
-      height: 140,
+    return CameraBarContainer(
       child: Stack(
         children: <Widget>[
           Align(
@@ -123,9 +123,15 @@ class CameraCaptureBar extends StatelessWidget {
             alignment: Alignment.center,
             child: _CaptureButton(
               size: _captureButtonSize,
+              onTap: (BuildContext context) {
+
+              },
             ),
           )
         ],
+      ),
+      decoration: BoxDecoration(
+        color: FDGTheme().colors.darkGrey
       ),
     );
   }

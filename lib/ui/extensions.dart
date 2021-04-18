@@ -1,3 +1,3 @@
 import 'package:flutter/material.dart';
 
-typedef WidgetTapCallback = Function(BuildContext context);
+typedef WidgetTapCallback = void Function(BuildContext context);

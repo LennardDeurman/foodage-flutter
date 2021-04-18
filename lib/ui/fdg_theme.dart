@@ -12,6 +12,7 @@ class _Colors {
 
   final lightGrey =  Color.fromRGBO(186, 186, 186, 1);
   final grey = Color.fromRGBO(108, 108, 105, 1);
+  final darkGrey = Color.fromRGBO(95, 95, 95, 1);
   final darkRed = Color.fromRGBO(157, 3, 3, 1);
 
 }
@@ -83,13 +84,7 @@ class FDGTheme {
       primarySwatch: primarySwatch,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       primaryColor: colors.darkRed,
-      textTheme: textThemeForData,
-      elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-              primary: colors.darkRed,
-              textStyle: textThemeForData.button
-          )
-      ),
+      textTheme: textThemeForData
     );
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/camera/camera_capture_bar.dart';
+import 'package:foodage/ui/camera/bar/camera_preview_bar.dart';
 import 'package:foodage/ui/camera/photo_container.dart';
 import 'package:foodage/ui/widgets/fdg_button.dart';
 import 'package:foodage/ui/widgets/fdg_ratio.dart';
@@ -18,6 +18,7 @@ class FoodCameraState extends State<FoodCamera> {
 
   @override
   Widget build(BuildContext context) {
+    final contextThemeData = Theme.of(context);
     return Scaffold(
       body: Container(
         child: Column(
@@ -74,18 +75,25 @@ class FoodCameraState extends State<FoodCamera> {
                                             ),
                                           )
                                         ),
-                                        FDGButton(
-                                          "Doorgaan",
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 8,
-                                            horizontal: 20
+                                        Theme(
+                                          data: contextThemeData.copyWith(
+                                            textTheme: contextThemeData.textTheme.copyWith(
+                                              button: contextThemeData.textTheme.button.copyWith(
+                                                fontSize: 13
+                                              )
+                                            )
                                           ),
-                                          textStyle: Theme.of(context).textTheme.button.copyWith(
-                                            fontSize: 13
-                                          ),
-                                          onTap: (BuildContext context) {
+                                          child: FDGPrimaryButton(
+                                            "Doorgaan",
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 8,
+                                                horizontal: 20
+                                            ),
+                                            borderRadius: 8,
+                                            onTap: (BuildContext context) {
 
-                                          },
+                                            },
+                                          ),
                                         )
                                       ],
                                     ),
@@ -146,7 +154,8 @@ class FoodCameraState extends State<FoodCamera> {
                 ],
               ),
             ),
-            CameraCaptureBar()
+            CameraPreviewBar()
+            //CameraCaptureBar()
           ],
         ),
       ),
