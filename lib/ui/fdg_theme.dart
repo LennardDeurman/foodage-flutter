@@ -4,7 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class _Colors {
 
-  final lightGrey =  Color.fromRGBO(186, 186, 186, 1);
+  final lightGrey2 = Color.fromRGBO(220, 220, 220, 1);
+  final lightGrey1 =  Color.fromRGBO(186, 186, 186, 1);
   final grey = Color.fromRGBO(108, 108, 105, 1);
   final darkGrey = Color.fromRGBO(95, 95, 95, 1);
   final darkRed = Color.fromRGBO(157, 3, 3, 1);
@@ -40,7 +41,8 @@ class FDGTheme {
     final headlineStyle = GoogleFonts.montserrat(
       textStyle: TextStyle( //Appbar title
           fontSize: 20,
-          fontWeight: FontWeight.w500
+          fontWeight: FontWeight.w500,
+          color: _colors.darkGrey
       )
     );
 
@@ -59,7 +61,7 @@ class FDGTheme {
         subtitle1: GoogleFonts.lato(
           textStyle: TextStyle(
               fontWeight: FontWeight.bold,
-              color: colors.lightGrey, //Color.fromRGBO(186, 186, 186, 1)
+              color: colors.lightGrey1, //Color.fromRGBO(186, 186, 186, 1)
               fontSize: 12
           ),
         ),

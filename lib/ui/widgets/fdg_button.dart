@@ -81,18 +81,24 @@ abstract class _FDGCustomButton extends StatelessWidget {
       width: 1,
     );
 
-    return ButtonStyle(
+    final currentButtonStyle = (buttonType == _ButtonType.elevatedButton
+        ? contextThemeData.elevatedButtonTheme?.style
+        : contextThemeData.outlinedButtonTheme?.style) ?? ButtonStyle();
+
+    final updatedButtonStyle = currentButtonStyle.copyWith(
       backgroundColor: MaterialStateProperty.all(backgroundColor),
       elevation: MaterialStateProperty.all(0),
       padding: MaterialStateProperty.all(padding ?? EdgeInsets.all(8)),
       side: MaterialStateProperty.all(
-        borderSide
+          borderSide
       ),
       shape: MaterialStateProperty.all(RoundedRectangleBorder(
           side: borderSide,
           borderRadius: BorderRadius.circular(borderRadius ?? 0)
       )),
     );
+
+    return updatedButtonStyle;
   }
 
   _ButtonType get buttonType => _ButtonType.elevatedButton;

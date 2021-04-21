@@ -63,6 +63,10 @@ class _SelectFromGalleryButton extends StatelessWidget {
   static const _width = 65.0;
   static const _imageHeight = 45.0;
 
+  final WidgetTapCallback onTap;
+
+  _SelectFromGalleryButton ({ @required this.onTap });
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,9 +78,7 @@ class _SelectFromGalleryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: Material(
               child: InkWell(
-                onTap: () {
-
-                },
+                onTap: () => onTap(context),
                 child: Container(
                   width: _width,
                   height: _imageHeight,
@@ -108,6 +110,11 @@ class CameraCaptureBar extends StatelessWidget {
 
   static const _captureButtonSize = 50.0;
 
+  final WidgetTapCallback onCaptureTap;
+  final WidgetTapCallback onSelectFromGalleryTap;
+
+  CameraCaptureBar ({ @required this.onCaptureTap, @required this.onSelectFromGalleryTap });
+
   @override
   Widget build(BuildContext context) {
     return CameraBarContainer(
@@ -116,7 +123,9 @@ class CameraCaptureBar extends StatelessWidget {
           Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                child: _SelectFromGalleryButton(),
+                child: _SelectFromGalleryButton(
+                  onTap: onSelectFromGalleryTap,
+                ),
                 margin: EdgeInsets.symmetric(
                     horizontal: 20
                 ),
@@ -126,9 +135,7 @@ class CameraCaptureBar extends StatelessWidget {
             alignment: Alignment.center,
             child: _CaptureButton(
               size: _captureButtonSize,
-              onTap: (BuildContext context) {
-
-              },
+              onTap: onCaptureTap,
             ),
           )
         ],
