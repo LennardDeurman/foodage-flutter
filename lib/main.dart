@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/camera/camera_screen.dart';
-import 'package:foodage/ui/fdg_theme.dart';
+import 'package:foodage/data/service_locator.dart';
+import 'ui/camera/camera_screen.dart';
+import 'ui/fdg_theme.dart';
 
-void main() {
+void main() async {
+  await ServiceLocator.init();
   runApp(MainApp());
 }
 

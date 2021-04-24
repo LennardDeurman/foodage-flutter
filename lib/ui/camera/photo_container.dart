@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/extensions.dart';
-import 'package:foodage/ui/widgets/fdg_ratio.dart';
+import '../../ui/extensions.dart';
+import '../../ui/widgets/fdg_ratio.dart';
 
 class _CloseButton extends StatelessWidget {
 

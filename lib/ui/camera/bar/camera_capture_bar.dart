@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/camera/bar/camera_bar.dart';
-import 'package:foodage/ui/extensions.dart';
-import 'package:foodage/ui/fdg_theme.dart';
+
+import '../../extensions.dart';
+import '../../fdg_theme.dart';
+import 'camera_bar.dart';
+
 
 class _CaptureButton extends StatelessWidget {
   final double size;

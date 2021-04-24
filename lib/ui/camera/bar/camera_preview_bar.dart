@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/camera/bar/camera_bar.dart';
-import 'package:foodage/ui/widgets/fdg_button.dart';
+
+import '../../camera/bar/camera_bar.dart';
+import '../../widgets/fdg_button.dart';
 
 class CameraPreviewBar extends StatelessWidget {
 

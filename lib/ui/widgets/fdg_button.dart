@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/extensions.dart';
+import '../extensions.dart';
 
 enum _ButtonType {
   elevatedButton,

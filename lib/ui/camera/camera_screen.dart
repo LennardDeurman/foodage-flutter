@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/camera/bar/camera_capture_bar.dart';
-import 'package:foodage/ui/camera/bar/camera_preview_bar.dart';
-import 'package:foodage/ui/camera/photo_container.dart';
-import 'package:foodage/ui/camera/picker/photo_picker_bottom_sheet.dart';
-import 'package:foodage/ui/widgets/fdg_button.dart';
-import 'package:foodage/ui/widgets/fdg_ratio.dart';
+
+import '../../ui/widgets/fdg_button.dart';
+import '../../ui/widgets/fdg_ratio.dart';
+import '../camera/bar/camera_capture_bar.dart';
+import '../camera/photo_container.dart';
+import '../camera/picker/photo_picker_bottom_sheet.dart';
 
 class FoodCamera extends StatefulWidget {
 

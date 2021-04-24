@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/fdg_theme.dart';
+import '../fdg_theme.dart';
 
 typedef FDGSegmentWidgetBuilder<T> = Widget Function(BuildContext context, T segment);
 
@@ -8,9 +8,10 @@ typedef FDGSegmentThemeBuilder = ThemeData Function(ThemeData localTheme);
 class FDGSegmentItem {
 
   final  WidgetBuilder iconBuilder;
+  final FDGSegmentWidgetBuilder<FDGSegmentItem> builder;
   final  String title;
 
-  FDGSegmentItem (this.title, { this.iconBuilder });
+  FDGSegmentItem (this.title, { this.iconBuilder, this.builder });
 
 }
 
