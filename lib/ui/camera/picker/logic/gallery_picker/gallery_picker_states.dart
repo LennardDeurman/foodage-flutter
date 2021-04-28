@@ -1,3 +1,4 @@
+import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_event_bloc.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
 abstract class GalleryPickerState {}
@@ -9,17 +10,17 @@ class GalleryPickerForbiddenState extends GalleryPickerState {}
 class GalleryPickerErrorState extends GalleryPickerState {}
 
 class AlbumState extends GalleryPickerState {
-  final List<Album> albums;
-  final Album selectedAlbum;
 
-  AlbumState ({ this.albums, this.selectedAlbum });
+  final AlbumData albumData;
+
+  AlbumState ({ this.albumData });
+
 }
 
 class AlbumLoadingState extends AlbumState {
 
-  AlbumLoadingState ({ List<Album> albums, Album selectedAlbum }) : super(
-      albums: albums,
-      selectedAlbum: selectedAlbum
+  AlbumLoadingState ({ AlbumData albumData }) : super(
+      albumData: albumData
   );
 
 }
@@ -27,18 +28,16 @@ class AlbumLoadedState extends AlbumState {
 
   final MediaPage selectedMedia;
 
-  AlbumLoadedState ({ List<Album> albums, Album selectedAlbum, this.selectedMedia }) : super(
-      albums: albums,
-      selectedAlbum: selectedAlbum
+  AlbumLoadedState ({ AlbumData albumData, this.selectedMedia }) : super(
+      albumData: albumData
   );
 
 }
 
 class AlbumFailedToLoadState extends AlbumState {
 
-  AlbumFailedToLoadState ({ List<Album> albums, Album selectedAlbum }) : super(
-      albums: albums,
-      selectedAlbum: selectedAlbum
+  AlbumFailedToLoadState ({ AlbumData albumData }) : super(
+      albumData: albumData
   );
 
 }

@@ -5,6 +5,22 @@ import '../../../../architecture.dart';
 import 'gallery_picker_states.dart';
 import 'gallery_picker_events.dart';
 
+class AlbumData {
+
+  final List<Album> albums;
+  final Album selectedAlbum;
+
+  AlbumData ({ this.albums, this.selectedAlbum });
+
+  AlbumData copyWith({ List<Album> albums, Album selectedAlbum }) {
+    return AlbumData(
+      albums: albums ?? this.albums,
+      selectedAlbum: selectedAlbum ?? this.selectedAlbum
+    );
+  }
+
+}
+
 
 class GalleryPickerEventBloc extends EventBloc<GalleryPickerEvent, GalleryPickerState> {
 
@@ -14,11 +30,16 @@ class GalleryPickerEventBloc extends EventBloc<GalleryPickerEvent, GalleryPicker
 
 
   Stream<AlbumState> _loadAlbumData({ List<Album> albums, Album selectedAlbum }) async* {
+    var albumData = state is AlbumState ? (state as AlbumState).albumData : AlbumData();
     try {
-      yield AlbumLoadingState(albums: albums, selectedAlbum: selectedAlbum);
-      yield AlbumLoadedState(albums: albums, selectedAlbum: selectedAlbum, selectedMedia: await selectedAlbum.listMedia());
+      albumData = albumData.copyWith(
+        albums: albums,
+        selectedAlbum: selectedAlbum,
+      );
+      yield AlbumLoadingState(albumData: albumData);
+      yield AlbumLoadedState(albumData: albumData, selectedMedia: await selectedAlbum.listMedia());
     } catch (e) {
-      yield AlbumFailedToLoadState(albums: albums, selectedAlbum: selectedAlbum);
+      yield AlbumFailedToLoadState(albumData: albumData);
     }
   }
 
@@ -42,9 +63,7 @@ class GalleryPickerEventBloc extends EventBloc<GalleryPickerEvent, GalleryPicker
       if (event is GalleryPickerInitEvent) {
         yield* _init();
       } else if (event is GalleryPickerAlbumChangeEvent) {
-        final currentAlbumState = ensureInCurrentState<AlbumState>();
         yield* _loadAlbumData(
-            albums: currentAlbumState.albums,
             selectedAlbum: event.album
         );
       }

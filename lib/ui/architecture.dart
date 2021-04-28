@@ -1,5 +1,7 @@
 /* Couples UI and logic */
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /* We use EventBloc as a way to handle all basic events, and use managingbloc as upper class, for rx-dart related stuff */
 
@@ -15,6 +17,12 @@ abstract class EventBloc<EventClass, StateClass> extends Bloc<EventClass, StateC
     final castedState = this.state as CurrentStateClass;
     return castedState;
   }
+
+}
+
+class EventBlocBuilder<BlocClass extends BlocBase<BlocStateClass>, BlocStateClass> extends BlocBuilder<BlocClass, BlocStateClass> {
+
+  EventBlocBuilder ({ BlocClass bloc, Widget Function (BuildContext context, BlocStateClass state) builder }) : super(bloc: bloc, builder: builder);
 
 }
 

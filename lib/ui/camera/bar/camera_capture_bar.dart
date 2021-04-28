@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:foodage/ui/architecture.dart';
+import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_event_bloc.dart';
+import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_states.dart';
+import 'package:foodage/ui/camera/picker/logic/photo_picker_bloc.dart';
+import 'package:photo_gallery/photo_gallery.dart';
+import 'package:provider/provider.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../../extensions.dart';
 import '../../fdg_theme.dart';
@@ -84,6 +91,7 @@ class _SelectFromGalleryButton extends StatelessWidget {
                 child: Container(
                   width: _width,
                   height: _imageHeight,
+                  child: _buildImage(context),
                 ),
               ),
             ),
@@ -103,6 +111,30 @@ class _SelectFromGalleryButton extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildImage(BuildContext context) {
+    return EventBlocBuilder<GalleryPickerEventBloc, GalleryPickerState>(
+      bloc: Provider.of<PhotoPickerManagingBloc>(context).galleryPickerEventBloc,
+      builder: (context, state) {
+        if (state is AlbumState) {
+          return Image(
+            fit: BoxFit.cover,
+            image: AlbumThumbnailProvider(
+              albumId: state.albumData.selectedAlbum.id,
+              width: 128,
+              height: 128,
+            ),
+          );
+        }
+        return Container(
+          color: FDGTheme().colors.lightGrey1,
+          child: Center(
+            child: Icon(Icons.add_photo_alternate_outlined, color: FDGTheme().colors.darkGrey,),
+          ),
+        );
+      },
     );
   }
 
