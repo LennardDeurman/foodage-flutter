@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../extensions.dart';
 
-enum _ButtonType {
-  elevatedButton,
-  outlineButton
-}
+enum _ButtonType { elevatedButton, outlineButton }
 
 class _FDGButton extends StatelessWidget {
   final String text;
@@ -13,7 +11,7 @@ class _FDGButton extends StatelessWidget {
   final EdgeInsets textPadding;
   final _ButtonType buttonType;
 
-  const _FDGButton(
+  _FDGButton(
     this.text, {
     @required this.onTap,
     this.buttonType,
@@ -75,27 +73,30 @@ abstract class _FDGCustomButton extends StatelessWidget {
     this.borderRadius,
   });
 
-  ButtonStyle customButtonStyle(ThemeData contextThemeData, { Color borderColor, Color backgroundColor }) {
+  ButtonStyle customButtonStyle(ThemeData contextThemeData, {Color borderColor, Color backgroundColor}) {
     final borderSide = BorderSide(
       color: borderColor ?? Colors.transparent,
       width: 1,
     );
 
     final currentButtonStyle = (buttonType == _ButtonType.elevatedButton
-        ? contextThemeData.elevatedButtonTheme?.style
-        : contextThemeData.outlinedButtonTheme?.style) ?? ButtonStyle();
+            ? contextThemeData.elevatedButtonTheme?.style
+            : contextThemeData.outlinedButtonTheme?.style) ??
+        ButtonStyle();
 
     final updatedButtonStyle = currentButtonStyle.copyWith(
       backgroundColor: MaterialStateProperty.all(backgroundColor),
       elevation: MaterialStateProperty.all(0),
-      padding: MaterialStateProperty.all(padding ?? EdgeInsets.all(8)),
-      side: MaterialStateProperty.all(
-          borderSide
+      padding: MaterialStateProperty.all(
+        padding ?? EdgeInsets.all(8),
       ),
-      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+      side: MaterialStateProperty.all(borderSide),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
           side: borderSide,
-          borderRadius: BorderRadius.circular(borderRadius ?? 0)
-      )),
+          borderRadius: BorderRadius.circular(borderRadius ?? 0),
+        ),
+      ),
     );
 
     return updatedButtonStyle;
@@ -145,15 +146,11 @@ class FDGPrimaryButton extends _FDGCustomButton {
           borderRadius: borderRadius,
         );
 
-
   @override
   ThemeData getLocalThemeData(ThemeData contextThemeData) {
     return contextThemeData.copyWith(
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: customButtonStyle(
-          contextThemeData,
-          backgroundColor: contextThemeData.primaryColor
-        )
+        style: customButtonStyle(contextThemeData, backgroundColor: contextThemeData.primaryColor),
       ),
     );
   }
@@ -189,10 +186,10 @@ class FDGSecondaryButton extends _FDGCustomButton {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: customButtonStyle(
-            contextThemeData,
-            backgroundColor:  Colors.transparent,
-            borderColor: contextThemeData.primaryColor,
-        )
+          contextThemeData,
+          backgroundColor: Colors.transparent,
+          borderColor: contextThemeData.primaryColor,
+        ),
       ),
     );
   }

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodage/data/service_locator.dart';
-import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_event_bloc.dart';
-import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_events.dart';
-import 'package:foodage/ui/camera/picker/logic/photo_picker_bloc.dart';
+import 'package:foodage/ui/camera/camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_cubit.dart';
+import 'package:foodage/ui/camera/picker/gallery_picker_cubit/gallery_picker_cubit.dart';
+import 'package:foodage/ui/camera/picker/photo_picker_cubit/photo_picker_cubit.dart';
 import 'package:foodage/ui/camera/picker/photo_picker_segments.dart';
-import 'package:provider/provider.dart';
 
-import '../../ui/widgets/fdg_button.dart';
-import '../../ui/widgets/fdg_ratio.dart';
-import '../camera/bar/camera_capture_bar.dart';
-import '../camera/photo_container.dart';
-import '../camera/picker/photo_picker_bottom_sheet.dart';
+import '../../data/service_locator.dart';
+import '../widgets/fdg_button.dart';
+import '../widgets/fdg_ratio.dart';
+import 'photo_container.dart';
+import 'bar/camera_capture_bar.dart';
+import 'picker/photo_picker_bottom_sheet.dart';
 
 class FoodCamera extends StatefulWidget {
 
@@ -30,20 +31,13 @@ class FoodCameraState extends State<FoodCamera> {
   @override
   Widget build(BuildContext context) {
     final contextThemeData = Theme.of(context);
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        Provider<PhotoPickerManagingBloc>(create: (_) {
-          final photoPickerSegments = getPhotoPickerSegments(context);
-          final bloc = PhotoPickerManagingBloc(
-              GalleryPickerEventBloc(sl.get()),
-              segments: photoPickerSegments,
-              initialSelectedSegment: photoPickerSegments[0],
-          );
-          bloc.galleryPickerEventBloc.add(GalleryPickerInitEvent());
-          return bloc;
-        }, lazy: false,)
+        BlocProvider<GalleryPickerCubit>(create: (context) => GalleryPickerCubit(sl.get())),
+        BlocProvider<PhotoPickerCubit>(create: (context) => PhotoPickerCubit(segments: getPhotoPickerSegments(context))),
+        BlocProvider<CameraPreviewFrameCubit>(create: (context) => CameraPreviewFrameCubit(sl.get())),
       ],
-      child:  Scaffold(
+      child: Scaffold(
         body: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

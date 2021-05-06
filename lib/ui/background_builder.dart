@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/fdg_theme.dart';
+
+import 'fdg_theme.dart';
 
 class _LabelsBuilder {
 

@@ -1,7 +1,10 @@
-import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_event_bloc.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
+import 'gallery_picker_cubit.dart';
+
 abstract class GalleryPickerState {}
+
+class GalleryPickerIdleState extends GalleryPickerState {}
 
 class GalleryDataLoadingState extends GalleryPickerState {}
 

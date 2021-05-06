@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/architecture.dart';
-import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_event_bloc.dart';
-import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_states.dart';
-import 'package:foodage/ui/camera/picker/logic/photo_picker_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_gallery/photo_gallery.dart';
-import 'package:provider/provider.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 import '../../extensions.dart';
 import '../../fdg_theme.dart';
+import '../picker/gallery_picker_cubit/gallery_picker_cubit.dart';
+import '../picker/gallery_picker_cubit/gallery_picker_states.dart';
 import 'camera_bar.dart';
-
 
 class _CaptureButton extends StatelessWidget {
   final double size;
@@ -115,8 +111,7 @@ class _SelectFromGalleryButton extends StatelessWidget {
   }
 
   Widget _buildImage(BuildContext context) {
-    return EventBlocBuilder<GalleryPickerEventBloc, GalleryPickerState>(
-      bloc: Provider.of<PhotoPickerManagingBloc>(context).galleryPickerEventBloc,
+    return BlocBuilder<GalleryPickerCubit, GalleryPickerState>(
       builder: (context, state) {
         if (state is AlbumState) {
           return Image(

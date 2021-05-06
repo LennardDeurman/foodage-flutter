@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/architecture.dart';
-import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_events.dart';
-import 'package:foodage/ui/camera/picker/logic/photo_picker_bloc.dart';
-import 'package:foodage/ui/fdg_theme.dart';
-import 'package:foodage/ui/widgets/dialogs/fdg_options.dart';
-import 'package:foodage/ui/widgets/fdg_segmented_control.dart';
-import 'package:foodage/ui/background_builder.dart';
-import 'package:foodage/ui/camera/album_photos_grid.dart';
-import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_event_bloc.dart';
-import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_states.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+
+import '../../background_builder.dart';
+import '../../extensions.dart';
+import '../../fdg_theme.dart';
+import '../../widgets/dialogs/fdg_options.dart';
+import '../../widgets/fdg_segmented_control.dart';
+import '../album_photos_grid.dart';
+import 'gallery_picker_cubit/gallery_picker_cubit.dart';
+import 'gallery_picker_cubit/gallery_picker_states.dart';
 
 List<FDGSegmentItem> getPhotoPickerSegments(BuildContext context) {
   return [
@@ -18,25 +18,26 @@ List<FDGSegmentItem> getPhotoPickerSegments(BuildContext context) {
   ];
 }
 
-
 class _InspirationBody extends StatelessWidget {
-
   final FDGSegmentItem _sender;
 
-  _InspirationBody (this._sender);
+  _InspirationBody(this._sender);
 
   static FDGSegmentItem segmentItem(BuildContext context) {
     return FDGSegmentItem(
-        "Inspiratie",
-        iconBuilder: (context) {
-          return Container(
-            margin: EdgeInsets.only(left: 6),
-            child: Icon(Icons.lightbulb, color: Theme.of(context).textTheme.button.color),
-          );
-        },
-        builder: (context, sender) {
-          return _InspirationBody(sender);
-        }
+      "Inspiratie",
+      iconBuilder: (context) {
+        return Container(
+          margin: EdgeInsets.only(left: 6),
+          child: Icon(
+            Icons.lightbulb,
+            color: Theme.of(context).textTheme.button.color,
+          ),
+        );
+      },
+      builder: (context, sender) {
+        return _InspirationBody(sender);
+      },
     );
   }
 
@@ -52,35 +53,43 @@ class _InspirationBody extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class _GalleryBody extends StatelessWidget {
-
   final FDGSegmentItem _sender;
 
   final BackgroundBuilder _backgroundBuilder = BackgroundBuilder();
 
-  _GalleryBody (this._sender);
-
-  PhotoPickerManagingBloc _photoPickerManagingBloc(BuildContext context) =>
-      Provider.of<PhotoPickerManagingBloc>(context, listen: false);
-
-  GalleryPickerEventBloc _galleryPickerEventBloc(BuildContext context) =>
-      _photoPickerManagingBloc(context).galleryPickerEventBloc;
+  _GalleryBody(this._sender);
 
   static FDGSegmentItem segmentItem(BuildContext context) {
-    return FDGSegmentItem(
-        "Gallerij",
-        iconBuilder: (context) {
-          return Container(
-            margin: EdgeInsets.only(left: 6),
-            child: Icon(Icons.image, color: Theme.of(context).textTheme.button.color),
-          );
-        },
-        builder: (context, sender) {
-          return _GalleryBody(sender);
-        }
+    return FDGSegmentItem("Gallerij", iconBuilder: (context) {
+      return Container(
+        margin: EdgeInsets.only(left: 6),
+        child: Icon(Icons.image, color: Theme.of(context).textTheme.button.color),
+      );
+    }, builder: (context, sender) {
+      return _GalleryBody(sender);
+    });
+  }
+
+  Future<void> _showAlbumPicker(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return BlocBuilder<GalleryPickerCubit, GalleryPickerState>(
+          builder: (context, state) {
+            final galleryPickerCubit = context.read<GalleryPickerCubit>();
+            final albumState = galleryPickerCubit.ensureInCurrentState<AlbumState>();
+            return FDGOptionsDialog(
+              options: albumState.albumData.albums,
+              value: albumState.albumData.selectedAlbum,
+              label: (album) => album.name,
+              updateValue: (album) => galleryPickerCubit.changeAlbumAndLoadData(album),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -90,12 +99,21 @@ class _GalleryBody extends StatelessWidget {
       contentWidget = AlbumPhotosGrid(state.selectedMedia);
     } else if (state is AlbumFailedToLoadState) {
       contentWidget = _backgroundBuilder.failed(
-        title: _backgroundBuilder.labels.title(context, "Oeps..."),
-        subtitle: _backgroundBuilder.labels.subtitle(context, "Kon de fotos van dit album niet ophalen"),
+        title: _backgroundBuilder.labels.title(
+          context,
+          "Oeps...",
+        ),
+        subtitle: _backgroundBuilder.labels.subtitle(
+          context,
+          "Kon de fotos van dit album niet ophalen",
+        ),
       );
     } else if (state is AlbumLoadingState) {
       contentWidget = _backgroundBuilder.loading(
-        title: _backgroundBuilder.labels.title(context, "Bezig met laden..."),
+        title: _backgroundBuilder.labels.title(
+          context,
+          "Bezig met laden...",
+        ),
       );
     }
 
@@ -106,42 +124,20 @@ class _GalleryBody extends StatelessWidget {
           state.albumData.selectedAlbum.name,
           style: Theme.of(context).textTheme.headline2,
         ),
-        SizedBox(width: 5,),
-        Icon(Icons.keyboard_arrow_down, color: Theme.of(context).textTheme.headline2.color,)
+        SizedBox(
+          width: 5,
+        ),
+        Icon(
+          Icons.keyboard_arrow_down,
+          color: Theme.of(context).textTheme.headline2.color,
+        )
       ],
     );
-
-
 
     return _PickerBody(
       titleWidget: GestureDetector(
         child: titleWidget,
-        onTap: () {
-          final photoPickerManagingBloc = _photoPickerManagingBloc(context);
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return Provider.value(
-                  value: photoPickerManagingBloc,
-                  builder: (context, widget) {
-                    final galleryPickerEventBloc = _galleryPickerEventBloc(context);
-                    return EventBlocBuilder<GalleryPickerEventBloc, GalleryPickerState>(
-                      bloc: galleryPickerEventBloc,
-                      builder: (context, state) {
-                        final albumState = galleryPickerEventBloc.ensureInCurrentState<AlbumState>();
-                        return FDGOptionsDialog(
-                            options: albumState.albumData.albums,
-                            value: albumState.albumData.selectedAlbum,
-                            label: (album) => album.name,
-                            updateValue: (album) => galleryPickerEventBloc.add(GalleryPickerAlbumChangeEvent(album))
-                        );
-                      },
-                    );
-                  },
-                );
-              }
-          );
-        },
+        onTap: () => _showAlbumPicker(context),
       ),
       contentWidget: contentWidget,
     );
@@ -149,40 +145,44 @@ class _GalleryBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EventBlocBuilder<GalleryPickerEventBloc, GalleryPickerState>(
-        bloc: _galleryPickerEventBloc(context), // provide the local bloc instance
-        builder: (context, state) {
-          if (state is GalleryDataLoadingState) {
-            return _PickerBody.background(
-                child: _backgroundBuilder.loading(
-                    title: _backgroundBuilder.labels.title(context, "Bezig met laden")
-                )
-            );
-          } else if (state is GalleryPickerErrorState) {
-            return _backgroundBuilder.failed(
-                title: _backgroundBuilder.labels.title(context, "Oeps.."),
-                subtitle: _backgroundBuilder.labels.subtitle(context, "Fout bij het ophalen van gallerij photos")
-            );
-          } else if (state is GalleryPickerForbiddenState) {
-            return _backgroundBuilder.failed(
-              title: _backgroundBuilder.labels.title(context, "Oeps.."),
-              subtitle: _backgroundBuilder.labels.subtitle(
-                context,
-                "De app heeft niet de juiste machtigingen. Sta het gebruik van je foto gallerij toe in het instellingenscherm van je telefoon.",
-              ),
-            );
-          } else if (state is AlbumState) {
-            return _mapAlbumStateToWidget(context, state);
-          }
-          return Container();
-        }
-    );
+    return BlocBuilder<GalleryPickerCubit, GalleryPickerState>(builder: (context, state) {
+      if (state is GalleryDataLoadingState) {
+        return _PickerBody.background(
+          child: _backgroundBuilder.loading(
+            title: _backgroundBuilder.labels.title(
+              context,
+              "Bezig met laden",
+            ),
+          ),
+        );
+      } else if (state is GalleryPickerErrorState) {
+        return _backgroundBuilder.failed(
+          title: _backgroundBuilder.labels.title(
+            context,
+            "Oeps..",
+          ),
+          subtitle: _backgroundBuilder.labels.subtitle(
+            context,
+            "Fout bij het ophalen van gallerij photos",
+          ),
+        );
+      } else if (state is GalleryPickerForbiddenState) {
+        return _backgroundBuilder.failed(
+          title: _backgroundBuilder.labels.title(context, "Oeps.."),
+          subtitle: _backgroundBuilder.labels.subtitle(
+            context,
+            "De app heeft niet de juiste machtigingen. Sta het gebruik van je foto gallerij toe in het instellingenscherm van je telefoon.",
+          ),
+        );
+      } else if (state is AlbumState) {
+        return _mapAlbumStateToWidget(context, state);
+      }
+      return Container();
+    });
   }
-
 }
 
 class _PickerBody extends StatelessWidget {
-
   final _borderSide = BorderSide(color: FDGTheme().colors.lightGrey2, width: 1);
 
   final Widget titleWidget;
@@ -190,13 +190,11 @@ class _PickerBody extends StatelessWidget {
 
   static const double _minHeight = 250;
 
-  _PickerBody ({ this.titleWidget, this.contentWidget });
+  _PickerBody({this.titleWidget, this.contentWidget});
 
-  static Widget background({ @required Widget child }) {
+  static Widget background({@required Widget child}) {
     return Container(
-      constraints: BoxConstraints(
-          minHeight: _minHeight
-      ),
+      constraints: BoxConstraints(minHeight: _minHeight),
       child: child,
     );
   }
@@ -228,5 +226,4 @@ class _PickerBody extends StatelessWidget {
       ],
     );
   }
-
 }

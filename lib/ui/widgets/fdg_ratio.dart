@@ -4,7 +4,7 @@ class FDGRatio extends StatelessWidget {
 
   final Widget child;
 
-  const FDGRatio ({ this.child });
+  FDGRatio ({ this.child });
 
   @override
   Widget build(BuildContext context) {
