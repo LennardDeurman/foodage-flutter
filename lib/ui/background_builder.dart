@@ -4,7 +4,7 @@ import 'fdg_theme.dart';
 
 class _LabelsBuilder {
 
-  Widget title(BuildContext context, String text, { EdgeInsets padding }) {
+  Widget title(BuildContext context, String text, { EdgeInsets? padding }) {
     return Container(
       child: Text(text, style: Theme.of(context).textTheme.headline2, textAlign: TextAlign.center,),
       padding: padding ?? EdgeInsets.only(
@@ -13,7 +13,7 @@ class _LabelsBuilder {
     );
   }
 
-  Widget subtitle(BuildContext context, String text, { EdgeInsets padding }) {
+  Widget subtitle(BuildContext context, String text, { EdgeInsets? padding }) {
     return Container(
       child: Text(text, style: Theme.of(context).textTheme.subtitle1, textAlign: TextAlign.center,),
       padding: padding ?? EdgeInsets.only(
@@ -28,7 +28,7 @@ class BackgroundBuilder {
 
   final _LabelsBuilder labels = _LabelsBuilder();
 
-  Widget loading({ Widget title, Widget subtitle }) {
+  Widget loading({ Widget? title, Widget? subtitle }) {
     return custom(
         primary: Container(
           child: CircularProgressIndicator(
@@ -41,7 +41,7 @@ class BackgroundBuilder {
     );
   }
 
-  Widget failed({ Widget title, Widget subtitle } ) {
+  Widget failed({ Widget? title, Widget? subtitle } ) {
     return custom(
       primary: Icon(Icons.warning_rounded, color: FDGTheme().colors.darkRed, size: 48,),
       title: title,
@@ -49,7 +49,7 @@ class BackgroundBuilder {
     );
   }
 
-  Widget custom({ Widget primary, Widget title, Widget subtitle }) {
+  Widget custom({ Widget? primary, Widget? title, Widget? subtitle }) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,

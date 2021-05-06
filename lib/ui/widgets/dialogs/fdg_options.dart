@@ -6,31 +6,30 @@ class FDGOptionsDialog<T> extends StatelessWidget {
   final List<T> options;
   final T value;
   final void Function(T) updateValue;
-  final String Function(T) label;
+  final String Function(T)? label;
   final bool dismissAfterUpdate;
 
-  FDGOptionsDialog({this.options, this.value, this.updateValue, this.label, this.dismissAfterUpdate = true });
+  FDGOptionsDialog({
+    required this.options,
+    required this.value,
+    required this.updateValue,
+    this.label,
+    this.dismissAfterUpdate = true,
+  });
 
   String _label(BuildContext context, T option) {
-    if (label != null) return label(option);
+    if (label != null) return label!(option);
     return option.toString();
   }
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20)
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Container(
-        margin: EdgeInsets.only(
-          top: 15,
-          bottom: 25
-        ),
-        constraints: BoxConstraints(
-          maxHeight: 400
-        ),
-        child:  ListView.builder(
+        margin: EdgeInsets.only(top: 15, bottom: 25),
+        constraints: BoxConstraints(maxHeight: 400),
+        child: ListView.builder(
           itemCount: options.length,
           shrinkWrap: true,
           itemBuilder: (context, index) {
@@ -50,7 +49,10 @@ class FDGOptionsDialog<T> extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Container(
-                            child: Text(_label(context, option), style: Theme.of(context).textTheme.headline3,),
+                            child: Text(
+                              _label(context, option),
+                              style: Theme.of(context).textTheme.headline3,
+                            ),
                             padding: EdgeInsets.all(20),
                           ),
                         ),

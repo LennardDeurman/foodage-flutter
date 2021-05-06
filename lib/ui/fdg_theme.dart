@@ -13,22 +13,22 @@ class _Colors {
 
 class FDGTheme {
 
-  static FDGTheme _instance;
+  static FDGTheme? _instance;
 
-  _Colors _colors;
+  late _Colors _colors;
   _Colors get colors => _colors;
 
 
   factory FDGTheme() {
     if (_instance == null) _instance = FDGTheme._internal();
-    return _instance;
+    return _instance!;
   }
 
   FDGTheme._internal() {
     _colors = _Colors();
   } 
 
-  Color get primarySwatch {
+  MaterialColor get primarySwatch {
     return Colors.red;
   }
 

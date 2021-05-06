@@ -10,11 +10,11 @@ enum CameraState {
 class CameraPreviewFrameState {
   final CameraState cameraState;
 
-  final CameraController controller;
+  final CameraController? controller;
 
-  CameraPreviewFrameState({this.cameraState, this.controller});
+  CameraPreviewFrameState({required this.cameraState, this.controller});
 
-  CameraPreviewFrameState copyWith({CameraState cameraState, CameraController controller}) {
+  CameraPreviewFrameState copyWith({CameraState? cameraState, CameraController? controller}) {
     return CameraPreviewFrameState(cameraState: cameraState ?? this.cameraState, controller: controller ?? this.controller);
   }
 }

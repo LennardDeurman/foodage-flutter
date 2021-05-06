@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:photo_gallery/photo_gallery.dart';
 import 'package:provider/provider.dart';
 
 import '../../background_builder.dart';
-import '../../extensions.dart';
+import '../../ui_extensions.dart';
 import '../../fdg_theme.dart';
 import '../../widgets/dialogs/fdg_options.dart';
 import '../../widgets/fdg_segmented_control.dart';
@@ -31,7 +32,7 @@ class _InspirationBody extends StatelessWidget {
           margin: EdgeInsets.only(left: 6),
           child: Icon(
             Icons.lightbulb,
-            color: Theme.of(context).textTheme.button.color,
+            color: Theme.of(context).textTheme.button!.color,
           ),
         );
       },
@@ -66,7 +67,7 @@ class _GalleryBody extends StatelessWidget {
     return FDGSegmentItem("Gallerij", iconBuilder: (context) {
       return Container(
         margin: EdgeInsets.only(left: 6),
-        child: Icon(Icons.image, color: Theme.of(context).textTheme.button.color),
+        child: Icon(Icons.image, color: Theme.of(context).textTheme.button!.color),
       );
     }, builder: (context, sender) {
       return _GalleryBody(sender);
@@ -81,9 +82,9 @@ class _GalleryBody extends StatelessWidget {
           builder: (context, state) {
             final galleryPickerCubit = context.read<GalleryPickerCubit>();
             final albumState = galleryPickerCubit.ensureInCurrentState<AlbumState>();
-            return FDGOptionsDialog(
-              options: albumState.albumData.albums,
-              value: albumState.albumData.selectedAlbum,
+            return FDGOptionsDialog<Album>(
+              options: albumState.albumData.albums!,
+              value: albumState.albumData.selectedAlbum!,
               label: (album) => album.name,
               updateValue: (album) => galleryPickerCubit.changeAlbumAndLoadData(album),
             );
@@ -94,7 +95,7 @@ class _GalleryBody extends StatelessWidget {
   }
 
   Widget _mapAlbumStateToWidget(BuildContext context, AlbumState state) {
-    Widget contentWidget;
+    Widget? contentWidget;
     if (state is AlbumLoadedState) {
       contentWidget = AlbumPhotosGrid(state.selectedMedia);
     } else if (state is AlbumFailedToLoadState) {
@@ -121,7 +122,7 @@ class _GalleryBody extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       children: [
         Text(
-          state.albumData.selectedAlbum.name,
+          state.albumData.selectedAlbum!.name,
           style: Theme.of(context).textTheme.headline2,
         ),
         SizedBox(
@@ -129,7 +130,7 @@ class _GalleryBody extends StatelessWidget {
         ),
         Icon(
           Icons.keyboard_arrow_down,
-          color: Theme.of(context).textTheme.headline2.color,
+          color: Theme.of(context).textTheme.headline2!.color,
         )
       ],
     );
@@ -185,14 +186,14 @@ class _GalleryBody extends StatelessWidget {
 class _PickerBody extends StatelessWidget {
   final _borderSide = BorderSide(color: FDGTheme().colors.lightGrey2, width: 1);
 
-  final Widget titleWidget;
-  final Widget contentWidget;
+  final Widget? titleWidget;
+  final Widget? contentWidget;
 
   static const double _minHeight = 250;
 
   _PickerBody({this.titleWidget, this.contentWidget});
 
-  static Widget background({@required Widget child}) {
+  static Widget background({required Widget child}) {
     return Container(
       constraints: BoxConstraints(minHeight: _minHeight),
       child: child,

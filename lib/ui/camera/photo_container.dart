@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../ui/extensions.dart';
+import '../../ui/ui_extensions.dart';
 import '../../ui/widgets/fdg_ratio.dart';
 
 class _CloseButton extends StatelessWidget {
@@ -9,7 +9,7 @@ class _CloseButton extends StatelessWidget {
   final double buttonInnerMargin;
   final WidgetTapCallback onRemovePressed;
 
-  _CloseButton ({ @required this.size, @required this.onRemovePressed, this.buttonInnerMargin = 5 });
+  _CloseButton ({ required this.size, required this.onRemovePressed, this.buttonInnerMargin = 5 });
 
   double get _borderRadius => size / 2;
 
@@ -39,7 +39,7 @@ class _CloseButton extends StatelessWidget {
 
 class PhotoContainer extends StatelessWidget {
 
-  final WidgetTapCallback onRemovePressed;
+  final WidgetTapCallback? onRemovePressed;
   final double borderRadius;
 
   static const _backgroundColor = Color.fromRGBO(100, 100, 100, 1);
@@ -50,6 +50,14 @@ class PhotoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final removeButton = Positioned(
+      right: 10,
+      top: -8,
+      child: _CloseButton(
+        size: _closeButtonSize,
+        onRemovePressed: onRemovePressed!,
+      ),
+    );
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -64,14 +72,7 @@ class PhotoContainer extends StatelessWidget {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              Positioned(
-                right: 10,
-                top: -8,
-                child: _CloseButton(
-                  size: _closeButtonSize,
-                  onRemovePressed: onRemovePressed,
-                ),
-              )
+              if (onRemovePressed != null) removeButton
             ],
           ),
         ),

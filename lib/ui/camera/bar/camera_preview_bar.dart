@@ -28,7 +28,7 @@ class CameraPreviewBar extends StatelessWidget {
               FDGPrimaryButton(
                 "Gebruik foto",
                 icon: Container(
-                  child: Icon(Icons.check, color: Theme.of(context).textTheme.button.color),
+                  child: Icon(Icons.check, color: Theme.of(context).textTheme.button!.color),
                   margin: EdgeInsets.only(left: 5),
                 ),
                 borderRadius: 14,

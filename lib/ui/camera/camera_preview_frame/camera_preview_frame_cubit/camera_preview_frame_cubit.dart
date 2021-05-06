@@ -6,7 +6,7 @@ import '../../../../data/photos/camera_repository.dart';
 import 'camera_preview_frame_states.dart';
 
 class CameraPreviewFrameCubit extends Cubit<CameraPreviewFrameState> {
-  List<CameraDescription> _availableCameras;
+  List<CameraDescription>? _availableCameras;
 
   final CameraRepository _cameraRepository;
 
@@ -23,9 +23,9 @@ class CameraPreviewFrameCubit extends Cubit<CameraPreviewFrameState> {
       return;
     }
     _availableCameras = await _cameraRepository.getCameras();
-    var selectedCameraDescription = _cameraRepository.getMainCamera(_availableCameras);
-    if (selectedCameraDescription == null && _availableCameras.length > 0)
-      selectedCameraDescription = _availableCameras.first;
+    var selectedCameraDescription = _cameraRepository.getMainCamera(_availableCameras!);
+    if (selectedCameraDescription == null && _availableCameras!.length > 0)
+      selectedCameraDescription = _availableCameras!.first;
     if (selectedCameraDescription != null) {
       final newController = _cameraController(selectedCameraDescription);
       emit(state.copyWith(cameraState: CameraState.ready, controller: newController));

@@ -16,13 +16,13 @@ class AlbumState extends GalleryPickerState {
 
   final AlbumData albumData;
 
-  AlbumState ({ this.albumData });
+  AlbumState ({ required this.albumData });
 
 }
 
 class AlbumLoadingState extends AlbumState {
 
-  AlbumLoadingState ({ AlbumData albumData }) : super(
+  AlbumLoadingState ({ required AlbumData albumData }) : super(
       albumData: albumData
   );
 
@@ -31,7 +31,7 @@ class AlbumLoadedState extends AlbumState {
 
   final MediaPage selectedMedia;
 
-  AlbumLoadedState ({ AlbumData albumData, this.selectedMedia }) : super(
+  AlbumLoadedState ({ required AlbumData albumData, required this.selectedMedia }) : super(
       albumData: albumData
   );
 
@@ -39,7 +39,7 @@ class AlbumLoadedState extends AlbumState {
 
 class AlbumFailedToLoadState extends AlbumState {
 
-  AlbumFailedToLoadState ({ AlbumData albumData }) : super(
+  AlbumFailedToLoadState ({ required AlbumData albumData }) : super(
       albumData: albumData
   );
 

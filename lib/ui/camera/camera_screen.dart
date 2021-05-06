@@ -96,7 +96,7 @@ class FoodCameraState extends State<FoodCamera> {
                                           Theme(
                                             data: contextThemeData.copyWith(
                                                 textTheme: contextThemeData.textTheme.copyWith(
-                                                    button: contextThemeData.textTheme.button.copyWith(
+                                                    button: contextThemeData.textTheme.button!.copyWith(
                                                         fontSize: 13
                                                     )
                                                 )

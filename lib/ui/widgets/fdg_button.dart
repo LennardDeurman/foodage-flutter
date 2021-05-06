@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../extensions.dart';
+import '../ui_extensions.dart';
 
 enum _ButtonType { elevatedButton, outlineButton }
 
 class _FDGButton extends StatelessWidget {
   final String text;
-  final Widget icon;
-  final WidgetTapCallback onTap;
-  final EdgeInsets textPadding;
   final _ButtonType buttonType;
+  final WidgetTapCallback onTap;
+  final EdgeInsets? textPadding;
+  final Widget? icon;
 
   _FDGButton(
     this.text, {
-    @required this.onTap,
-    this.buttonType,
+    required this.onTap,
+    required this.buttonType,
     this.icon,
     this.textPadding,
   });
@@ -57,31 +57,32 @@ class _FDGButton extends StatelessWidget {
 }
 
 abstract class _FDGCustomButton extends StatelessWidget {
-  final EdgeInsets padding;
-  final double borderRadius;
+  final EdgeInsets? padding;
+  final double? borderRadius;
   final String text;
-  final Widget icon;
+  final Widget? icon;
   final WidgetTapCallback onTap;
-  final EdgeInsets textPadding;
+  final EdgeInsets? textPadding;
 
   _FDGCustomButton(
     this.text, {
-    @required this.onTap,
+    required this.onTap,
     this.icon,
     this.padding,
     this.textPadding,
     this.borderRadius,
   });
 
-  ButtonStyle customButtonStyle(ThemeData contextThemeData, {Color borderColor, Color backgroundColor}) {
+  ButtonStyle customButtonStyle(ThemeData contextThemeData,
+      {required Color backgroundColor, Color? borderColor,}) {
     final borderSide = BorderSide(
       color: borderColor ?? Colors.transparent,
       width: 1,
     );
 
     final currentButtonStyle = (buttonType == _ButtonType.elevatedButton
-            ? contextThemeData.elevatedButtonTheme?.style
-            : contextThemeData.outlinedButtonTheme?.style) ??
+            ? contextThemeData.elevatedButtonTheme.style
+            : contextThemeData.outlinedButtonTheme.style) ??
         ButtonStyle();
 
     final updatedButtonStyle = currentButtonStyle.copyWith(
@@ -132,11 +133,11 @@ abstract class _FDGCustomButton extends StatelessWidget {
 class FDGPrimaryButton extends _FDGCustomButton {
   FDGPrimaryButton(
     String text, {
-    @required WidgetTapCallback onTap,
-    Widget icon,
-    EdgeInsets padding,
-    EdgeInsets textPadding,
-    double borderRadius,
+    required WidgetTapCallback onTap,
+    Widget? icon,
+    EdgeInsets? padding,
+    EdgeInsets? textPadding,
+    double? borderRadius,
   }) : super(
           text,
           onTap: onTap,
@@ -159,11 +160,11 @@ class FDGPrimaryButton extends _FDGCustomButton {
 class FDGSecondaryButton extends _FDGCustomButton {
   FDGSecondaryButton(
     String text, {
-    @required WidgetTapCallback onTap,
-    Widget icon,
-    EdgeInsets padding,
-    EdgeInsets textPadding,
-    double borderRadius,
+    required WidgetTapCallback onTap,
+    Widget? icon,
+    EdgeInsets? padding,
+    EdgeInsets? textPadding,
+    double? borderRadius,
   }) : super(
           text,
           onTap: onTap,
@@ -180,7 +181,7 @@ class FDGSecondaryButton extends _FDGCustomButton {
   ThemeData getLocalThemeData(ThemeData contextThemeData) {
     return ThemeData(
       textTheme: contextThemeData.textTheme.copyWith(
-        button: contextThemeData.textTheme.button.copyWith(
+        button: contextThemeData.textTheme.button!.copyWith(
           color: contextThemeData.primaryColor,
         ),
       ),

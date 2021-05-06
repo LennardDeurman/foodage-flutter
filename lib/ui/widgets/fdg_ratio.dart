@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class FDGRatio extends StatelessWidget {
 
-  final Widget child;
+  final Widget? child;
 
   FDGRatio ({ this.child });
 

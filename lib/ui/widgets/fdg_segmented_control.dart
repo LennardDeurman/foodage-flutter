@@ -11,7 +11,7 @@ class FDGSegmentItem {
   final FDGSegmentWidgetBuilder<FDGSegmentItem> builder;
   final String title;
 
-  FDGSegmentItem(this.title, {this.iconBuilder, this.builder});
+  FDGSegmentItem(this.title, {required this.iconBuilder, required this.builder});
 }
 
 class FDGSegmentedControl<T> extends StatelessWidget {
@@ -19,22 +19,22 @@ class FDGSegmentedControl<T> extends StatelessWidget {
     final themeData = localThemeData.copyWith(
       primaryColor: FDGTheme().colors.lightGrey2,
       textTheme: localThemeData.textTheme.copyWith(
-        button: localThemeData.textTheme.button.copyWith(color: FDGTheme().colors.grey),
+        button: localThemeData.textTheme.button!.copyWith(color: FDGTheme().colors.grey),
       ),
     );
-    if (this.unActiveSegmentThemeBuilder != null) return this.unActiveSegmentThemeBuilder(themeData);
+    if (this.unActiveSegmentThemeBuilder != null) return this.unActiveSegmentThemeBuilder!(themeData);
     return themeData;
   }
 
   final List<T> segments;
   final T value;
   final FDGSegmentWidgetBuilder<T> segmentWidgetBuilder;
-  final FDGSegmentThemeBuilder unActiveSegmentThemeBuilder;
+  final FDGSegmentThemeBuilder? unActiveSegmentThemeBuilder;
 
   FDGSegmentedControl({
-    @required this.segments,
-    @required this.value,
-    @required this.segmentWidgetBuilder,
+    required this.segments,
+    required this.value,
+    required this.segmentWidgetBuilder,
     this.unActiveSegmentThemeBuilder,
   });
 

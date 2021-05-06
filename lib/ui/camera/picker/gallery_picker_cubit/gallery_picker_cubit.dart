@@ -5,12 +5,12 @@ import '../../../../data/photos/photo_gallery_repository.dart';
 import 'gallery_picker_states.dart';
 
 class AlbumData {
-  final List<Album> albums;
-  final Album selectedAlbum;
+  final List<Album>? albums;
+  final Album? selectedAlbum;
 
   AlbumData({this.albums, this.selectedAlbum});
 
-  AlbumData copyWith({List<Album> albums, Album selectedAlbum}) {
+  AlbumData copyWith({List<Album>? albums, Album? selectedAlbum}) {
     return AlbumData(
       albums: albums ?? this.albums,
       selectedAlbum: selectedAlbum ?? this.selectedAlbum,
@@ -23,7 +23,7 @@ class GalleryPickerCubit extends Cubit<GalleryPickerState> {
 
   GalleryPickerCubit(this._photoGalleryRepository) : super(GalleryPickerIdleState());
 
-  void _loadAlbumData({List<Album> albums, Album selectedAlbum}) async {
+  void _loadAlbumData({required Album selectedAlbum, List<Album>? albums}) async {
     var albumData = state is AlbumState ? (state as AlbumState).albumData : AlbumData();
     try {
       albumData = albumData.copyWith(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
-import '../../extensions.dart';
+import '../../ui_extensions.dart';
 import '../../fdg_theme.dart';
 import '../picker/gallery_picker_cubit/gallery_picker_cubit.dart';
 import '../picker/gallery_picker_cubit/gallery_picker_states.dart';
@@ -16,8 +16,8 @@ class _CaptureButton extends StatelessWidget {
   final WidgetTapCallback onTap;
 
   const _CaptureButton({
-    @required this.onTap,
-    @required this.size,
+    required this.onTap,
+    required this.size,
     this.innerMargin = 2,
     this.buttonColor = Colors.white,
     this.borderColor = Colors.grey,
@@ -41,7 +41,7 @@ class _CaptureButton extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () => onTap != null ? onTap(context) : null,
+            onTap: () => onTap(context),
             child: Container(
               width: size,
               height: size,
@@ -70,7 +70,7 @@ class _SelectFromGalleryButton extends StatelessWidget {
 
   final WidgetTapCallback onTap;
 
-  _SelectFromGalleryButton ({ @required this.onTap });
+  _SelectFromGalleryButton ({ required this.onTap });
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class _SelectFromGalleryButton extends StatelessWidget {
           Container(
             child: Text(
               "Selecteren uit gallerij",
-              style: Theme.of(context).textTheme.bodyText1.copyWith(
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Colors.white,
                 fontSize: 11
               ),
@@ -117,7 +117,7 @@ class _SelectFromGalleryButton extends StatelessWidget {
           return Image(
             fit: BoxFit.cover,
             image: AlbumThumbnailProvider(
-              albumId: state.albumData.selectedAlbum.id,
+              albumId: state.albumData.selectedAlbum!.id,
               width: 128,
               height: 128,
             ),
@@ -142,7 +142,7 @@ class CameraCaptureBar extends StatelessWidget {
   final WidgetTapCallback onCaptureTap;
   final WidgetTapCallback onSelectFromGalleryTap;
 
-  CameraCaptureBar ({ @required this.onCaptureTap, @required this.onSelectFromGalleryTap });
+  CameraCaptureBar ({ required this.onCaptureTap, required this.onSelectFromGalleryTap });
 
   @override
   Widget build(BuildContext context) {
