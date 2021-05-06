@@ -4,7 +4,6 @@ import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_eve
 import 'package:foodage/ui/camera/picker/logic/gallery_picker/gallery_picker_events.dart';
 import 'package:foodage/ui/camera/picker/logic/photo_picker_bloc.dart';
 import 'package:foodage/ui/camera/picker/photo_picker_segments.dart';
-import 'package:foodage/ui/widgets/fdg_segmented_control.dart';
 import 'package:provider/provider.dart';
 
 import '../../ui/widgets/fdg_button.dart';
@@ -23,6 +22,10 @@ class FoodCamera extends StatefulWidget {
 }
 
 class FoodCameraState extends State<FoodCamera> {
+
+  Widget _buildImageBody(BuildContext context) {
+    return Container();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,10 +167,7 @@ class FoodCameraState extends State<FoodCamera> {
                             ),
                           ),
                           FDGRatio(
-                            child: Container(
-                              color: Colors.transparent,
-                              child: Container(),
-                            ),
+                            child: _buildImageBody(context),
                           ),
                         ],
                       ),
@@ -179,9 +179,7 @@ class FoodCameraState extends State<FoodCamera> {
                 onCaptureTap: (BuildContext context) {
 
                 },
-                onSelectFromGalleryTap: (BuildContext context) {
-                  PhotoPickerBottomSheet.show(context);
-                },
+                onSelectFromGalleryTap: (BuildContext context) => PhotoPickerBottomSheet.show(context),
               )
             ],
           ),
