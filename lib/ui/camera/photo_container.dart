@@ -48,8 +48,7 @@ class PhotoContainer extends StatelessWidget {
 
   PhotoContainer ({ this.borderRadius = 10, this.onRemovePressed });
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildRemoveButton(BuildContext context) {
     final removeButton = Positioned(
       right: 10,
       top: -8,
@@ -58,6 +57,11 @@ class PhotoContainer extends StatelessWidget {
         onRemovePressed: onRemovePressed!,
       ),
     );
+    return removeButton;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -72,7 +76,7 @@ class PhotoContainer extends StatelessWidget {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              if (onRemovePressed != null) removeButton
+              if (onRemovePressed != null) _buildRemoveButton(context)
             ],
           ),
         ),

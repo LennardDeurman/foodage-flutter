@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodage/ui/camera/picker/gallery_picker_cubit/gallery_picker_cubit.dart';
 
 import '../../fdg_theme.dart';
 import '../../widgets/fdg_button.dart';
@@ -13,10 +14,18 @@ class PhotoPickerBottomSheet extends StatelessWidget {
   static const _minHeight = 250.0;
 
   static void show(BuildContext context) {
+    final photoPickerCubit = BlocProvider.of<PhotoPickerCubit>(context);
+    final galleryPickerCubit = BlocProvider.of<GalleryPickerCubit>(context);
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return PhotoPickerBottomSheet();
+          return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(value: photoPickerCubit),
+                BlocProvider.value(value: galleryPickerCubit)
+              ],
+              child: PhotoPickerBottomSheet()
+          );
         },
         isScrollControlled: true);
   }
@@ -37,29 +46,32 @@ class PhotoPickerBottomSheet extends StatelessWidget {
                   minHeight: _minHeight,
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: _borderSide,
+              Visibility(
+                visible: photoPickerCubit.segments.length > 1,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: _borderSide,
+                    ),
                   ),
-                ),
-                child: FDGSegmentedControl<FDGSegmentItem>(
-                  value: state.selectedSegment,
-                  segments: photoPickerCubit.segments,
-                  segmentWidgetBuilder: (BuildContext context, FDGSegmentItem segmentItem) {
-                    return Container(
-                      child: FDGPrimaryButton(
-                        segmentItem.title,
-                        onTap: (BuildContext context) => photoPickerCubit.changeSegment(segmentItem),
-                        borderRadius: 12,
-                        padding: EdgeInsets.all(6),
-                        textPadding: EdgeInsets.symmetric(horizontal: 10),
-                        icon: segmentItem?.iconBuilder(context),
-                      ),
-                      margin: EdgeInsets.symmetric(horizontal: 5),
-                    );
-                  },
+                  child: FDGSegmentedControl<FDGSegmentItem>(
+                    value: state.selectedSegment,
+                    segments: photoPickerCubit.segments,
+                    segmentWidgetBuilder: (BuildContext context, FDGSegmentItem segmentItem) {
+                      return Container(
+                        child: FDGPrimaryButton(
+                          segmentItem.title,
+                          onTap: (BuildContext context) => photoPickerCubit.changeSegment(segmentItem),
+                          borderRadius: 12,
+                          padding: EdgeInsets.all(6),
+                          textPadding: EdgeInsets.symmetric(horizontal: 10),
+                          icon: segmentItem.iconBuilder(context),
+                        ),
+                        margin: EdgeInsets.symmetric(horizontal: 5),
+                      );
+                    },
+                  ),
                 ),
               )
             ],

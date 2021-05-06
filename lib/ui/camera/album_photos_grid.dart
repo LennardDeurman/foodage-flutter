@@ -4,9 +4,9 @@ import 'package:transparent_image/transparent_image.dart';
 
 class AlbumPhotosGrid extends StatelessWidget {
 
-  final MediaPage mediaPage;
+  final List<Medium> media;
 
-  AlbumPhotosGrid (this.mediaPage);
+  AlbumPhotosGrid (this.media);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class AlbumPhotosGrid extends StatelessWidget {
       mainAxisSpacing: 1.0,
       crossAxisSpacing: 1.0,
       children: <Widget>[
-        ...mediaPage.items.map(
+        ...media.map(
               (medium) => Container(
             color: Colors.grey[300],
             child: FadeInImage(

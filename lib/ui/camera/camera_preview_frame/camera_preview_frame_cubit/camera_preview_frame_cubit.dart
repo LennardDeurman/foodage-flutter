@@ -12,8 +12,11 @@ class CameraPreviewFrameCubit extends Cubit<CameraPreviewFrameState> {
 
   CameraPreviewFrameCubit(this._cameraRepository) : super(CameraPreviewFrameState(cameraState: CameraState.idle));
 
-  CameraController _cameraController(CameraDescription cameraDescription) =>
-      CameraController(cameraDescription, ResolutionPreset.medium);
+  Future<CameraController> _cameraController(CameraDescription cameraDescription) async {
+    final controller = CameraController(cameraDescription, ResolutionPreset.medium);
+    await controller.initialize();
+    return controller;
+  }
 
   void init() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -27,15 +30,15 @@ class CameraPreviewFrameCubit extends Cubit<CameraPreviewFrameState> {
     if (selectedCameraDescription == null && _availableCameras!.length > 0)
       selectedCameraDescription = _availableCameras!.first;
     if (selectedCameraDescription != null) {
-      final newController = _cameraController(selectedCameraDescription);
+      final newController = await _cameraController(selectedCameraDescription);
       emit(state.copyWith(cameraState: CameraState.ready, controller: newController));
     } else {
       emit(state.copyWith(cameraState: CameraState.noCameraAvailable));
     }
   }
 
-  void changeCamera(CameraDescription cameraDescription) {
-    final newController = _cameraController(cameraDescription);
+  void changeCamera(CameraDescription cameraDescription) async {
+    final newController = await _cameraController(cameraDescription);
     emit(state.copyWith(cameraState: CameraState.ready, controller: newController));
   }
 

@@ -6,7 +6,13 @@ import '../../extensions.dart';
 class CameraRepository {
   Future<bool> checkPermission() async => await Permission.camera.request().isGranted;
 
-  Future<List<CameraDescription>> getCameras() async => await getCameras();
+  Future<List<CameraDescription>> getCameras() async {
+    try {
+      return await availableCameras();
+    } on Exception {
+      return []; //Happens on simulator
+    }
+  }
 
   CameraDescription? getMainCamera(List<CameraDescription> availableCameras) =>
       availableCameras.firstWhereOrNull((cameraDesc) => cameraDesc.lensDirection == CameraLensDirection.back);

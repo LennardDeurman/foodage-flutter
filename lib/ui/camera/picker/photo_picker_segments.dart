@@ -97,7 +97,7 @@ class _GalleryBody extends StatelessWidget {
   Widget _mapAlbumStateToWidget(BuildContext context, AlbumState state) {
     Widget? contentWidget;
     if (state is AlbumLoadedState) {
-      contentWidget = AlbumPhotosGrid(state.selectedMedia);
+      contentWidget = AlbumPhotosGrid(state.media);
     } else if (state is AlbumFailedToLoadState) {
       contentWidget = _backgroundBuilder.failed(
         title: _backgroundBuilder.labels.title(
