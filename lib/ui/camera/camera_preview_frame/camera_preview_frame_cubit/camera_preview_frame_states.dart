@@ -4,6 +4,7 @@ enum CameraState {
   idle,
   ready,
   permissionsDenied,
+  preparingOutput,
   noCameraAvailable,
 }
 

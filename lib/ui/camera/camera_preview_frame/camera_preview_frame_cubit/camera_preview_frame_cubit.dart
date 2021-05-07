@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/photos/camera_repository.dart';
+import '../../../ui_extensions.dart';
 import 'camera_preview_frame_states.dart';
+
 
 class CameraPreviewFrameCubit extends Cubit<CameraPreviewFrameState> {
   List<CameraDescription>? _availableCameras;
@@ -16,6 +20,18 @@ class CameraPreviewFrameCubit extends Cubit<CameraPreviewFrameState> {
     final controller = CameraController(cameraDescription, ResolutionPreset.medium);
     await controller.initialize();
     return controller;
+  }
+  
+  Future<XFile?> takePicture() async {
+    final state = ensureInCurrentState<CameraPreviewFrameState>();
+    final isReady = state.cameraState == CameraState.ready && state.controller != null;
+    if (isReady) {
+      emit(state.copyWith(cameraState: CameraState.preparingOutput));
+      final xFile = await state.controller!.takePicture();
+      emit(state.copyWith(cameraState: CameraState.ready));
+      return xFile;
+    }
+    return null;
   }
 
   void init() async {

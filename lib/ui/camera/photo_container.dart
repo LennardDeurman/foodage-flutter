@@ -41,12 +41,13 @@ class PhotoContainer extends StatelessWidget {
 
   final WidgetTapCallback? onRemovePressed;
   final double borderRadius;
+  final Widget content;
 
   static const _backgroundColor = Color.fromRGBO(100, 100, 100, 1);
   static const _closeButtonSize = 20.0;
 
 
-  PhotoContainer ({ this.borderRadius = 10, this.onRemovePressed });
+  PhotoContainer ({ required this.content, this.borderRadius = 10, this.onRemovePressed });
 
   Widget _buildRemoveButton(BuildContext context) {
     final removeButton = Positioned(
@@ -76,6 +77,7 @@ class PhotoContainer extends StatelessWidget {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
+              content,
               if (onRemovePressed != null) _buildRemoveButton(context)
             ],
           ),

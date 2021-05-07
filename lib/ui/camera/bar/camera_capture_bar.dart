@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodage/ui/camera/camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_cubit.dart';
+import 'package:foodage/ui/camera/camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_states.dart';
+import 'package:foodage/ui/camera/main_camera_cubit/main_camera_cubit.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
 import '../../ui_extensions.dart';
@@ -162,9 +165,24 @@ class CameraCaptureBar extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.center,
-            child: _CaptureButton(
-              size: _captureButtonSize,
-              onTap: onCaptureTap,
+            child: Builder(
+              builder: (context) {
+                final captureButton = _CaptureButton(
+                  size: _captureButtonSize,
+                  onTap: onCaptureTap,
+                );
+                final previewCubit = context.read<CameraPreviewFrameCubit>();
+                final cameraState = previewCubit.state.cameraState;
+                if (cameraState == CameraState.preparingOutput) {
+                  return IgnorePointer( //disable when the cubit is processing photo
+                    child: Opacity(
+                      opacity: 0.7,
+                      child: captureButton,
+                    ),
+                  );
+                }
+                return captureButton;
+              }
             ),
           )
         ],

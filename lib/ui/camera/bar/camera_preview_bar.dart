@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:foodage/ui/ui_extensions.dart';
 
 import '../../widgets/fdg_button.dart';
 import 'camera_bar.dart';
 
 class CameraPreviewBar extends StatelessWidget {
+
+  final WidgetTapCallback onCancelPressed;
+  final WidgetTapCallback onUsePhotoPressed;
+
+  CameraPreviewBar ({ required this.onCancelPressed, required this.onUsePhotoPressed });
+
   @override
   Widget build(BuildContext context) {
     return CameraBarContainer(
@@ -20,7 +27,7 @@ class CameraPreviewBar extends StatelessWidget {
                 ),
                 borderRadius: 14,
                 textPadding: EdgeInsets.symmetric(horizontal: 10),
-                onTap: (BuildContext context) {},
+                onTap: onCancelPressed,
               ),
               SizedBox(
                 width: 16,
@@ -33,7 +40,7 @@ class CameraPreviewBar extends StatelessWidget {
                 ),
                 borderRadius: 14,
                 textPadding: EdgeInsets.symmetric(horizontal: 10),
-                onTap: (BuildContext context) {},
+                onTap: onUsePhotoPressed,
               )
             ],
           ),

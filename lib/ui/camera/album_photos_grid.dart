@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodage/ui/camera/image_details.dart';
+import 'package:foodage/ui/camera/main_camera_cubit/main_camera_cubit.dart';
+import 'package:foodage/ui/fdg_theme.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -10,6 +14,7 @@ class AlbumPhotosGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mainCameraCubit = context.read<MainCameraCubit>();
     return GridView.count(
       crossAxisCount: 3,
       mainAxisSpacing: 1.0,
@@ -18,14 +23,28 @@ class AlbumPhotosGrid extends StatelessWidget {
         ...media.map(
               (medium) => Container(
             color: Colors.grey[300],
-            child: FadeInImage(
-              fit: BoxFit.cover,
-              placeholder: MemoryImage(kTransparentImage),
-              image: ThumbnailProvider(
-                mediumId: medium.id,
-                mediumType: medium.mediumType,
-                highQuality: true,
-              ),
+            child: Builder(
+              builder: (context) {
+                final imageDetails = GalleryPickedImageDetails(medium);
+                return Stack(
+                  children: [
+                    Material(
+                      child: InkWell(
+                        child: imageDetails.toWidget(context),
+                        onTap: () => mainCameraCubit.selectImage(imageDetails),
+                      ),
+                    ),
+                    Visibility(
+                      visible: mainCameraCubit.isSelectedImage(imageDetails),
+                      child: Container(
+                        child: Center(
+                          child: Icon(Icons.done, size: 32, color: FDGTheme().colors.darkRed,),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
             ),
           ),
         ),
