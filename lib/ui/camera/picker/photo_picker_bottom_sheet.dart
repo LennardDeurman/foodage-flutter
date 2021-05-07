@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodage/ui/camera/picker/gallery_picker_cubit/gallery_picker_cubit.dart';
 
 import '../../fdg_theme.dart';
 import '../../widgets/fdg_button.dart';
 import '../../widgets/fdg_segmented_control.dart';
+import 'gallery_picker_cubit/gallery_picker_cubit.dart';
 import 'photo_picker_cubit/photo_picker_cubit.dart';
 import 'photo_picker_cubit/photo_picker_states.dart';
 

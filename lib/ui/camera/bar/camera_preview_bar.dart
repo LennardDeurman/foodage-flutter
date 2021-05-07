@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/ui_extensions.dart';
 
+import '../../ui_extensions.dart';
 import '../../widgets/fdg_button.dart';
 import 'camera_bar.dart';
 

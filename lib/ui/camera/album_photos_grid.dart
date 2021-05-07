@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodage/ui/camera/image_details.dart';
-import 'package:foodage/ui/camera/main_camera_cubit/main_camera_cubit.dart';
-import 'package:foodage/ui/fdg_theme.dart';
 import 'package:photo_gallery/photo_gallery.dart';
-import 'package:transparent_image/transparent_image.dart';
+
+import '../fdg_theme.dart';
+import 'image_details.dart';
+import 'main_camera_cubit/main_camera_cubit.dart';
 
 class AlbumPhotosGrid extends StatelessWidget {
 

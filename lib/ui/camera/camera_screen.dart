@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodage/data/service_locator.dart';
-import 'package:foodage/ui/camera/bar/camera_preview_bar.dart';
-import 'package:foodage/ui/camera/camera_preview_frame/camera_preview_frame.dart';
-import 'package:foodage/ui/camera/camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_cubit.dart';
-import 'package:foodage/ui/camera/image_details.dart';
-import 'package:foodage/ui/camera/image_preview_frame.dart';
-import 'package:foodage/ui/camera/main_camera_cubit/main_camera_cubit.dart';
-import 'package:foodage/ui/camera/main_camera_cubit/main_camera_states.dart';
-import 'package:foodage/ui/camera/picker/gallery_picker_cubit/gallery_picker_cubit.dart';
-import 'package:foodage/ui/camera/picker/photo_picker_cubit/photo_picker_cubit.dart';
-import 'package:foodage/ui/camera/picker/photo_picker_segments.dart';
-import 'package:foodage/ui/ui_extensions.dart';
 
 import '../../data/service_locator.dart';
 import '../widgets/fdg_button.dart';
 import '../widgets/fdg_ratio.dart';
+import '../ui_extensions.dart';
 import 'photo_container.dart';
+import 'image_details.dart';
+import 'image_preview_frame.dart';
+import 'camera_preview_frame/camera_preview_frame.dart';
+import 'camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_cubit.dart';
+import 'main_camera_cubit/main_camera_cubit.dart';
+import 'main_camera_cubit/main_camera_states.dart';
 import 'bar/camera_capture_bar.dart';
+import 'bar/camera_preview_bar.dart';
 import 'picker/photo_picker_bottom_sheet.dart';
+import 'picker/gallery_picker_cubit/gallery_picker_cubit.dart';
+import 'picker/photo_picker_cubit/photo_picker_cubit.dart';
+import 'picker/photo_picker_segments.dart';
 
 class FoodCamera extends StatefulWidget {
   @override

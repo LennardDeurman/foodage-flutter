@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/data/service_locator.dart';
+import 'data/service_locator.dart';
 import 'ui/camera/camera_screen.dart';
 import 'ui/fdg_theme.dart';
 

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodage/ui/camera/camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_cubit.dart';
-import 'package:foodage/ui/camera/camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_states.dart';
-import 'package:foodage/ui/camera/main_camera_cubit/main_camera_cubit.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
 import '../../ui_extensions.dart';
 import '../../fdg_theme.dart';
+import '../camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_cubit.dart';
+import '../camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_states.dart';
 import '../picker/gallery_picker_cubit/gallery_picker_cubit.dart';
 import '../picker/gallery_picker_cubit/gallery_picker_states.dart';
 import 'camera_bar.dart';

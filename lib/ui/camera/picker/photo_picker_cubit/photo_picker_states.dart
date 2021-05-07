@@ -1,4 +1,4 @@
-import 'package:foodage/ui/widgets/fdg_segmented_control.dart';
+import '../../../widgets/fdg_segmented_control.dart';
 
 class PhotoPickerState {
 

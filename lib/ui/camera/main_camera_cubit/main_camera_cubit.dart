@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodage/ui/camera/image_details.dart';
 
 import '../../ui_extensions.dart';
+import '../image_details.dart';
 import 'main_camera_states.dart';
 
 class MainCameraCubit extends Cubit<MainCameraState> {

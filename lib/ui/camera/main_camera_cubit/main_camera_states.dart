@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:foodage/ui/camera/image_details.dart';
+import '../image_details.dart';
 
 class MainCameraState {
   List<ImageDetails> selectedImages;
