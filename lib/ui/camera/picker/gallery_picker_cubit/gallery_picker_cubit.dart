@@ -54,6 +54,14 @@ class GalleryPickerCubit extends Cubit<GalleryPickerState> {
     ));
   }
 
+  Future verifyPermissionsAndReload() async {
+    final permissionGranted = await _photoGalleryRepository.checkPermission();
+    if (permissionGranted && state is! AlbumState) {
+      final albums = await _photoGalleryRepository.getPhotoAlbums();
+      _loadAlbumData(albums: albums, selectedAlbum: albums[0]);
+    }
+  }
+
   void loadInitialAlbum() async {
     emit(GalleryDataLoadingState());
     final permissionGranted = await _photoGalleryRepository.checkPermission();

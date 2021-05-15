@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodage/ui/fdg_theme.dart';
 
 import '../../data/service_locator.dart';
 import '../widgets/fdg_button.dart';
-import '../widgets/fdg_ratio.dart';
 import '../ui_extensions.dart';
 import 'photo_container.dart';
 import 'image_details.dart';
@@ -74,7 +74,7 @@ class _CameraScreenHeader extends StatelessWidget {
                     child: new Icon(
                       Icons.close,
                       size: 24,
-                      color: Colors.black,
+                      color: FDGTheme().colors.darkRed,
                     ),
                   )),
               Theme(
@@ -99,22 +99,6 @@ class _CameraScreenHeader extends StatelessWidget {
                 ),
                 child: _buildSelectedMedia(context),
               ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  child: Text("Media", style: Theme.of(context).textTheme.caption),
-                  margin: EdgeInsets.only(bottom: 3),
-                ),
-                Text(
-                  "${context.read<MainCameraCubit>().state.selectedImages.length} geselecteerd",
-                  style: Theme.of(context).textTheme.subtitle1,
-                )
-              ],
             ),
           )
         ],
@@ -144,83 +128,59 @@ class FoodCameraState extends State<FoodCamera> {
       ],
       child: Scaffold(
         body: BlocBuilder<MainCameraCubit, MainCameraState>(builder: (context, mainCameraState) {
-          return Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                          child: Column(
-                        children: [
-                          Expanded(
-                            child: Container(),
-                          ),
-                          FDGRatio(),
-                        ],
-                      )),
-                      Positioned.fill(
-                        child: Column(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: Offset(0, 3), // changes position of shadow
-                                ),
-                              ]),
-                              child: SafeArea(
-                                bottom: false,
-                                child: _CameraScreenHeader(
-                                  onContinuePressed: (context) {},
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                child: Builder(builder: (context) {
-                                  if (mainCameraState is MainCameraDefaultState) {
-                                    return CameraPreviewFrame();
-                                  } else if (mainCameraState is MainCameraImagePreviewingState) {
-                                    final previewState = mainCameraState;
-                                    return ImagePreviewFrame(
-                                      child: previewState.previewImage.toWidget(context),
-                                    );
-                                  }
-                                  throw InvalidStateFailure();
-                                }),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+          return Stack(
+            children: [
+              Positioned.fill(
+                child: Builder(
+                  builder: (context) {
+                    if (mainCameraState is MainCameraImagePreviewingState) {
+                      final previewState = mainCameraState;
+                      return ImagePreviewFrame(
+                        child: previewState.previewImage.toWidget(context),
+                      );
+                    }
+                    return CameraPreviewFrame();
+                  },
                 ),
-                Builder(builder: (context) {
-                  if (mainCameraState is MainCameraDefaultState) {
-                    return CameraCaptureBar(
-                      onCaptureTap: (BuildContext context) async {
-                        final previewFrameCubit = context.read<CameraPreviewFrameCubit>();
-                        final mainCubit = context.read<MainCameraCubit>();
-                        final xFile = await previewFrameCubit.takePicture();
-                        if (xFile != null) mainCubit.previewTakenPhoto(CameraCapturedImageDetails(xFile));
-                      },
-                      onSelectFromGalleryTap: (BuildContext context) => PhotoPickerBottomSheet.show(context),
-                    );
-                  } else if (mainCameraState is MainCameraImagePreviewingState) {
-                    return CameraPreviewBar(
-                      onCancelPressed: (context) => context.read<MainCameraCubit>().cancelPreview(),
-                      onUsePhotoPressed: (context) => context.read<MainCameraCubit>().useTakenPhoto(),
-                    );
-                  }
-                  throw InvalidStateFailure();
-                })
-              ],
-            ),
+              ),
+              Align(
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                  child: _CameraScreenHeader(onContinuePressed: (context) {}),
+                  top: true,
+                  bottom: false,
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Builder(
+                  builder: (context) {
+                    if (mainCameraState is MainCameraDefaultState) {
+                      return CameraCaptureBar(
+                        onCaptureTap: (BuildContext context) async {
+                          final previewFrameCubit = context.read<CameraPreviewFrameCubit>();
+                          final mainCubit = context.read<MainCameraCubit>();
+                          final xFile = await previewFrameCubit.takePicture();
+                          if (xFile != null) mainCubit.previewTakenPhoto(CameraCapturedImageDetails(xFile));
+                        },
+                        onSelectFromGalleryTap: (BuildContext context) {
+                          final galleryPickerCubit = context.read<GalleryPickerCubit>();
+                          galleryPickerCubit.verifyPermissionsAndReload().then(
+                                (_) => PhotoPickerBottomSheet.show(context),
+                              );
+                        },
+                      );
+                    } else if (mainCameraState is MainCameraImagePreviewingState) {
+                      return CameraPreviewBar(
+                        onCancelPressed: (context) => context.read<MainCameraCubit>().cancelPreview(),
+                        onUsePhotoPressed: (context) => context.read<MainCameraCubit>().useTakenPhoto(),
+                      );
+                    }
+                    throw InvalidStateFailure();
+                  },
+                ),
+              ),
+            ],
           );
         }),
       ),

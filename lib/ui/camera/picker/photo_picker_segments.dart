@@ -75,20 +75,24 @@ class _GalleryBody extends StatelessWidget {
   }
 
   Future<void> _showAlbumPicker(BuildContext context) {
+    final galleryPickerCubit = context.read<GalleryPickerCubit>();
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return BlocBuilder<GalleryPickerCubit, GalleryPickerState>(
-          builder: (context, state) {
-            final galleryPickerCubit = context.read<GalleryPickerCubit>();
-            final albumState = galleryPickerCubit.ensureInCurrentState<AlbumState>();
-            return FDGOptionsDialog<Album>(
-              options: albumState.albumData.albums!,
-              value: albumState.albumData.selectedAlbum!,
-              label: (album) => album.name,
-              updateValue: (album) => galleryPickerCubit.changeAlbumAndLoadData(album),
-            );
-          },
+        return BlocProvider.value(
+          value: galleryPickerCubit,
+          child: BlocBuilder<GalleryPickerCubit, GalleryPickerState>(
+            builder: (context, state) {
+              final galleryPickerCubit = context.read<GalleryPickerCubit>();
+              final albumState = galleryPickerCubit.ensureInCurrentState<AlbumState>();
+              return FDGOptionsDialog<Album>(
+                options: albumState.albumData.albums!,
+                value: albumState.albumData.selectedAlbum!,
+                label: (album) => album.name,
+                updateValue: (album) => galleryPickerCubit.changeAlbumAndLoadData(album),
+              );
+            },
+          ),
         );
       },
     );

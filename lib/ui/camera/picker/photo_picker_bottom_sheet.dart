@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodage/ui/camera/main_camera_cubit/main_camera_cubit.dart';
 
 import '../../fdg_theme.dart';
 import '../../widgets/fdg_button.dart';
@@ -16,13 +17,15 @@ class PhotoPickerBottomSheet extends StatelessWidget {
   static void show(BuildContext context) {
     final photoPickerCubit = BlocProvider.of<PhotoPickerCubit>(context);
     final galleryPickerCubit = BlocProvider.of<GalleryPickerCubit>(context);
+    final mainCameraCubit = BlocProvider.of<MainCameraCubit>(context);
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
           return MultiBlocProvider(
               providers: [
                 BlocProvider.value(value: photoPickerCubit),
-                BlocProvider.value(value: galleryPickerCubit)
+                BlocProvider.value(value: galleryPickerCubit),
+                BlocProvider.value(value: mainCameraCubit)
               ],
               child: PhotoPickerBottomSheet()
           );

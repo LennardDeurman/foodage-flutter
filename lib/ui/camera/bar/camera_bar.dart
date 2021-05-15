@@ -5,16 +5,22 @@ class CameraBarContainer extends StatelessWidget {
   final Widget child;
   final BoxDecoration? decoration;
 
-  static const _barHeight = 140.0;
+  static const _barHeight = 80.0;
 
   CameraBarContainer({ required this.child, this.decoration });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: decoration,
-      height: _barHeight,
-      child: child,
+      color: Colors.transparent,
+      child: SafeArea(
+        child: SizedBox(
+          height: _barHeight,
+          child: child,
+        ),
+        bottom: true,
+        top: false,
+      ),
     );
   }
 

@@ -52,7 +52,7 @@ class PhotoContainer extends StatelessWidget {
   Widget _buildRemoveButton(BuildContext context) {
     final removeButton = Positioned(
       right: 10,
-      top: -8,
+      top: -5,
       child: _CloseButton(
         size: _closeButtonSize,
         onRemovePressed: onRemovePressed!,
@@ -63,26 +63,28 @@ class PhotoContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius)
-      ),
-      child: FDGRatio(
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius),
-            color: _backgroundColor,
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius)
           ),
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              content,
-              if (onRemovePressed != null) _buildRemoveButton(context)
-            ],
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(borderRadius),
+            child: FDGRatio(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: _backgroundColor,
+                ),
+                child: content,
+              ),
+            ),
           ),
         ),
-      ),
+        if (onRemovePressed != null) _buildRemoveButton(context)
+      ],
     );
   }
 

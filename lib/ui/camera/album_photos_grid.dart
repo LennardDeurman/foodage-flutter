@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodage/ui/camera/main_camera_cubit/main_camera_states.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
 import '../fdg_theme.dart';
@@ -7,10 +8,9 @@ import 'image_details.dart';
 import 'main_camera_cubit/main_camera_cubit.dart';
 
 class AlbumPhotosGrid extends StatelessWidget {
-
   final List<Medium> media;
 
-  AlbumPhotosGrid (this.media);
+  AlbumPhotosGrid(this.media);
 
   @override
   Widget build(BuildContext context) {
@@ -21,35 +21,44 @@ class AlbumPhotosGrid extends StatelessWidget {
       crossAxisSpacing: 1.0,
       children: <Widget>[
         ...media.map(
-              (medium) => Container(
+          (medium) => Container(
             color: Colors.grey[300],
-            child: Builder(
-              builder: (context) {
-                final imageDetails = GalleryPickedImageDetails(medium);
-                return Stack(
-                  children: [
-                    Material(
-                      child: InkWell(
+            child: BlocBuilder<MainCameraCubit, MainCameraState>(builder: (context, state) {
+              final imageDetails = GalleryPickedImageDetails(medium);
+              final isSelected = mainCameraCubit.isSelectedImage(imageDetails);
+              return Material(
+                child: InkWell(
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
                         child: imageDetails.toWidget(context),
-                        onTap: () => mainCameraCubit.selectImage(imageDetails),
                       ),
-                    ),
-                    Visibility(
-                      visible: mainCameraCubit.isSelectedImage(imageDetails),
-                      child: Container(
-                        child: Center(
-                          child: Icon(Icons.done, size: 32, color: FDGTheme().colors.darkRed,),
+                      Visibility(
+                        visible: isSelected,
+                        child: Container(
+                          child: Center(
+                            child: Icon(
+                              Icons.done,
+                              size: 32,
+                              color: FDGTheme().colors.darkRed,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.5)
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                );
-              },
-            ),
+                      )
+                    ],
+                  ),
+                  onTap: () => isSelected
+                      ? mainCameraCubit.unSelectImage(imageDetails)
+                      : mainCameraCubit.selectImage(imageDetails),
+                ),
+              );
+            }),
           ),
         ),
       ],
     );
   }
-
 }

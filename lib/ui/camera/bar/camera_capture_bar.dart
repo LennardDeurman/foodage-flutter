@@ -76,38 +76,20 @@ class _SelectFromGalleryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: _width,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Material(
-              child: InkWell(
-                onTap: () => onTap(context),
-                child: Container(
-                  width: _width,
-                  height: _imageHeight,
-                  child: _buildImage(context),
-                ),
-              ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Material(
+          child: InkWell(
+            onTap: () => onTap(context),
+            child: SizedBox(
+              width: _width,
+              height: _imageHeight,
+              child: _buildImage(context),
             ),
           ),
-          Container(
-            child: Text(
-              "Selecteren uit gallerij",
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Colors.white,
-                fontSize: 11
-              ),
-              textAlign: TextAlign.center,
-            ),
-            margin: EdgeInsets.only(
-              top: 8,
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
@@ -185,9 +167,6 @@ class CameraCaptureBar extends StatelessWidget {
             ),
           )
         ],
-      ),
-      decoration: BoxDecoration(
-        color: FDGTheme().colors.darkGrey
       ),
     );
   }

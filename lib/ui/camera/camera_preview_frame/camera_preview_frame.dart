@@ -16,12 +16,25 @@ class CameraPreviewFrame extends StatelessWidget {
         builder: (context, previewState) {
           final cameraState = previewState.cameraState;
           if (cameraState == CameraState.ready) {
-            final controller = previewState.controller!;
-            final scale = 1 / (controller.value.aspectRatio * MediaQuery.of(context).size.aspectRatio);
+            final controller = previewState.controller;
+            var camera = controller!.value;
+            // fetch screen size
+            final size = MediaQuery.of(context).size;
+
+            // calculate scale depending on screen and camera ratios
+            // this is actually size.aspectRatio / (1 / camera.aspectRatio)
+            // because camera preview size is received as landscape
+            // but we're calculating for portrait orientation
+            var scale = size.aspectRatio * camera.aspectRatio;
+
+            // to prevent scaling down, invert the value
+            if (scale < 1) scale = 1 / scale;
+
             return Transform.scale(
-              scale: scale,
-              alignment: Alignment.topCenter,
-              child: CameraPreview(controller),
+                scale: scale,
+                child: Center(
+                  child: CameraPreview(controller),
+                ),
             );
           } else if (cameraState == CameraState.permissionsDenied) {
             return _backgroundBuilder.custom(

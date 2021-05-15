@@ -63,6 +63,7 @@ abstract class _FDGCustomButton extends StatelessWidget {
   final Widget? icon;
   final WidgetTapCallback onTap;
   final EdgeInsets? textPadding;
+  final ButtonStyle? buttonStyle;
 
   _FDGCustomButton(
     this.text, {
@@ -71,28 +72,37 @@ abstract class _FDGCustomButton extends StatelessWidget {
     this.padding,
     this.textPadding,
     this.borderRadius,
+    this.buttonStyle,
   });
 
-  ButtonStyle customButtonStyle(ThemeData contextThemeData,
-      {required Color backgroundColor, Color? borderColor,}) {
+  ButtonStyle _getCurrentButtonStyle(ThemeData contextThemeData) {
+    if (buttonStyle != null) return buttonStyle!;
+    return (buttonType == _ButtonType.elevatedButton
+            ? contextThemeData.elevatedButtonTheme.style
+            : contextThemeData.outlinedButtonTheme.style) ??
+        ButtonStyle();
+  }
+
+  ButtonStyle customButtonStyle(
+    ThemeData contextThemeData, {
+    required Color backgroundColor,
+    Color? borderColor,
+  }) {
     final borderSide = BorderSide(
       color: borderColor ?? Colors.transparent,
       width: 1,
     );
 
-    final currentButtonStyle = (buttonType == _ButtonType.elevatedButton
-            ? contextThemeData.elevatedButtonTheme.style
-            : contextThemeData.outlinedButtonTheme.style) ??
-        ButtonStyle();
+    final currentButtonStyle = _getCurrentButtonStyle(contextThemeData);
 
     final updatedButtonStyle = currentButtonStyle.copyWith(
-      backgroundColor: MaterialStateProperty.all(backgroundColor),
-      elevation: MaterialStateProperty.all(0),
-      padding: MaterialStateProperty.all(
+      backgroundColor: currentButtonStyle.backgroundColor ?? MaterialStateProperty.all(backgroundColor),
+      elevation: currentButtonStyle.elevation ?? MaterialStateProperty.all(0),
+      padding: currentButtonStyle.padding ?? MaterialStateProperty.all(
         padding ?? EdgeInsets.all(8),
       ),
-      side: MaterialStateProperty.all(borderSide),
-      shape: MaterialStateProperty.all(
+      side: currentButtonStyle.side ?? MaterialStateProperty.all(borderSide),
+      shape: currentButtonStyle.shape ?? MaterialStateProperty.all(
         RoundedRectangleBorder(
           side: borderSide,
           borderRadius: BorderRadius.circular(borderRadius ?? 0),
@@ -138,20 +148,23 @@ class FDGPrimaryButton extends _FDGCustomButton {
     EdgeInsets? padding,
     EdgeInsets? textPadding,
     double? borderRadius,
-  }) : super(
-          text,
-          onTap: onTap,
-          icon: icon,
-          padding: padding,
-          textPadding: textPadding,
-          borderRadius: borderRadius,
-        );
+    ButtonStyle? buttonStyle,
+  }) : super(text,
+            onTap: onTap,
+            icon: icon,
+            padding: padding,
+            textPadding: textPadding,
+            borderRadius: borderRadius,
+            buttonStyle: buttonStyle);
 
   @override
   ThemeData getLocalThemeData(ThemeData contextThemeData) {
     return contextThemeData.copyWith(
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: customButtonStyle(contextThemeData, backgroundColor: contextThemeData.primaryColor),
+        style: customButtonStyle(
+          contextThemeData,
+          backgroundColor: contextThemeData.primaryColor,
+        ),
       ),
     );
   }
@@ -165,6 +178,7 @@ class FDGSecondaryButton extends _FDGCustomButton {
     EdgeInsets? padding,
     EdgeInsets? textPadding,
     double? borderRadius,
+    ButtonStyle? buttonStyle,
   }) : super(
           text,
           onTap: onTap,
@@ -172,6 +186,7 @@ class FDGSecondaryButton extends _FDGCustomButton {
           padding: padding,
           textPadding: textPadding,
           borderRadius: borderRadius,
+          buttonStyle: buttonStyle,
         );
 
   @override
