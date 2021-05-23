@@ -78,7 +78,10 @@ class PhotoContainer extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: _backgroundColor,
                 ),
-                child: content,
+                child: FittedBox(
+                  child: content,
+                  fit: BoxFit.cover,
+                )
               ),
             ),
           ),

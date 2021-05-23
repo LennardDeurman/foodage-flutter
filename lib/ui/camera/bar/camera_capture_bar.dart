@@ -4,8 +4,6 @@ import 'package:photo_gallery/photo_gallery.dart';
 
 import '../../ui_extensions.dart';
 import '../../fdg_theme.dart';
-import '../camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_cubit.dart';
-import '../camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_states.dart';
 import '../picker/gallery_picker_cubit/gallery_picker_cubit.dart';
 import '../picker/gallery_picker_cubit/gallery_picker_states.dart';
 import 'camera_bar.dart';
@@ -13,6 +11,8 @@ import 'camera_bar.dart';
 class _CaptureButton extends StatelessWidget {
   final double size;
   final double innerMargin;
+  final bool isLoading;
+  final bool isEnabled;
   final Color buttonColor;
   final Color borderColor;
   final WidgetTapCallback onTap;
@@ -20,6 +20,8 @@ class _CaptureButton extends StatelessWidget {
   const _CaptureButton({
     required this.onTap,
     required this.size,
+    this.isEnabled = true,
+    this.isLoading = false,
     this.innerMargin = 2,
     this.buttonColor = Colors.white,
     this.borderColor = Colors.grey,
@@ -55,6 +57,14 @@ class _CaptureButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(_innerBorderRadius),
                     border: Border.all(color: borderColor, width: innerMargin),
                   ),
+                  child: isLoading ? Center(
+                    child: SizedBox.fromSize(
+                      size: Size.square(20),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  ) : null,
                 ),
               ),
             ),
@@ -66,13 +76,12 @@ class _CaptureButton extends StatelessWidget {
 }
 
 class _SelectFromGalleryButton extends StatelessWidget {
-
   static const _width = 65.0;
   static const _imageHeight = 45.0;
 
   final WidgetTapCallback onTap;
 
-  _SelectFromGalleryButton ({ required this.onTap });
+  _SelectFromGalleryButton({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -110,23 +119,34 @@ class _SelectFromGalleryButton extends StatelessWidget {
         return Container(
           color: FDGTheme().colors.lightGrey1,
           child: Center(
-            child: Icon(Icons.add_photo_alternate_outlined, color: FDGTheme().colors.darkGrey,),
+            child: Icon(
+              Icons.add_photo_alternate_outlined,
+              color: FDGTheme().colors.darkGrey,
+            ),
           ),
         );
       },
     );
   }
-
 }
 
 class CameraCaptureBar extends StatelessWidget {
-
   static const _captureButtonSize = 50.0;
 
   final WidgetTapCallback onCaptureTap;
   final WidgetTapCallback onSelectFromGalleryTap;
 
-  CameraCaptureBar ({ required this.onCaptureTap, required this.onSelectFromGalleryTap });
+  final bool isLoading;
+  final bool isEnabled;
+
+  final Widget? actions;
+
+  CameraCaptureBar(
+      {required this.onCaptureTap,
+      required this.onSelectFromGalleryTap,
+      this.isLoading = false,
+      this.isEnabled = true,
+      this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -134,41 +154,38 @@ class CameraCaptureBar extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                child: _SelectFromGalleryButton(
-                  onTap: onSelectFromGalleryTap,
-                ),
-                margin: EdgeInsets.symmetric(
-                    horizontal: 20
-                ),
-              )
+            alignment: Alignment.centerLeft,
+            child: Container(
+              child: _SelectFromGalleryButton(
+                onTap: onSelectFromGalleryTap,
+              ),
+              margin: EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.center,
-            child: Builder(
-              builder: (context) {
-                final captureButton = _CaptureButton(
-                  size: _captureButtonSize,
-                  onTap: onCaptureTap,
+            child: Builder(builder: (context) {
+              final captureButton = _CaptureButton(
+                size: _captureButtonSize,
+                onTap: onCaptureTap,
+                isLoading: isLoading,
+              );
+              if (!isEnabled) {
+                return IgnorePointer(
+                  //disable when the cubit is processing photo
+                  child: Opacity(
+                    opacity: 0.7,
+                    child: captureButton,
+                  ),
                 );
-                final previewCubit = context.read<CameraPreviewFrameCubit>();
-                final cameraState = previewCubit.state.cameraState;
-                if (cameraState == CameraState.preparingOutput) {
-                  return IgnorePointer( //disable when the cubit is processing photo
-                    child: Opacity(
-                      opacity: 0.7,
-                      child: captureButton,
-                    ),
-                  );
-                }
-                return captureButton;
               }
-            ),
-          )
+              return captureButton;
+            }),
+          ),
         ],
       ),
     );
   }
-
 }

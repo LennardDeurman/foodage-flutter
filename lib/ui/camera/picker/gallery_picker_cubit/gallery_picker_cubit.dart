@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
 import '../../../../data/photos/photo_gallery_repository.dart';
-import '../../../ui_extensions.dart';
 import 'gallery_picker_states.dart';
 
 class AlbumData {
@@ -47,10 +46,10 @@ class GalleryPickerCubit extends Cubit<GalleryPickerState> {
     final currentState = state as AlbumLoadedState;
     final currentMedia = currentState.media;
     final newOffset = currentMedia.length;
-    emit(AlbumExtendingState(albumData: currentState.albumData, media: currentMedia));
-    final newMediaPage = await currentState.albumData.selectedAlbum!.listMedia(skip: newOffset, take: _galleryLoadLimit);
+    emit(AlbumExtendingState(albumData: currentState.albumData, media: currentMedia,));
+    final newMediaPage = await currentState.albumData.selectedAlbum!.listMedia(skip: newOffset, take: _galleryLoadLimit,);
     emit(currentState.copyWith(
-        media: newMediaPage.items + currentMedia
+        media: newMediaPage.items + currentMedia,
     ));
   }
 

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/fdg_theme.dart';
-
 import '../../ui_extensions.dart';
 import '../../widgets/fdg_button.dart';
 import 'camera_bar.dart';
@@ -13,7 +11,6 @@ class CameraPreviewBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final outlinedButtonTheme = Theme.of(context).outlinedButtonTheme;
     return CameraBarContainer(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

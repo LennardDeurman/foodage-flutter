@@ -19,18 +19,16 @@ class PhotoPickerBottomSheet extends StatelessWidget {
     final galleryPickerCubit = BlocProvider.of<GalleryPickerCubit>(context);
     final mainCameraCubit = BlocProvider.of<MainCameraCubit>(context);
     showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          return MultiBlocProvider(
-              providers: [
-                BlocProvider.value(value: photoPickerCubit),
-                BlocProvider.value(value: galleryPickerCubit),
-                BlocProvider.value(value: mainCameraCubit)
-              ],
-              child: PhotoPickerBottomSheet()
-          );
-        },
-        isScrollControlled: true);
+      context: context,
+      builder: (BuildContext context) {
+        return MultiBlocProvider(providers: [
+          BlocProvider.value(value: photoPickerCubit),
+          BlocProvider.value(value: galleryPickerCubit),
+          BlocProvider.value(value: mainCameraCubit)
+        ], child: PhotoPickerBottomSheet());
+      },
+      isScrollControlled: true,
+    );
   }
 
   @override

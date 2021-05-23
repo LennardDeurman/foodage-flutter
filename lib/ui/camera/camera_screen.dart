@@ -1,15 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:foodage/ui/fdg_theme.dart';
-
+import 'package:foodage/ui/camera/camera_option_button.dart';
+import 'package:foodage/ui/camera/image_details.dart';
 import '../../data/service_locator.dart';
 import '../widgets/fdg_button.dart';
 import '../ui_extensions.dart';
+import '../fdg_theme.dart';
 import 'photo_container.dart';
-import 'image_details.dart';
 import 'image_preview_frame.dart';
-import 'camera_preview_frame/camera_preview_frame.dart';
-import 'camera_preview_frame/camera_preview_frame_cubit/camera_preview_frame_cubit.dart';
+import 'camera_preview_frame.dart';
 import 'main_camera_cubit/main_camera_cubit.dart';
 import 'main_camera_cubit/main_camera_states.dart';
 import 'bar/camera_capture_bar.dart';
@@ -108,6 +109,9 @@ class _CameraScreenHeader extends StatelessWidget {
 }
 
 class FoodCameraState extends State<FoodCamera> {
+
+  final cameraPreviewKey = GlobalKey<CameraPreviewFrameState>();
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -120,11 +124,6 @@ class FoodCameraState extends State<FoodCamera> {
         }),
         BlocProvider<PhotoPickerCubit>(
             create: (context) => PhotoPickerCubit(segments: getPhotoPickerSegments(context))),
-        BlocProvider<CameraPreviewFrameCubit>(create: (context) {
-          final cameraPreviewCubit = CameraPreviewFrameCubit(sl.get());
-          cameraPreviewCubit.init();
-          return cameraPreviewCubit;
-        }),
       ],
       child: Scaffold(
         body: BlocBuilder<MainCameraCubit, MainCameraState>(builder: (context, mainCameraState) {
@@ -139,7 +138,7 @@ class FoodCameraState extends State<FoodCamera> {
                         child: previewState.previewImage.toWidget(context),
                       );
                     }
-                    return CameraPreviewFrame();
+                    return CameraPreviewFrame(key: cameraPreviewKey);
                   },
                 ),
               ),
@@ -157,23 +156,30 @@ class FoodCameraState extends State<FoodCamera> {
                   builder: (context) {
                     if (mainCameraState is MainCameraDefaultState) {
                       return CameraCaptureBar(
+                        isEnabled: mainCameraState.readyState == MainCameraReadyState.ready,
+                        isLoading: mainCameraState.readyState == MainCameraReadyState.preparingOutput,
+                        actions: Column(
+                          children: [
+                            cameraPreviewKey.currentState!.changeFlashButton(),
+                            SizedBox(height: 8,),
+                            cameraPreviewKey.currentState!.changeFlashButton(),
+                          ],
+                        ),
                         onCaptureTap: (BuildContext context) async {
-                          final previewFrameCubit = context.read<CameraPreviewFrameCubit>();
-                          final mainCubit = context.read<MainCameraCubit>();
-                          final xFile = await previewFrameCubit.takePicture();
-                          if (xFile != null) mainCubit.previewTakenPhoto(CameraCapturedImageDetails(xFile));
+                          final mainCameraCubit = context.read<MainCameraCubit>();
+                          mainCameraCubit.handleImageCapture(
+                            captureImageCallback: () {
+                              Future<File> future = cameraPreviewKey.currentState!.capture();
+                              return future;
+                            },
+                          );
                         },
                         onSelectFromGalleryTap: (BuildContext context) {
                           final galleryPickerCubit = context.read<GalleryPickerCubit>();
                           galleryPickerCubit.verifyPermissionsAndReload().then(
                                 (_) => PhotoPickerBottomSheet.show(context),
-                              );
+                          );
                         },
-                      );
-                    } else if (mainCameraState is MainCameraImagePreviewingState) {
-                      return CameraPreviewBar(
-                        onCancelPressed: (context) => context.read<MainCameraCubit>().cancelPreview(),
-                        onUsePhotoPressed: (context) => context.read<MainCameraCubit>().useTakenPhoto(),
                       );
                     }
                     throw InvalidStateFailure();

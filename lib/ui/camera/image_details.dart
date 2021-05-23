@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -12,6 +11,14 @@ abstract class ImageDetails<T> {
   ImageDetails (this.representationObject);
 
   Widget toWidget(BuildContext context);
+
+  @override
+  bool operator ==(covariant ImageDetails<T> other) {
+    return this.representationObject == other.representationObject;
+  }
+
+  @override
+  int get hashCode => representationObject.hashCode;
 
 }
 
@@ -30,12 +37,30 @@ class GalleryPickedImageDetails extends ImageDetails<Medium> {
     ),
   );
 
-}
-
-class CameraCapturedImageDetails extends ImageDetails<XFile> {
-
-  CameraCapturedImageDetails (XFile xFile) : super(xFile);
+  @override
+  bool operator ==(other) {
+    if (other is! GalleryPickedImageDetails) return false;
+    return this.representationObject.id == other.representationObject.id;
+  }
 
   @override
-  Widget toWidget(BuildContext context) => Image.file(File(this.representationObject.path));
+  int get hashCode => representationObject.id.hashCode;
+
+}
+
+class CameraCapturedImageDetails extends ImageDetails<File> {
+
+  CameraCapturedImageDetails (File file) : super(file);
+
+  @override
+  Widget toWidget(BuildContext context) => Image.file(representationObject);
+
+  @override
+  bool operator ==(other) {
+    if (other is! CameraCapturedImageDetails) return false;
+    return this.representationObject.path == other.representationObject.path;
+  }
+
+  @override
+  int get hashCode => representationObject.path.hashCode;
 }

@@ -1,9 +1,19 @@
 import '../image_details.dart';
 
-class MainCameraState {
-  List<ImageDetails> selectedImages;
+enum MainCameraReadyState {
+  ready,
+  preparingOutput,
+}
 
-  MainCameraState({required this.selectedImages});
+class MainCameraState {
+  final List<ImageDetails> selectedImages;
+
+  final MainCameraReadyState readyState;
+
+  MainCameraState({
+    required this.selectedImages,
+    this.readyState = MainCameraReadyState.preparingOutput,
+  });
 
   MainCameraState copyWith({List<ImageDetails>? selectedImages}) {
     return MainCameraState(
@@ -13,12 +23,24 @@ class MainCameraState {
 }
 
 class MainCameraDefaultState extends MainCameraState {
-  MainCameraDefaultState({required List<ImageDetails> selectedImages}) : super(selectedImages: selectedImages);
+  MainCameraDefaultState({
+    required List<ImageDetails> selectedImages,
+    MainCameraReadyState readyState = MainCameraReadyState.ready,
+  }) : super(selectedImages: selectedImages, readyState: readyState);
+
+  MainCameraDefaultState copyWith({List<ImageDetails>? selectedImages}) {
+    return MainCameraDefaultState(
+      selectedImages: selectedImages ?? this.selectedImages,
+    );
+  }
 }
 
 class MainCameraImagePreviewingState extends MainCameraState {
   final ImageDetails previewImage;
 
-  MainCameraImagePreviewingState({required List<ImageDetails> selectedImages, required this.previewImage})
-      : super(selectedImages: selectedImages);
+  MainCameraImagePreviewingState({
+    required List<ImageDetails> selectedImages,
+    required this.previewImage,
+    MainCameraReadyState readyState = MainCameraReadyState.ready,
+  }) : super(selectedImages: selectedImages, readyState: readyState);
 }

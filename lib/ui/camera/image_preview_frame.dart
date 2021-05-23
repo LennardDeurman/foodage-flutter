@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/fdg_theme.dart';
 
 class ImagePreviewFrame extends StatelessWidget {
   final Widget child;
@@ -14,8 +13,11 @@ class ImagePreviewFrame extends StatelessWidget {
           child: Container(
             color: Colors.grey,
             child: Container(
-              decoration: BoxDecoration(color: FDGTheme().colors.grey),
-              child: child,
+              decoration: BoxDecoration(color: Colors.white,),
+              child: FittedBox(
+                child: child,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
         )

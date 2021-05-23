@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodage/ui/camera/main_camera_cubit/main_camera_states.dart';
@@ -11,6 +13,11 @@ class AlbumPhotosGrid extends StatelessWidget {
   final List<Medium> media;
 
   AlbumPhotosGrid(this.media);
+
+  void _selectImage(BuildContext context, GalleryPickedImageDetails details) async {
+    final mainCameraCubit = context.read<MainCameraCubit>();
+    mainCameraCubit.selectImage(details);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +59,7 @@ class AlbumPhotosGrid extends StatelessWidget {
                   ),
                   onTap: () => isSelected
                       ? mainCameraCubit.unSelectImage(imageDetails)
-                      : mainCameraCubit.selectImage(imageDetails),
+                      : _selectImage(context, imageDetails),
                 ),
               );
             }),
