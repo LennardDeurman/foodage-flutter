@@ -102,7 +102,7 @@ class CameraPreviewFrameState extends State<CameraPreviewFrame> {
           ),
         ),
         Positioned(
-            bottom: 20,
+            bottom: 30,
             right: 20,
             child: Container(
               child: Column(

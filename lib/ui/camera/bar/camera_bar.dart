@@ -12,7 +12,7 @@ class CameraBarContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        bottom: 40,
+        bottom: 20,
       ),
       child: SafeArea(
         child: Column(
