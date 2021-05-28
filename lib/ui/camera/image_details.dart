@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+Image _imageWidgetFromFile(File file) => Image.file(file);
+
 abstract class ImageDetails<T> {
 
   final T representationObject;
@@ -16,18 +18,28 @@ abstract class ImageDetails<T> {
 
 class GalleryPickedImageDetails extends ImageDetails<Medium> {
 
+  File? _croppedFile;
+
   GalleryPickedImageDetails (Medium medium) : super(medium);
 
   @override
-  Widget toWidget(BuildContext context) => FadeInImage(
-    fit: BoxFit.cover,
-    placeholder: MemoryImage(kTransparentImage),
-    image: ThumbnailProvider(
-      mediumId: representationObject.id,
-      mediumType: representationObject.mediumType,
-      highQuality: true,
-    ),
-  );
+  Widget toWidget(BuildContext context) {
+    if (_croppedFile != null) {
+      return _imageWidgetFromFile(_croppedFile!);
+    } else {
+      return FadeInImage(
+        fit: BoxFit.cover,
+        placeholder: MemoryImage(kTransparentImage),
+        image: ThumbnailProvider(
+          mediumId: representationObject.id,
+          mediumType: representationObject.mediumType,
+          highQuality: true,
+        ),
+      );
+    }
+  }
+
+  void updateWithCroppedFile(File file) => _croppedFile = file;
 
   @override
   bool operator ==(other) {
@@ -45,7 +57,7 @@ class CameraCapturedImageDetails extends ImageDetails<File> {
   CameraCapturedImageDetails (File file) : super(file);
 
   @override
-  Widget toWidget(BuildContext context) => Image.file(representationObject);
+  Widget toWidget(BuildContext context) => _imageWidgetFromFile(representationObject);
 
   @override
   bool operator ==(other) {

@@ -8,6 +8,7 @@ class _Colors {
   final grey = Color.fromRGBO(108, 108, 105, 1);
   final darkGrey = Color.fromRGBO(95, 95, 95, 1);
   final darkRed = Color.fromRGBO(157, 3, 3, 1);
+  final orange = Color.fromRGBO(255, 165, 0, 1);
 
 }
 

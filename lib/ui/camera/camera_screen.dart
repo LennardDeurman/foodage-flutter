@@ -40,6 +40,7 @@ class _CameraScreenHeader extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int position) {
         final selectedImage = selectedImages[position];
+        final isGalleryImage = selectedImage is GalleryPickedImageDetails;
         return Container(
           margin: EdgeInsets.only(right: 5),
           child: PhotoContainer(
@@ -47,6 +48,13 @@ class _CameraScreenHeader extends StatelessWidget {
               context,
             ),
             onRemovePressed: (context) => mainCameraCubit.unSelectImage(selectedImage),
+            onEditPressed: () {
+              if (isGalleryImage) {
+                return (context) => mainCameraCubit.editGalleryPickedImage(
+                  selectedImage as GalleryPickedImageDetails,
+                );
+              }
+            }(),
           ),
         );
       },
@@ -109,7 +117,6 @@ class _CameraScreenHeader extends StatelessWidget {
 }
 
 class FoodCameraState extends State<FoodCamera> {
-
   final cameraPreviewKey = GlobalKey<CameraPreviewFrameState>();
 
   @override
@@ -161,7 +168,9 @@ class FoodCameraState extends State<FoodCamera> {
                         actions: Column(
                           children: [
                             cameraPreviewKey.currentState!.changeFlashButton(),
-                            SizedBox(height: 8,),
+                            SizedBox(
+                              height: 8,
+                            ),
                             cameraPreviewKey.currentState!.changeFlashButton(),
                           ],
                         ),
@@ -178,7 +187,7 @@ class FoodCameraState extends State<FoodCamera> {
                           final galleryPickerCubit = context.read<GalleryPickerCubit>();
                           galleryPickerCubit.verifyPermissionsAndReload().then(
                                 (_) => PhotoPickerBottomSheet.show(context),
-                          );
+                              );
                         },
                       );
                     }

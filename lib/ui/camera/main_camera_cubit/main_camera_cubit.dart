@@ -11,6 +11,14 @@ import '../../ui_extensions.dart';
 import '../image_details.dart';
 import 'main_camera_states.dart';
 
+extension ListExtensions<T> on List<T> {
+  void replace(T originalObject, T newObject) {
+    final currentIndex = indexOf(originalObject);
+    removeAt(currentIndex);
+    insert(currentIndex, newObject);
+  }
+}
+
 class MainCameraCubit extends Cubit<MainCameraState> {
   MainCameraCubit() : super(MainCameraDefaultState(selectedImages: []));
 
@@ -46,14 +54,30 @@ class MainCameraCubit extends Cubit<MainCameraState> {
         rotateButtonsHidden: true,
         aspectRatioPickerButtonHidden: true,
         resetButtonHidden: true,
-        rectX: imgInfo.width / 2,
-        rectY: imgInfo.height / 2,
+        rectX: imgInfo.width / 2 - size.width / 2,
+        rectY: imgInfo.height / 2 - size.height / 2,
         rectWidth: size.width,
         rectHeight: size.height,
         cancelButtonTitle: 'Annuleren',
         doneButtonTitle: 'Gereed',
       ),
     );
+  }
+
+  void editGalleryPickedImage(GalleryPickedImageDetails imageDetails) async {
+    final originalFile = await imageDetails.representationObject.getFile();
+    final newFile = await cropImage(originalFile);
+    if (newFile != null) {
+      final newImageDetails = imageDetails;
+      imageDetails.updateWithCroppedFile(newFile);
+      final newSelectedImages = state.selectedImages;
+      newSelectedImages.replace(imageDetails, newImageDetails);
+      emit(
+        state.copyWith(
+          selectedImages: newSelectedImages,
+        ),
+      );
+    }
   }
 
   void unSelectImage(ImageDetails image) {
