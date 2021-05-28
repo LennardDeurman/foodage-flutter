@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class FDGRatio extends StatelessWidget {
 
+  static const aspectRatio = 1.25;
+
   final Widget? child;
 
   FDGRatio ({ this.child });
@@ -9,7 +11,7 @@ class FDGRatio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.25,
+      aspectRatio: aspectRatio,
       child: child,
     );
   }
