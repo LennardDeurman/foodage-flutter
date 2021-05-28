@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodage/ui/camera/main_camera_cubit/main_camera_states.dart';
+import 'package:foodage/ui/camera/picker/gallery_picker_cubit/gallery_picker_cubit.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
 import '../fdg_theme.dart';
@@ -10,6 +11,9 @@ import 'image_details.dart';
 import 'main_camera_cubit/main_camera_cubit.dart';
 
 class AlbumPhotosGrid extends StatelessWidget {
+
+  static const _scrollLoadOffset = 100;
+
   final List<Medium> media;
 
   AlbumPhotosGrid(this.media);
@@ -19,53 +23,68 @@ class AlbumPhotosGrid extends StatelessWidget {
     mainCameraCubit.selectImage(details);
   }
 
+  bool _handleScrollNotification(BuildContext context, ScrollNotification scrollNotification) {
+    final bottomReached = scrollNotification.metrics.pixels >=
+        scrollNotification.metrics.maxScrollExtent - _scrollLoadOffset;
+    if (bottomReached) {
+      final galleryPickerCubit = context.read<GalleryPickerCubit>();
+      galleryPickerCubit.loadMoreOfAlbum();
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final mainCameraCubit = context.read<MainCameraCubit>();
-    return GridView.count(
-      crossAxisCount: 3,
-      mainAxisSpacing: 1.0,
-      crossAxisSpacing: 1.0,
-      children: <Widget>[
-        ...media.map(
-          (medium) => Container(
-            color: Colors.grey[300],
-            child: BlocBuilder<MainCameraCubit, MainCameraState>(builder: (context, state) {
-              final imageDetails = GalleryPickedImageDetails(medium);
-              final isSelected = mainCameraCubit.isSelectedImage(imageDetails);
-              return Material(
-                child: InkWell(
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                        child: imageDetails.toWidget(context),
-                      ),
-                      Visibility(
-                        visible: isSelected,
-                        child: Container(
-                          child: Center(
-                            child: Icon(
-                              Icons.done,
-                              size: 32,
-                              color: FDGTheme().colors.darkRed,
+    return NotificationListener<ScrollNotification>(
+      child: GridView.count(
+        crossAxisCount: 3,
+        mainAxisSpacing: 1.0,
+        crossAxisSpacing: 1.0,
+        children: <Widget>[
+          ...media.map(
+                (medium) =>
+                Container(
+                  color: Colors.grey[300],
+                  child: BlocBuilder<MainCameraCubit, MainCameraState>(builder: (context, state) {
+                    final imageDetails = GalleryPickedImageDetails(medium);
+                    final isSelected = mainCameraCubit.isSelectedImage(imageDetails);
+                    return Material(
+                      child: InkWell(
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: imageDetails.toWidget(context),
                             ),
-                          ),
-                          decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.5)
-                          ),
+                            Visibility(
+                              visible: isSelected,
+                              child: Container(
+                                child: Center(
+                                  child: Icon(
+                                    Icons.done,
+                                    size: 32,
+                                    color: FDGTheme().colors.darkRed,
+                                  ),
+                                ),
+                                decoration: BoxDecoration(color: Colors.white.withOpacity(0.5)),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                  onTap: () => isSelected
-                      ? mainCameraCubit.unSelectImage(imageDetails)
-                      : _selectImage(context, imageDetails),
+                        onTap: () =>
+                        isSelected ? mainCameraCubit.unSelectImage(imageDetails) : _selectImage(context, imageDetails),
+                      ),
+                    );
+                  }),
                 ),
-              );
-            }),
           ),
-        ),
-      ],
+        ],
+      ),
+      onNotification: (scrollNotification) =>
+          _handleScrollNotification(
+            context,
+            scrollNotification,
+          ),
     );
   }
 }

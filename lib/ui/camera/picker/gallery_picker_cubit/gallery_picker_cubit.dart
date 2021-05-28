@@ -3,6 +3,7 @@ import 'package:photo_gallery/photo_gallery.dart';
 
 import '../../../../data/photos/photo_gallery_repository.dart';
 import 'gallery_picker_states.dart';
+import '../../../ui_extensions.dart';
 
 class AlbumData {
   final List<Album>? albums;
@@ -42,14 +43,16 @@ class GalleryPickerCubit extends Cubit<GalleryPickerState> {
   }
 
   void loadMoreOfAlbum() async {
-    if (!(state is AlbumLoadedState)) return;
-    final currentState = state as AlbumLoadedState;
+    if (state is AlbumExtendingState) { //If data is already loading then do not request more
+      return;
+    }
+    final currentState = ensureInCurrentState<AlbumLoadedState>();
     final currentMedia = currentState.media;
     final newOffset = currentMedia.length;
     emit(AlbumExtendingState(albumData: currentState.albumData, media: currentMedia,));
     final newMediaPage = await currentState.albumData.selectedAlbum!.listMedia(skip: newOffset, take: _galleryLoadLimit,);
     emit(currentState.copyWith(
-        media: newMediaPage.items + currentMedia,
+        media: currentMedia + newMediaPage.items,
     ));
   }
 

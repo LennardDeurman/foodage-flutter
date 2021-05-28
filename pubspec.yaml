@@ -13,16 +13,17 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.3
   camera: ^0.8.1
-  camerawesome: 0.3.0-nullsafety
+  camerawesome: 0.3.0
   google_fonts: ^2.0.0
   provider: ^5.0.0
-  rxdart: ^0.26.0
+  rxdart: ^0.27.0
   flutter_bloc: ^7.0.0
   photo_gallery: ^1.0.1
   permission_handler: ^7.1.0
   get_it: ^7.1.2
   transparent_image: ^2.0.0
   image_cropper: ^1.4.0
+  image: 3.0.2
 
 dev_dependencies:
   flutter_test:

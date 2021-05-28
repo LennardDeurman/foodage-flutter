@@ -12,14 +12,6 @@ abstract class ImageDetails<T> {
 
   Widget toWidget(BuildContext context);
 
-  @override
-  bool operator ==(covariant ImageDetails<T> other) {
-    return this.representationObject == other.representationObject;
-  }
-
-  @override
-  int get hashCode => representationObject.hashCode;
-
 }
 
 class GalleryPickedImageDetails extends ImageDetails<Medium> {
