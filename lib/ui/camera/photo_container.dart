@@ -1,55 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodage/ui/fdg_theme.dart';
+import 'package:foodage/ui/widgets/fdg_badge_action_button.dart';
 
 import '../../ui/ui_extensions.dart';
 import '../../ui/widgets/fdg_ratio.dart';
-
-class _ActionButton extends StatelessWidget {
-  final double size;
-  final double buttonInnerMargin;
-  final Color color;
-  final Icon icon;
-  final WidgetTapCallback onPressed;
-
-  _ActionButton({
-    required this.size,
-    required this.color,
-    required this.onPressed,
-    required this.icon,
-    this.buttonInnerMargin = 5,
-  });
-
-  double get _borderRadius => size / 2;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(_borderRadius),
-        child: Material(
-          color: color,
-          child: InkWell(
-            child: Container(
-              child: Center(
-                child: IconTheme(
-                  data: IconThemeData(
-                    color: Colors.white,
-                    size: size - buttonInnerMargin,
-                  ),
-                  child: icon,
-                ),
-              ),
-            ),
-            onTap: () => onPressed(context),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class PhotoContainer extends StatelessWidget {
   final WidgetTapCallback? onRemovePressed;
   final WidgetTapCallback? onEditPressed;
@@ -57,7 +11,6 @@ class PhotoContainer extends StatelessWidget {
   final Widget content;
 
   static const _backgroundColor = Color.fromRGBO(100, 100, 100, 1);
-  static const _buttonSize = 20.0;
 
   PhotoContainer({
     required this.content,
@@ -66,15 +19,13 @@ class PhotoContainer extends StatelessWidget {
     this.onEditPressed,
   });
 
-  Widget _actionButtonRemove(BuildContext context) => _ActionButton(
-        size: _buttonSize,
+  Widget _actionButtonRemove(BuildContext context) => FDGBadgeActionButton(
         color: Theme.of(context).primaryColor,
         icon: Icon(Icons.close),
         onPressed: onRemovePressed!,
       );
 
-  Widget _actionButtonEdit(BuildContext context) => _ActionButton(
-    size: _buttonSize,
+  Widget _actionButtonEdit(BuildContext context) => FDGBadgeActionButton(
     color: FDGTheme().colors.orange,
     icon: Icon(Icons.edit),
     onPressed: onEditPressed!,

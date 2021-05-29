@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../background_builder.dart';
 import '../../ui_extensions.dart';
 import '../../fdg_theme.dart';
-import '../../widgets/dialogs/fdg_options.dart';
+import '../../widgets/dialogs/fdg_options_dialog.dart';
 import '../../widgets/fdg_segmented_control.dart';
 import '../album_photos_grid.dart';
 import 'gallery_picker_cubit/gallery_picker_cubit.dart';
@@ -74,9 +74,9 @@ class _GalleryBody extends StatelessWidget {
     });
   }
 
-  Future<void> _showAlbumPicker(BuildContext context) {
+  Future<void> _showAlbumPicker(BuildContext context) async {
     final galleryPickerCubit = context.read<GalleryPickerCubit>();
-    return showDialog<void>(
+    final selectedAlbum = await showDialog<Album>(
       context: context,
       builder: (BuildContext context) {
         return BlocProvider.value(
@@ -89,13 +89,15 @@ class _GalleryBody extends StatelessWidget {
                 options: albumState.albumData.albums!,
                 value: albumState.albumData.selectedAlbum!,
                 label: (album) => album.name,
-                updateValue: (album) => galleryPickerCubit.changeAlbumAndLoadData(album),
               );
             },
           ),
         );
       },
     );
+    if (selectedAlbum != null) {
+      galleryPickerCubit.changeAlbumAndLoadData(selectedAlbum);
+    }
   }
 
   Widget _mapAlbumStateToWidget(BuildContext context, AlbumState state) {

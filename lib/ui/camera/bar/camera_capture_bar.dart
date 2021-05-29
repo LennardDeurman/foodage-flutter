@@ -57,14 +57,16 @@ class _CaptureButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(_innerBorderRadius),
                     border: Border.all(color: borderColor, width: innerMargin),
                   ),
-                  child: isLoading ? Center(
-                    child: SizedBox.fromSize(
-                      size: Size.square(20),
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      ),
-                    ),
-                  ) : null,
+                  child: isLoading
+                      ? Center(
+                          child: SizedBox.fromSize(
+                            size: Size.square(20),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        )
+                      : null,
                 ),
               ),
             ),
@@ -141,12 +143,13 @@ class CameraCaptureBar extends StatelessWidget {
 
   final Widget? actions;
 
-  CameraCaptureBar(
-      {required this.onCaptureTap,
-      required this.onSelectFromGalleryTap,
-      this.isLoading = false,
-      this.isEnabled = true,
-      this.actions});
+  CameraCaptureBar({
+    required this.onCaptureTap,
+    required this.onSelectFromGalleryTap,
+    this.isLoading = false,
+    this.isEnabled = true,
+    this.actions,
+  });
 
   @override
   Widget build(BuildContext context) {

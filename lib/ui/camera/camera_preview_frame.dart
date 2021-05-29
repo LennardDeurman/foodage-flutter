@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
+import 'package:foodage/ui/widgets/dialogs/fdg_message_dialog.dart';
 import 'package:image/image.dart' as imgUtils;
 import 'package:path_provider/path_provider.dart';
 import 'package:foodage/ui/camera/camera_option_button.dart';
@@ -39,30 +40,15 @@ class CameraPreviewFrameState extends State<CameraPreviewFrame> {
     super.dispose();
   }
 
-  //TODO: Permissions request
   void _onPermissionsResult(bool? granted) {
     if (granted != null && granted) {
       setState(() {});
     } else {
-      AlertDialog alert = AlertDialog(
-        title: Text('Error'),
-        content:
-        Text('It seems you doesn\'t authorized some permissions. Please check on your settings and try again.'),
-        actions: [
-          FlatButton(
-            child: Text('OK'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
+      FDGAlertDialog(
+        title: Text('Onvoldoende rechten'),
+        content: Text('Je hebt de app geen toegang gegeven tot je camera, ga naar instellingen van je telefoon en pas dit aan. Probeer het daarna opnieuw.'),
+        hasCancelButton: false,
+      ).show(context);
     }
   }
 

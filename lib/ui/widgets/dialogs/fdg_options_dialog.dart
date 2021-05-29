@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:foodage/ui/widgets/dialogs/fdg_dialog.dart';
 
 import '../../fdg_theme.dart';
 
 class FDGOptionsDialog<T> extends StatelessWidget {
   final List<T> options;
   final T value;
-  final void Function(T) updateValue;
   final String Function(T)? label;
   final bool dismissAfterUpdate;
 
   FDGOptionsDialog({
     required this.options,
     required this.value,
-    required this.updateValue,
     this.label,
     this.dismissAfterUpdate = true,
   });
@@ -24,8 +23,7 @@ class FDGOptionsDialog<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    return FDGDialog(
       child: Container(
         margin: EdgeInsets.only(top: 15, bottom: 25),
         constraints: BoxConstraints(maxHeight: 400),
@@ -70,10 +68,10 @@ class FDGOptionsDialog<T> extends StatelessWidget {
                       ],
                     ),
                   ),
-                  onTap: () {
-                    updateValue(option);
-                    if (dismissAfterUpdate) Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(
+                    context,
+                    option,
+                  ),
                 ),
               ),
             );
