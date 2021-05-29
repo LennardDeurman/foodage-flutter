@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodage/ui/ui_extensions.dart';
+import 'package:foodage/ui/widget_tap_callback.dart';
 
 class FDGBadgeActionButton extends StatelessWidget {
   final double size;

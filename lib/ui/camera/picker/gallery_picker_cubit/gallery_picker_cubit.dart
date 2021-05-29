@@ -3,7 +3,8 @@ import 'package:photo_gallery/photo_gallery.dart';
 
 import '../../../../data/photos/photo_gallery_repository.dart';
 import 'gallery_picker_states.dart';
-import '../../../ui_extensions.dart';
+import '../../../../custom_errors.dart';
+import 'package:foodage/extensions/cubit_extensions.dart';
 
 class AlbumData {
   final List<Album>? albums;
@@ -20,7 +21,6 @@ class AlbumData {
 }
 
 class GalleryPickerCubit extends Cubit<GalleryPickerState> {
-
   static const _galleryLoadLimit = 30;
 
   final PhotoGalleryRepository _photoGalleryRepository;
@@ -34,33 +34,53 @@ class GalleryPickerCubit extends Cubit<GalleryPickerState> {
         albums: albums,
         selectedAlbum: selectedAlbum,
       );
-      emit(AlbumLoadingState(albumData: albumData));
+      emit(
+        AlbumLoadingState(albumData: albumData),
+      );
       final mediaPage = await selectedAlbum.listMedia(take: _galleryLoadLimit);
-      emit(AlbumLoadedState(albumData: albumData, media: mediaPage.items));
+      emit(
+        AlbumLoadedState(albumData: albumData, media: mediaPage.items),
+      );
     } catch (e) {
-      emit(AlbumFailedToLoadState(albumData: albumData));
+      emit(
+        AlbumFailedToLoadState(albumData: albumData),
+      );
     }
   }
 
   void loadMoreOfAlbum() async {
-    if (state is AlbumExtendingState) { //If data is already loading then do not request more
+    if (state is AlbumExtendingState) {
+      //If data is already loading then do not request more
       return;
     }
     final currentState = ensureInCurrentState<AlbumLoadedState>();
     final currentMedia = currentState.media;
     final newOffset = currentMedia.length;
-    emit(AlbumExtendingState(albumData: currentState.albumData, media: currentMedia,));
-    final newMediaPage = await currentState.albumData.selectedAlbum!.listMedia(skip: newOffset, take: _galleryLoadLimit,);
-    emit(currentState.copyWith(
+    emit(
+      AlbumExtendingState(
+        albumData: currentState.albumData,
+        media: currentMedia,
+      ),
+    );
+    final newMediaPage = await currentState.albumData.selectedAlbum!.listMedia(
+      skip: newOffset,
+      take: _galleryLoadLimit,
+    );
+    emit(
+      currentState.copyWith(
         media: currentMedia + newMediaPage.items,
-    ));
+      ),
+    );
   }
 
   Future verifyPermissionsAndReload() async {
     final permissionGranted = await _photoGalleryRepository.checkPermission();
     if (permissionGranted && state is! AlbumState) {
       final albums = await _photoGalleryRepository.getPhotoAlbums();
-      _loadAlbumData(albums: albums, selectedAlbum: albums[0]);
+      _loadAlbumData(
+        albums: albums,
+        selectedAlbum: albums[0],
+      );
     }
   }
 
@@ -69,7 +89,10 @@ class GalleryPickerCubit extends Cubit<GalleryPickerState> {
     final permissionGranted = await _photoGalleryRepository.checkPermission();
     if (permissionGranted) {
       final albums = await _photoGalleryRepository.getPhotoAlbums();
-      _loadAlbumData(albums: albums, selectedAlbum: albums[0]);
+      _loadAlbumData(
+        albums: albums,
+        selectedAlbum: albums[0],
+      );
     } else {
       emit(GalleryPickerForbiddenState());
     }

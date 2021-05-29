@@ -45,7 +45,7 @@ class AlbumPhotosGrid extends StatelessWidget {
           ...media.map(
                 (medium) =>
                 Container(
-                  color: Colors.grey[300],
+                  color: FDGTheme().colors.lightGrey1,
                   child: BlocBuilder<MainCameraCubit, MainCameraState>(builder: (context, state) {
                     final imageDetails = GalleryPickedImageDetails(medium);
                     final isSelected = mainCameraCubit.isSelectedImage(imageDetails);
@@ -66,7 +66,7 @@ class AlbumPhotosGrid extends StatelessWidget {
                                     color: FDGTheme().colors.darkRed,
                                   ),
                                 ),
-                                decoration: BoxDecoration(color: Colors.white.withOpacity(0.5)),
+                                decoration: BoxDecoration(color: Colors.white60),
                               ),
                             )
                           ],

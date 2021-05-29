@@ -19,7 +19,9 @@ class FDGSegmentedControl<T> extends StatelessWidget {
     final themeData = localThemeData.copyWith(
       primaryColor: FDGTheme().colors.lightGrey2,
       textTheme: localThemeData.textTheme.copyWith(
-        button: localThemeData.textTheme.button!.copyWith(color: FDGTheme().colors.grey),
+        button: localThemeData.textTheme.button!.copyWith(
+          color: FDGTheme().colors.grey,
+        ),
       ),
     );
     if (this.unActiveSegmentThemeBuilder != null) return this.unActiveSegmentThemeBuilder!(themeData);
@@ -42,11 +44,15 @@ class FDGSegmentedControl<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentThemeData = Theme.of(context);
     final elevatedButtonStyle = (currentThemeData.elevatedButtonTheme.style ?? ButtonStyle()).copyWith(
-      padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+      padding: MaterialStateProperty.all(
+        EdgeInsets.all(0),
+      ),
       minimumSize: MaterialStateProperty.all(Size.zero),
     );
     final outlinedButtonStyle = (currentThemeData.outlinedButtonTheme.style ?? ButtonStyle()).copyWith(
-      padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+      padding: MaterialStateProperty.all(
+        EdgeInsets.all(0),
+      ),
       minimumSize: MaterialStateProperty.all(Size.zero),
     );
     final localThemeData = currentThemeData.copyWith(

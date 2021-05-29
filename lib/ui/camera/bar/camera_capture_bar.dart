@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:foodage/ui/widget_tap_callback.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
-import '../../ui_extensions.dart';
+import '../../../custom_errors.dart';
 import '../../fdg_theme.dart';
 import '../picker/gallery_picker_cubit/gallery_picker_cubit.dart';
 import '../picker/gallery_picker_cubit/gallery_picker_states.dart';
@@ -11,10 +12,13 @@ import 'camera_bar.dart';
 class _CaptureButton extends StatelessWidget {
   final double size;
   final double innerMargin;
+
   final bool isLoading;
   final bool isEnabled;
+
   final Color buttonColor;
   final Color borderColor;
+
   final WidgetTapCallback onTap;
 
   const _CaptureButton({
@@ -25,7 +29,8 @@ class _CaptureButton extends StatelessWidget {
     this.innerMargin = 2,
     this.buttonColor = Colors.white,
     this.borderColor = Colors.grey,
-  });
+    Key? key
+  }) : super(key: key);
 
   double get _innerSize => size - innerMargin;
 
@@ -46,9 +51,8 @@ class _CaptureButton extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () => onTap(context),
-            child: Container(
-              width: size,
-              height: size,
+            child: SizedBox.fromSize(
+              size: Size.square(size),
               child: Center(
                 child: Container(
                   width: _innerSize,
@@ -80,10 +84,14 @@ class _CaptureButton extends StatelessWidget {
 class _SelectFromGalleryButton extends StatelessWidget {
   static const _width = 65.0;
   static const _imageHeight = 45.0;
+  static const _thumbnailSize = 128;
 
   final WidgetTapCallback onTap;
 
-  _SelectFromGalleryButton({required this.onTap});
+  const _SelectFromGalleryButton({
+    required this.onTap,
+    Key? key
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +121,8 @@ class _SelectFromGalleryButton extends StatelessWidget {
             fit: BoxFit.cover,
             image: AlbumThumbnailProvider(
               albumId: state.albumData.selectedAlbum!.id,
-              width: 128,
-              height: 128,
+              width: _thumbnailSize,
+              height: _thumbnailSize,
             ),
           );
         }
@@ -134,6 +142,7 @@ class _SelectFromGalleryButton extends StatelessWidget {
 
 class CameraCaptureBar extends StatelessWidget {
   static const _captureButtonSize = 50.0;
+  static const _opacityWhenProcessing = 0.7;
 
   final WidgetTapCallback onCaptureTap;
   final WidgetTapCallback onSelectFromGalleryTap;
@@ -141,15 +150,13 @@ class CameraCaptureBar extends StatelessWidget {
   final bool isLoading;
   final bool isEnabled;
 
-  final Widget? actions;
-
-  CameraCaptureBar({
+  const CameraCaptureBar({
     required this.onCaptureTap,
     required this.onSelectFromGalleryTap,
     this.isLoading = false,
     this.isEnabled = true,
-    this.actions,
-  });
+    Key? key
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +186,7 @@ class CameraCaptureBar extends StatelessWidget {
                 return IgnorePointer(
                   //disable when the cubit is processing photo
                   child: Opacity(
-                    opacity: 0.7,
+                    opacity: _opacityWhenProcessing,
                     child: captureButton,
                   ),
                 );

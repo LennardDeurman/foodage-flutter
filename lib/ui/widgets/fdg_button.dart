@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:foodage/ui/widget_tap_callback.dart';
 
-import '../ui_extensions.dart';
+//TODO: Refactor this class
 
 enum _ButtonType { elevatedButton, outlineButton }
 

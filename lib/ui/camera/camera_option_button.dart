@@ -28,8 +28,7 @@ class CameraOptionButton extends StatelessWidget {
           ),
           onTap: () {
             if (onTapCallback != null) {
-              // Trigger short vibration
-              HapticFeedback.selectionClick();
+              HapticFeedback.selectionClick(); // Trigger short vibration
               onTapCallback!();
             }
           },

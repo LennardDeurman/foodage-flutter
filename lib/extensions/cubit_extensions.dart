@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-typedef WidgetTapCallback = void Function(BuildContext context);
-
-class InvalidStateFailure implements Exception {}
 
 extension CubitExtension on Cubit {
 

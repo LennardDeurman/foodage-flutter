@@ -10,7 +10,7 @@ class MainCameraState {
 
   final MainCameraReadyState readyState;
 
-  MainCameraState({
+  const MainCameraState({
     required this.selectedImages,
     this.readyState = MainCameraReadyState.preparingOutput,
   });
@@ -23,10 +23,13 @@ class MainCameraState {
 }
 
 class MainCameraDefaultState extends MainCameraState {
-  MainCameraDefaultState({
+  const MainCameraDefaultState({
     required List<ImageDetails> selectedImages,
     MainCameraReadyState readyState = MainCameraReadyState.ready,
-  }) : super(selectedImages: selectedImages, readyState: readyState);
+  }) : super(
+          selectedImages: selectedImages,
+          readyState: readyState,
+        );
 
   MainCameraDefaultState copyWith({List<ImageDetails>? selectedImages}) {
     return MainCameraDefaultState(
@@ -35,12 +38,3 @@ class MainCameraDefaultState extends MainCameraState {
   }
 }
 
-class MainCameraImagePreviewingState extends MainCameraState {
-  final ImageDetails previewImage;
-
-  MainCameraImagePreviewingState({
-    required List<ImageDetails> selectedImages,
-    required this.previewImage,
-    MainCameraReadyState readyState = MainCameraReadyState.ready,
-  }) : super(selectedImages: selectedImages, readyState: readyState);
-}

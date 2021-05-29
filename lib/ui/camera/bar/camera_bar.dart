@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CameraBarContainer extends StatelessWidget {
-
   final Widget child;
   final BoxDecoration? decoration;
 
-
-  CameraBarContainer({ required this.child, this.decoration });
+  const CameraBarContainer({
+    required this.child,
+    this.decoration,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class CameraBarContainer extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            child
+            child,
           ],
         ),
         bottom: true,
@@ -26,5 +28,4 @@ class CameraBarContainer extends StatelessWidget {
       ),
     );
   }
-
 }

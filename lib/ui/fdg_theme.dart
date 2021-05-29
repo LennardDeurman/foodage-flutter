@@ -36,35 +36,42 @@ class FDGTheme {
 
   TextTheme get textTheme {
     final headlineStyle = GoogleFonts.montserrat(
-        textStyle: TextStyle(
-            //Appbar title
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            color: _colors.darkGrey));
+      textStyle: TextStyle(
+        //Appbar title
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+        color: _colors.darkGrey,
+      ),
+    );
 
     return TextTheme(
-        button: GoogleFonts.montserrat(
-            textStyle: TextStyle(
+      button: GoogleFonts.montserrat(
+        textStyle: TextStyle(
           //Default theme for most buttons
           fontSize: 13,
           fontWeight: FontWeight.w500,
           color: Colors.white,
-        )),
-        headline1: headlineStyle,
-        headline2: headlineStyle.copyWith(fontSize: 16),
-        headline3: headlineStyle.copyWith(fontSize: 14),
-        headline4: headlineStyle.copyWith(fontSize: 11),
-        subtitle1: GoogleFonts.lato(
-          textStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: colors.lightGrey1, //Color.fromRGBO(186, 186, 186, 1)
-              fontSize: 12),
         ),
-        caption: GoogleFonts.montserrat(
-            textStyle: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: colors.grey, //Color.fromRGBO(108, 105, 105, 1)
-                fontSize: 14)));
+      ),
+      headline1: headlineStyle,
+      headline2: headlineStyle.copyWith(fontSize: 16),
+      headline3: headlineStyle.copyWith(fontSize: 14),
+      headline4: headlineStyle.copyWith(fontSize: 11),
+      subtitle1: GoogleFonts.lato(
+        textStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: colors.lightGrey1, //Color.fromRGBO(186, 186, 186, 1)
+          fontSize: 12,
+        ),
+      ),
+      caption: GoogleFonts.montserrat(
+        textStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: colors.grey, //Color.fromRGBO(108, 105, 105, 1)
+          fontSize: 14,
+        ),
+      ),
+    );
   }
 
   ThemeData get themeData {

@@ -6,15 +6,14 @@ import 'package:foodage/ui/camera/camera_option_button.dart';
 import 'package:foodage/ui/camera/image_details.dart';
 import '../../data/service_locator.dart';
 import '../widgets/fdg_button.dart';
-import '../ui_extensions.dart';
+import '../../custom_errors.dart';
 import '../fdg_theme.dart';
-import 'photo_container.dart';
+import '../common/photo_container.dart';
 import 'image_preview_frame.dart';
 import 'camera_preview_frame.dart';
 import 'main_camera_cubit/main_camera_cubit.dart';
 import 'main_camera_cubit/main_camera_states.dart';
 import 'bar/camera_capture_bar.dart';
-import 'bar/camera_preview_bar.dart';
 import 'picker/photo_picker_bottom_sheet.dart';
 import 'picker/gallery_picker_cubit/gallery_picker_cubit.dart';
 import 'picker/photo_picker_cubit/photo_picker_cubit.dart';
@@ -51,8 +50,8 @@ class _CameraScreenHeader extends StatelessWidget {
             onEditPressed: () {
               if (isGalleryImage) {
                 return (context) => mainCameraCubit.editGalleryPickedImage(
-                  selectedImage as GalleryPickedImageDetails,
-                );
+                      selectedImage as GalleryPickedImageDetails,
+                    );
               }
             }(),
           ),
@@ -75,24 +74,32 @@ class _CameraScreenHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    customBorder: new CircleBorder(),
-                    onTap: () {},
-                    splashColor: Colors.grey,
-                    child: new Icon(
-                      Icons.close,
-                      size: 24,
-                      color: FDGTheme().colors.darkRed,
-                    ),
-                  )),
+                color: Colors.transparent,
+                child: InkWell(
+                  customBorder: CircleBorder(),
+                  onTap: () {},
+                  splashColor: Colors.grey,
+                  child: Icon(
+                    Icons.close,
+                    size: 24,
+                    color: FDGTheme().colors.darkRed,
+                  ),
+                ),
+              ),
               Theme(
                 data: contextThemeData.copyWith(
-                    textTheme: contextThemeData.textTheme
-                        .copyWith(button: contextThemeData.textTheme.button!.copyWith(fontSize: 13))),
+                  textTheme: contextThemeData.textTheme.copyWith(
+                    button: contextThemeData.textTheme.button!.copyWith(
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
                 child: FDGPrimaryButton(
                   "Doorgaan",
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 20,
+                  ),
                   borderRadius: 8,
                   onTap: onContinuePressed,
                 ),
@@ -102,7 +109,9 @@ class _CameraScreenHeader extends StatelessWidget {
           Container(
             child: Center(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: EdgeInsets.symmetric(
+                  vertical: 10,
+                ),
                 constraints: BoxConstraints(
                   maxHeight: 100,
                 ),
@@ -117,87 +126,83 @@ class _CameraScreenHeader extends StatelessWidget {
 }
 
 class FoodCameraState extends State<FoodCamera> {
-  final cameraPreviewKey = GlobalKey<CameraPreviewFrameState>();
+  final _cameraPreviewKey = GlobalKey<CameraPreviewFrameState>();
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<MainCameraCubit>(create: (context) => MainCameraCubit()),
-        BlocProvider<GalleryPickerCubit>(create: (context) {
-          final galleryPickerCubit = GalleryPickerCubit(sl.get());
-          galleryPickerCubit.loadInitialAlbum();
-          return galleryPickerCubit;
-        }),
+        BlocProvider<MainCameraCubit>(
+          create: (context) => MainCameraCubit(),
+        ),
+        BlocProvider<GalleryPickerCubit>(
+          create: (context) {
+            final galleryPickerCubit = GalleryPickerCubit(
+              sl.get(),
+            );
+            galleryPickerCubit.loadInitialAlbum();
+            return galleryPickerCubit;
+          },
+        ),
         BlocProvider<PhotoPickerCubit>(
-            create: (context) => PhotoPickerCubit(segments: getPhotoPickerSegments(context))),
+          create: (context) => PhotoPickerCubit(
+            segments: getPhotoPickerSegments(context),
+          ),
+        ),
       ],
       child: Scaffold(
-        body: BlocBuilder<MainCameraCubit, MainCameraState>(builder: (context, mainCameraState) {
-          return Stack(
-            children: [
-              Positioned.fill(
-                child: Builder(
-                  builder: (context) {
-                    if (mainCameraState is MainCameraImagePreviewingState) {
-                      final previewState = mainCameraState;
-                      return ImagePreviewFrame(
-                        child: previewState.previewImage.toWidget(context),
-                      );
-                    }
-                    return CameraPreviewFrame(key: cameraPreviewKey);
-                  },
+        body: BlocBuilder<MainCameraCubit, MainCameraState>(
+          builder: (context, mainCameraState) {
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: CameraPreviewFrame(
+                    key: _cameraPreviewKey,
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: SafeArea(
-                  child: _CameraScreenHeader(onContinuePressed: (context) {}),
-                  top: true,
-                  bottom: false,
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: SafeArea(
+                    child: _CameraScreenHeader(
+                      onContinuePressed: (context) {},
+                    ),
+                    top: true,
+                    bottom: false,
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Builder(
-                  builder: (context) {
-                    if (mainCameraState is MainCameraDefaultState) {
-                      return CameraCaptureBar(
-                        isEnabled: mainCameraState.readyState == MainCameraReadyState.ready,
-                        isLoading: mainCameraState.readyState == MainCameraReadyState.preparingOutput,
-                        actions: Column(
-                          children: [
-                            cameraPreviewKey.currentState!.changeFlashButton(),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            cameraPreviewKey.currentState!.changeFlashButton(),
-                          ],
-                        ),
-                        onCaptureTap: (BuildContext context) async {
-                          final mainCameraCubit = context.read<MainCameraCubit>();
-                          mainCameraCubit.handleImageCapture(
-                            captureImageCallback: () {
-                              Future<File> future = cameraPreviewKey.currentState!.capture();
-                              return future;
-                            },
-                          );
-                        },
-                        onSelectFromGalleryTap: (BuildContext context) {
-                          final galleryPickerCubit = context.read<GalleryPickerCubit>();
-                          galleryPickerCubit.verifyPermissionsAndReload().then(
-                                (_) => PhotoPickerBottomSheet.show(context),
-                              );
-                        },
-                      );
-                    }
-                    throw InvalidStateFailure();
-                  },
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Builder(
+                    builder: (context) {
+                      if (mainCameraState is MainCameraDefaultState) {
+                        return CameraCaptureBar(
+                          isEnabled: mainCameraState.readyState == MainCameraReadyState.ready,
+                          isLoading: mainCameraState.readyState == MainCameraReadyState.preparingOutput,
+                          onCaptureTap: (BuildContext context) async {
+                            final mainCameraCubit = context.read<MainCameraCubit>();
+                            mainCameraCubit.handleImageCapture(
+                              captureImageCallback: () {
+                                Future<File> future = _cameraPreviewKey.currentState!.capture();
+                                return future;
+                              },
+                            );
+                          },
+                          onSelectFromGalleryTap: (BuildContext context) {
+                            final galleryPickerCubit = context.read<GalleryPickerCubit>();
+                            galleryPickerCubit.verifyPermissionsAndReload().then(
+                                  (_) => PhotoPickerBottomSheet.show(context),
+                                );
+                          },
+                        );
+                      }
+                      throw InvalidStateFailure();
+                    },
+                  ),
                 ),
-              ),
-            ],
-          );
-        }),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

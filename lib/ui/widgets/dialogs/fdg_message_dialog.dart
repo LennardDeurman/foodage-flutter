@@ -46,13 +46,14 @@ class FDGAlertDialog<T> extends StatelessWidget {
                     true,
                   ),
                 ),
-                if (hasCancelButton) FDGSecondaryButton(
-                  cancelButtonText ?? MaterialLocalizations.of(context).cancelButtonLabel,
-                  onTap: (context) => Navigator.pop(
-                    context,
-                    false,
-                  ),
-                )
+                if (hasCancelButton)
+                  FDGSecondaryButton(
+                    cancelButtonText ?? MaterialLocalizations.of(context).cancelButtonLabel,
+                    onTap: (context) => Navigator.pop(
+                      context,
+                      false,
+                    ),
+                  )
               ],
             )
           ],
@@ -61,6 +62,7 @@ class FDGAlertDialog<T> extends StatelessWidget {
     );
   }
 
-  Future<bool> show(BuildContext context) =>
-      showDialog<bool>(context: context, builder: (context) => this).then((value) => value ?? false);
+  Future<bool> show(BuildContext context) => showDialog<bool>(context: context, builder: (context) => this).then(
+        (value) => value ?? false,
+      );
 }

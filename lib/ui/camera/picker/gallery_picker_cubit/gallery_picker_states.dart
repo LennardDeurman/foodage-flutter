@@ -2,7 +2,9 @@ import 'package:photo_gallery/photo_gallery.dart';
 
 import 'gallery_picker_cubit.dart';
 
-abstract class GalleryPickerState {}
+abstract class GalleryPickerState {
+  const GalleryPickerState();
+}
 
 class GalleryPickerIdleState extends GalleryPickerState {}
 
@@ -15,19 +17,29 @@ class GalleryPickerErrorState extends GalleryPickerState {}
 class AlbumState extends GalleryPickerState {
   final AlbumData albumData;
 
-  AlbumState({required this.albumData});
+  const AlbumState({
+    required this.albumData,
+  });
 }
 
 class AlbumLoadingState extends AlbumState {
-  AlbumLoadingState({required AlbumData albumData}) : super(albumData: albumData);
+  const AlbumLoadingState({
+    required AlbumData albumData,
+  }) : super(albumData: albumData);
 }
 
 class AlbumLoadedState extends AlbumState {
   final List<Medium> media;
 
-  AlbumLoadedState({required AlbumData albumData, required this.media}) : super(albumData: albumData);
+  const AlbumLoadedState({
+    required AlbumData albumData,
+    required this.media,
+  }) : super(albumData: albumData);
 
-  AlbumLoadedState copyWith({AlbumData? albumData, List<Medium>? media}) {
+  AlbumLoadedState copyWith({
+    AlbumData? albumData,
+    List<Medium>? media,
+  }) {
     return AlbumLoadedState(
       albumData: albumData ?? this.albumData,
       media: media ?? this.media,
@@ -37,10 +49,14 @@ class AlbumLoadedState extends AlbumState {
 
 //Album is already loaded, but data is expanding / extending
 class AlbumExtendingState extends AlbumLoadedState {
-  AlbumExtendingState({required AlbumData albumData, required List<Medium> media})
-      : super(albumData: albumData, media: media);
+  const AlbumExtendingState({
+    required AlbumData albumData,
+    required List<Medium> media,
+  }) : super(albumData: albumData, media: media);
 }
 
 class AlbumFailedToLoadState extends AlbumState {
-  AlbumFailedToLoadState({required AlbumData albumData}) : super(albumData: albumData);
+  const AlbumFailedToLoadState({
+    required AlbumData albumData,
+  }) : super(albumData: albumData);
 }

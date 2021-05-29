@@ -10,9 +10,12 @@ import 'photo_picker_cubit/photo_picker_cubit.dart';
 import 'photo_picker_cubit/photo_picker_states.dart';
 
 class PhotoPickerBottomSheet extends StatelessWidget {
-  final _borderSide = BorderSide(color: FDGTheme().colors.lightGrey2, width: 1);
-
   static const _minHeight = 250.0;
+
+  final _borderSide = BorderSide(
+    color: FDGTheme().colors.lightGrey2,
+    width: 1,
+  );
 
   static void show(BuildContext context) {
     final photoPickerCubit = BlocProvider.of<PhotoPickerCubit>(context);
@@ -21,11 +24,14 @@ class PhotoPickerBottomSheet extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return MultiBlocProvider(providers: [
-          BlocProvider.value(value: photoPickerCubit),
-          BlocProvider.value(value: galleryPickerCubit),
-          BlocProvider.value(value: mainCameraCubit)
-        ], child: PhotoPickerBottomSheet());
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: photoPickerCubit),
+            BlocProvider.value(value: galleryPickerCubit),
+            BlocProvider.value(value: mainCameraCubit)
+          ],
+          child: PhotoPickerBottomSheet(),
+        );
       },
       isScrollControlled: true,
     );
@@ -42,7 +48,10 @@ class PhotoPickerBottomSheet extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                child: state.selectedSegment.builder(context, state.selectedSegment),
+                child: state.selectedSegment.builder(
+                  context,
+                  state.selectedSegment,
+                ),
                 constraints: BoxConstraints(
                   minHeight: _minHeight,
                 ),
@@ -50,7 +59,10 @@ class PhotoPickerBottomSheet extends StatelessWidget {
               Visibility(
                 visible: photoPickerCubit.segments.length > 1,
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 5,
+                  ),
                   decoration: BoxDecoration(
                     border: Border(
                       top: _borderSide,
@@ -66,10 +78,14 @@ class PhotoPickerBottomSheet extends StatelessWidget {
                           onTap: (BuildContext context) => photoPickerCubit.changeSegment(segmentItem),
                           borderRadius: 12,
                           padding: EdgeInsets.all(6),
-                          textPadding: EdgeInsets.symmetric(horizontal: 10),
+                          textPadding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
                           icon: segmentItem.iconBuilder(context),
                         ),
-                        margin: EdgeInsets.symmetric(horizontal: 5),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 5,
+                        ),
                       );
                     },
                   ),

@@ -4,34 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:foodage/ui/fdg_theme.dart';
 import 'package:foodage/ui/widgets/fdg_ratio.dart';
+import 'package:foodage/extensions/list_extensions.dart';
+import 'package:foodage/extensions/cubit_extensions.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image/image.dart' as imgUtils;
 
-import '../../ui_extensions.dart';
+import '../../../custom_errors.dart';
 import '../image_details.dart';
 import 'main_camera_states.dart';
 
-extension ListExtensions<T> on List<T> {
-  void replace(T originalObject, T newObject) {
-    final currentIndex = indexOf(originalObject);
-    removeAt(currentIndex);
-    insert(currentIndex, newObject);
-  }
-}
-
 class MainCameraCubit extends Cubit<MainCameraState> {
-  MainCameraCubit() : super(MainCameraDefaultState(selectedImages: []));
+  MainCameraCubit()
+      : super(
+          MainCameraDefaultState(
+            selectedImages: [],
+          ),
+        );
 
   void selectImage(ImageDetails image) {
-    final selectedImages = this.state.selectedImages;
+    final selectedImages = state.selectedImages;
     if (!selectedImages.contains(image)) {
       selectedImages.add(image);
-      emit(this.state.copyWith(selectedImages: selectedImages));
+      emit(
+        state.copyWith(
+          selectedImages: selectedImages,
+        ),
+      );
     }
   }
 
   Future<File?> cropImage(File imageFile) async {
-    final imgInfo = imgUtils.decodeImage(imageFile.readAsBytesSync());
+    final imgInfo = imgUtils.decodeImage(
+      imageFile.readAsBytesSync(),
+    );
     final size = Size(
       imgInfo!.width.toDouble(),
       imgInfo.width.toDouble() / FDGRatio.aspectRatio,
@@ -71,7 +76,10 @@ class MainCameraCubit extends Cubit<MainCameraState> {
       final newImageDetails = imageDetails;
       imageDetails.updateWithCroppedFile(newFile);
       final newSelectedImages = state.selectedImages;
-      newSelectedImages.replace(imageDetails, newImageDetails);
+      newSelectedImages.replace(
+        imageDetails,
+        newImageDetails,
+      );
       emit(
         state.copyWith(
           selectedImages: newSelectedImages,
@@ -82,19 +90,17 @@ class MainCameraCubit extends Cubit<MainCameraState> {
 
   void unSelectImage(ImageDetails image) {
     final selectedImages = this.state.selectedImages;
-    selectedImages.removeWhere((aImage) => aImage == image);
-    emit(this.state.copyWith(selectedImages: selectedImages));
+    selectedImages.removeWhere(
+      (aImage) => aImage == image,
+    );
+    emit(
+      this.state.copyWith(
+            selectedImages: selectedImages,
+          ),
+    );
   }
 
   bool isSelectedImage(ImageDetails image) => this.state.selectedImages.contains(image);
-
-  void useTakenPhoto() {
-    final imagePreviewState = ensureInCurrentState<MainCameraImagePreviewingState>();
-    final image = imagePreviewState.previewImage;
-    final selectedImages = imagePreviewState.selectedImages;
-    selectedImages.add(image);
-    emit(MainCameraDefaultState(selectedImages: selectedImages));
-  }
 
   void handleImageCapture({required Future<File> Function() captureImageCallback}) async {
     emit(
@@ -104,15 +110,28 @@ class MainCameraCubit extends Cubit<MainCameraState> {
       ),
     );
     try {
-      final imageFile = await captureImageCallback().timeout(Duration(seconds: 3));
+      final imageFile = await captureImageCallback().timeout(
+        Duration(
+          seconds: 3,
+        ),
+      );
       final croppedImageDetails = await cropImage(imageFile).then((croppedFile) {
         if (croppedFile == null) throw InvalidStateFailure();
         return CameraCapturedImageDetails(croppedFile);
       });
-      emit(MainCameraDefaultState(selectedImages: state.selectedImages, readyState: MainCameraReadyState.ready));
+      emit(
+        MainCameraDefaultState(
+          selectedImages: state.selectedImages,
+          readyState: MainCameraReadyState.ready,
+        ),
+      );
       selectImage(croppedImageDetails);
     } on Exception {
-      emit(MainCameraDefaultState(selectedImages: state.selectedImages));
+      emit(
+        MainCameraDefaultState(
+          selectedImages: state.selectedImages,
+        ),
+      );
     }
   }
 }

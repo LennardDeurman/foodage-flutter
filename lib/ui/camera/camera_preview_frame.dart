@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:foodage/ui/widgets/dialogs/fdg_message_dialog.dart';
-import 'package:image/image.dart' as imgUtils;
 import 'package:path_provider/path_provider.dart';
 import 'package:foodage/ui/camera/camera_option_button.dart';
 
 class CameraPreviewFrame extends StatefulWidget {
-
-  CameraPreviewFrame({ Key? key }) : super(key: key);
+  CameraPreviewFrame({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -25,8 +23,6 @@ class CameraPreviewFrameState extends State<CameraPreviewFrame> {
   ValueNotifier<CaptureModes> _captureMode = ValueNotifier(CaptureModes.PHOTO);
 
   PictureController _pictureController = new PictureController();
-
-  late List<Size> _availableSizes;
 
   double? _previousScale;
 
@@ -46,7 +42,8 @@ class CameraPreviewFrameState extends State<CameraPreviewFrame> {
     } else {
       FDGAlertDialog(
         title: Text('Onvoldoende rechten'),
-        content: Text('Je hebt de app geen toegang gegeven tot je camera, ga naar instellingen van je telefoon en pas dit aan. Probeer het daarna opnieuw.'),
+        content: Text(
+            'Je hebt de app geen toegang gegeven tot je camera, ga naar instellingen van je telefoon en pas dit aan. Probeer het daarna opnieuw.'),
         hasCancelButton: false,
       ).show(context);
     }
@@ -75,7 +72,6 @@ class CameraPreviewFrameState extends State<CameraPreviewFrame> {
               child: CameraAwesome(
                 onPermissionsResult: _onPermissionsResult,
                 selectDefaultSize: (availableSizes) {
-                  this._availableSizes = availableSizes;
                   return availableSizes[0];
                 },
                 captureMode: _captureMode,
@@ -94,14 +90,17 @@ class CameraPreviewFrameState extends State<CameraPreviewFrame> {
               child: Column(
                 children: [
                   ValueListenableBuilder(
-                    valueListenable: _switchFlash, builder: (context, flash, widget) => changeFlashButton(),),
+                    valueListenable: _switchFlash,
+                    builder: (context, flash, widget) => changeFlashButton(),
+                  ),
                   SizedBox(width: 20.0),
                   ValueListenableBuilder(
-                    valueListenable: _switchFlash, builder: (context, flash, widget) => changeCameraButton(),)
+                    valueListenable: _switchFlash,
+                    builder: (context, flash, widget) => changeCameraButton(),
+                  )
                 ],
               ),
-            )
-        )
+            ))
       ],
     );
   }
@@ -118,7 +117,6 @@ extension CameraControlActions on CameraPreviewFrameState {
 }
 
 extension CameraControlOptionBuilders on CameraPreviewFrameState {
-
   IconData _getFlashIcon() {
     switch (_switchFlash.value) {
       case CameraFlashes.NONE:
@@ -171,24 +169,10 @@ extension CameraControlOptionBuilders on CameraPreviewFrameState {
 
   Future<File> capture() async {
     final Directory extDir = await getTemporaryDirectory();
-    final testDir =
-        await Directory('${extDir.path}/test').create(recursive: true);
+    final testDir = await Directory('${extDir.path}/photos').create(recursive: true);
     final String filePath = '${testDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
     await _pictureController.takePicture(filePath);
-    // lets just make our phone vibrate
     HapticFeedback.mediumImpact();
-    print("----------------------------------");
-    print("TAKE PHOTO CALLED");
-    final file = File(filePath);
-    print("==> hastakePhoto : ${file.exists()} | path : $filePath");
-    final img = imgUtils.decodeImage(file.readAsBytesSync());
-    if (img != null) {
-      print("==> img.width : ${img.width} | img.height : ${img.height}");
-    } else {
-      print("Image info was null");
-    }
-    print("----------------------------------");
-    return file;
+    return File(filePath);
   }
-
 }

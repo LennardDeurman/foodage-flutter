@@ -7,13 +7,11 @@ class FDGOptionsDialog<T> extends StatelessWidget {
   final List<T> options;
   final T value;
   final String Function(T)? label;
-  final bool dismissAfterUpdate;
 
   FDGOptionsDialog({
     required this.options,
     required this.value,
     this.label,
-    this.dismissAfterUpdate = true,
   });
 
   String _label(BuildContext context, T option) {
@@ -25,8 +23,13 @@ class FDGOptionsDialog<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return FDGDialog(
       child: Container(
-        margin: EdgeInsets.only(top: 15, bottom: 25),
-        constraints: BoxConstraints(maxHeight: 400),
+        margin: EdgeInsets.only(
+          top: 15,
+          bottom: 25,
+        ),
+        constraints: BoxConstraints(
+          maxHeight: 400,
+        ),
         child: ListView.builder(
           itemCount: options.length,
           shrinkWrap: true,
@@ -36,7 +39,10 @@ class FDGOptionsDialog<T> extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border(
-                  bottom: BorderSide(width: 1, color: FDGTheme().colors.lightGrey2),
+                  bottom: BorderSide(
+                    width: 1,
+                    color: FDGTheme().colors.lightGrey2,
+                  ),
                 ),
               ),
               child: Material(
