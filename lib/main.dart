@@ -1,10 +1,9 @@
+import 'package:fdg_camera/fdg_camera.dart';
 import 'package:flutter/material.dart';
-import 'data/service_locator.dart';
-import 'ui/camera/camera_screen.dart';
-import 'ui/fdg_theme.dart';
+import 'package:fdg_ui/fdg_ui.dart';
 
 void main() async {
-  await ServiceLocator.init();
+  FDGCamera.initialize();
   runApp(MainApp());
 }
 
@@ -16,7 +15,22 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: fdgTheme.appName,
       theme: fdgTheme.themeData,
-      home: FoodCamera(),
+      home: Scaffold(
+        body: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: FDGPrimaryButton(
+                  'Open camera',
+                  onTap: (context) => FDGCamera.show(context),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
