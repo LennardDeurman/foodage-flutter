@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 export 'src/photo_container.dart';
 
 class FDGCamera {
-  static void initialize() async {
+  static void ensureInitialized() async {
     sl.registerSingleton(PhotoGalleryRepository());
   }
 

@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:fdg_camera/src/fdg_camera_locale_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_common/fdg_common.dart';
 import 'package:fdg_camera/src/image_details.dart';
@@ -93,7 +95,7 @@ class _CameraScreenHeader extends StatelessWidget {
                   ),
                 ),
                 child: FDGPrimaryButton(
-                  "Doorgaan",
+                  FDGCameraLocaleKeys.continueButton.tr(),
                   padding: EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 20,

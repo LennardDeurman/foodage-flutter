@@ -10,6 +10,11 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>nl</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>foodage</string>
 	<key>CFBundlePackageType</key>
@@ -22,16 +27,16 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>De app heeft toegang nodig tot je camera om foto's te maken</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>De app heeft toegang nodig tot je foto's om foto's te kiezen</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>De app heeft toegang nodig tot je foto's om foto's te kiezen</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSCameraUsageDescription</key>
-	<string>The app needs access to your Camera in order to let you make pictures</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-    <string>The app needs access to your Photo library to let you choose photos</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>The app needs access to your Photo library to let you choose photos</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

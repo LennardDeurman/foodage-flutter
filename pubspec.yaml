@@ -18,11 +18,7 @@ dependencies:
   fdg_camera:
     path: packages/fdg_camera
   cupertino_icons: ^1.0.3
-  camera: ^0.8.1
-  provider: ^5.0.0
-  rxdart: ^0.27.0
-  flutter_bloc: ^7.0.0
-  get_it: ^7.1.2
+  easy_localization: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -31,4 +27,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
+  assets:
+    - assets/translations/

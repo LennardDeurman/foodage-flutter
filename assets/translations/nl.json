@@ -1,0 +1,14 @@
+{
+  "fdg_app_demo_open_camera": "Open camera",
+
+  "fdg_camera_continue": "Doorgaan",
+  "fdg_camera_permissions_dialog_title": "Onvoldoende rechten",
+  "fdg_camera_permissions_dialog_message": "Je hebt de app geen toegang gegeven tot je camera, ga naar instellingen van je telefoon en pas dit aan. Probeer het daarna opnieuw.",
+  "fdg_camera_tab_inspiration": "Inspiratie",
+  "fdg_camera_tab_gallery": "Gallerij",
+  "fdg_camera_error_background_title": "Oeps..",
+  "fdg_camera_loading_background_message": "Bezig met laden...",
+  "fdg_camera_error_background_gallery_load_message": "Fout bij het ophalen van gallerij photos",
+  "fdg_camera_error_background_album_load_message": "Kon de fotos van dit album niet ophalen",
+  "fdg_camera_error_background_permissions_message": "De app heeft niet de juiste machtigingen. Sta het gebruik van je foto gallerij toe in het instellingenscherm van je telefoon."
+}

@@ -1,7 +1,9 @@
+import 'package:fdg_camera/src/fdg_camera_locale_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_common/fdg_common.dart';
 import 'package:fdg_camera/src/album_photos_grid.dart';
@@ -21,7 +23,7 @@ class _InspirationBody extends StatelessWidget {
 
   static FDGSegmentItem segmentItem(BuildContext context) {
     return FDGSegmentItem(
-      "Inspiratie",
+      FDGCameraLocaleKeys.pickerTabInspiration.tr(),
       iconBuilder: (context) {
         return Container(
           margin: EdgeInsets.only(left: 6),
@@ -59,7 +61,7 @@ class _GalleryBody extends StatelessWidget {
   _GalleryBody(this._sender);
 
   static FDGSegmentItem segmentItem(BuildContext context) {
-    return FDGSegmentItem("Gallerij", iconBuilder: (context) {
+    return FDGSegmentItem(FDGCameraLocaleKeys.pickerTabGallery.tr(), iconBuilder: (context) {
       return Container(
         margin: EdgeInsets.only(left: 6),
         child: Icon(
@@ -106,18 +108,18 @@ class _GalleryBody extends StatelessWidget {
       contentWidget = _backgroundBuilder.failed(
         title: _backgroundBuilder.labels.title(
           context,
-          "Oeps...",
+          FDGCameraLocaleKeys.errorBackgroundTitle.tr(),
         ),
         subtitle: _backgroundBuilder.labels.subtitle(
           context,
-          "Kon de fotos van dit album niet ophalen",
+          FDGCameraLocaleKeys.errorBackgroundAlbumLoadMessage.tr(),
         ),
       );
     } else if (state is AlbumLoadingState) {
       contentWidget = _backgroundBuilder.loading(
         title: _backgroundBuilder.labels.title(
           context,
-          "Bezig met laden...",
+          FDGCameraLocaleKeys.loadingBackgroundMessage.tr(),
         ),
       );
     }
@@ -156,7 +158,7 @@ class _GalleryBody extends StatelessWidget {
           child: _backgroundBuilder.loading(
             title: _backgroundBuilder.labels.title(
               context,
-              "Bezig met laden",
+              FDGCameraLocaleKeys.loadingBackgroundMessage.tr(),
             ),
           ),
         );
@@ -164,19 +166,19 @@ class _GalleryBody extends StatelessWidget {
         return _backgroundBuilder.failed(
           title: _backgroundBuilder.labels.title(
             context,
-            "Oeps..",
+            FDGCameraLocaleKeys.errorBackgroundTitle.tr(),
           ),
           subtitle: _backgroundBuilder.labels.subtitle(
             context,
-            "Fout bij het ophalen van gallerij photos",
+            FDGCameraLocaleKeys.errorBackgroundGalleryLoadMessage.tr(),
           ),
         );
       } else if (state is GalleryPickerForbiddenState) {
         return _backgroundBuilder.failed(
-          title: _backgroundBuilder.labels.title(context, "Oeps.."),
+          title: _backgroundBuilder.labels.title(context, FDGCameraLocaleKeys.errorBackgroundTitle.tr(),),
           subtitle: _backgroundBuilder.labels.subtitle(
             context,
-            "De app heeft niet de juiste machtigingen. Sta het gebruik van je foto gallerij toe in het instellingenscherm van je telefoon.",
+            FDGCameraLocaleKeys.errorBackgroundPermissionsMessage.tr(),
           ),
         );
       } else if (state is AlbumState) {

@@ -12,6 +12,7 @@ dependencies:
     path: ../../packages/fdg_common
   fdg_ui:
     path: ../../packages/fdg_ui
+  easy_localization: ^3.0.0
   transparent_image: ^2.0.0
   photo_gallery: ^1.0.1
   camerawesome: 0.3.0
