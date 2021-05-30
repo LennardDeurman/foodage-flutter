@@ -1,6 +1,4 @@
-# foodage
 
-Finding a new way towards food inspiration
 
 ## Getting Started
 
