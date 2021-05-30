@@ -1,0 +1,1 @@
+class InvalidStateFailure implements Exception {}
