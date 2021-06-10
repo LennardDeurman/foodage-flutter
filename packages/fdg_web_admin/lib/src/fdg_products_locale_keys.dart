@@ -8,6 +8,11 @@ class FDGProductsLocaleKeys {
   static const editorFieldProductUrlHint = "fdg_products_editor_field_product_url_hint";
   static const editorFieldPrice = "fdg_products_editor_field_price";
   static const editorFieldPriceHint = "fdg_products_editor_field_price_hint";
+  static const editorFieldTotalQuantity = "fdg_products_editor_field_total_quantity";
+  static const editorFieldTotalQuantityHint = "fdg_products_editor_field_total_quantity_hint";
+  static const editorFieldPortionSize = "fdg_products_editor_field_portion_size";
+  static const editorFieldPortionSizeHint = "fdg_products_editor_field_portion_size_hint";
+  static const editorFieldUnits = "fdg_products_editor_field_units";
   static const editorCancel = "fdg_products_editor_cancel";
   static const editorConfirm = "fdg_products_editor_confirm";
   static const unitGrams = "fdg_products_unit_grams";

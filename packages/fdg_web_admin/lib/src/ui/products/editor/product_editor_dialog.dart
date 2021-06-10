@@ -88,6 +88,10 @@ class ProductEditorDialog extends StatelessWidget {
                       SizedBox(
                         height: _spacing,
                       ),
+                      _QuantityInfoSection(),
+                      SizedBox(
+                        height: _spacing,
+                      ),
                       _NutrientsInfoSection(),
                       SizedBox(
                         height: _spacing,
@@ -106,6 +110,53 @@ class ProductEditorDialog extends StatelessWidget {
   }
 
   static void show(BuildContext context) => showDialog(context: context, builder: (context) => ProductEditorDialog());
+}
+
+class _QuantityInfoSection extends StatelessWidget {
+
+  static const _spacing = 20.0;
+
+  const _QuantityInfoSection({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: FDGLabeledTextField(
+            label: Text(FDGProductsLocaleKeys.editorFieldTotalQuantity.tr()),
+            textField: TextFormField(
+              decoration: InputDecoration(
+                hintText: FDGProductsLocaleKeys.editorFieldTotalQuantityHint.tr()
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: _spacing,),
+        Expanded(
+          child: FDGLabeledTextField(
+            label: Text(FDGProductsLocaleKeys.editorFieldPortionSize.tr()),
+            textField: TextFormField(
+              decoration: InputDecoration(
+                  hintText: FDGProductsLocaleKeys.editorFieldPortionSizeHint.tr()
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: _spacing,),
+        Expanded(
+          child: FDGLabeledTextField(
+            label: Text(FDGProductsLocaleKeys.editorFieldUnits.tr()),
+            textField: TextFormField(
+              decoration: InputDecoration(
+
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
 }
 
 class _NutrientsInfoSection extends StatelessWidget {
