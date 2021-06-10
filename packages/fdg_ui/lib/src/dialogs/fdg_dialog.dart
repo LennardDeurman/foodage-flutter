@@ -12,13 +12,15 @@ class FDGDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
           Positioned(
-            bottom: -10,
+            top: -12,
             right: 30,
             child: FDGBadgeActionButton(
               color: Theme.of(context).primaryColor,
               icon: Icon(Icons.close),
+              size: 25,
               onPressed: (context) => Navigator.pop(
                 context,
                 false,

@@ -17,6 +17,8 @@ dependencies:
     path: packages/fdg_common
   fdg_camera:
     path: packages/fdg_camera
+  fdg_web_admin:
+    path: packages/fdg_web_admin
   cupertino_icons: ^1.0.3
   easy_localization: ^3.0.0
 

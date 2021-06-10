@@ -27,24 +27,23 @@ class _FDGButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final child = Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Visibility(
-            visible: this.icon != null,
-            child: this.icon ?? Container(),
+    final child =  Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Visibility(
+          visible: this.icon != null,
+          child: this.icon ?? Container(),
+        ),
+        Container(
+          padding: _textPadding,
+          child: Text(
+            this.text,
+            style: Theme.of(context).textTheme.button,
           ),
-          Container(
-            padding: _textPadding,
-            child: Text(
-              this.text,
-              style: Theme.of(context).textTheme.button,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
     if (buttonType == _ButtonType.elevatedButton) {
       return ElevatedButton(
