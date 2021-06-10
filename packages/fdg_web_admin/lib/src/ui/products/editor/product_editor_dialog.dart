@@ -112,8 +112,38 @@ class ProductEditorDialog extends StatelessWidget {
   static void show(BuildContext context) => showDialog(context: context, builder: (context) => ProductEditorDialog());
 }
 
-class _QuantityInfoSection extends StatelessWidget {
+class _UnitSuffix extends StatelessWidget {
 
+  static const _width = 50.0;
+  static const _height = 40.0;
+
+
+  final String unit;
+
+  const _UnitSuffix (this.unit, { Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return SizedBox(
+      height: _height,
+      width: _width,
+      child: Container(
+        child: Center(
+          child: Text(
+            unit,
+            style: theme.textTheme.subtitle2!.copyWith(
+              color: theme.primaryColor,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+}
+
+class _QuantityInfoSection extends StatelessWidget {
   static const _spacing = 20.0;
 
   const _QuantityInfoSection({Key? key}) : super(key: key);
@@ -127,30 +157,31 @@ class _QuantityInfoSection extends StatelessWidget {
             label: Text(FDGProductsLocaleKeys.editorFieldTotalQuantity.tr()),
             textField: TextFormField(
               decoration: InputDecoration(
-                hintText: FDGProductsLocaleKeys.editorFieldTotalQuantityHint.tr()
+                hintText: FDGProductsLocaleKeys.editorFieldTotalQuantityHint.tr(),
+                suffixIcon: _UnitSuffix(),
               ),
             ),
           ),
         ),
-        SizedBox(width: _spacing,),
+        SizedBox(
+          width: _spacing,
+        ),
         Expanded(
           child: FDGLabeledTextField(
             label: Text(FDGProductsLocaleKeys.editorFieldPortionSize.tr()),
             textField: TextFormField(
-              decoration: InputDecoration(
-                  hintText: FDGProductsLocaleKeys.editorFieldPortionSizeHint.tr()
-              ),
+              decoration: InputDecoration(hintText: FDGProductsLocaleKeys.editorFieldPortionSizeHint.tr()),
             ),
           ),
         ),
-        SizedBox(width: _spacing,),
+        SizedBox(
+          width: _spacing,
+        ),
         Expanded(
           child: FDGLabeledTextField(
             label: Text(FDGProductsLocaleKeys.editorFieldUnits.tr()),
             textField: TextFormField(
-              decoration: InputDecoration(
-
-              ),
+              decoration: InputDecoration(),
             ),
           ),
         )
