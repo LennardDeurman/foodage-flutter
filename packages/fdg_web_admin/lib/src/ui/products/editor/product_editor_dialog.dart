@@ -125,13 +125,14 @@ class _NutrientsInfoSection extends StatelessWidget {
       child: Row(
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 FDGProductsLocaleKeys.nutritionalValue.tr(),
                 style: defaultTextStyle,
               ),
               Text(
-                FDGProductsLocaleKeys.unitPer100g,
+                FDGProductsLocaleKeys.unitPer100g.tr(),
                 style: subtitleStyle,
               ),
             ],

@@ -12,8 +12,8 @@ class FDGProductsLocaleKeys {
   static const editorConfirm = "fdg_products_editor_confirm";
   static const unitGrams = "fdg_products_unit_grams";
   static const unitMls = "fdg_products_unit_mls";
-  static const unitPer100g = "fdg_products_unit_per_100g";
-  static const unitPer100ml = "fdg_products_unit_per_100ml";
+  static const unitPer100g = "fdg_products_unit_per_g";
+  static const unitPer100ml = "fdg_products_unit_per_ml";
   static const nutrientCarbs = "fdg_products_nutrient_carbs";
   static const nutrientProtein = "fdg_products_nutrient_protein";
   static const nutrientFats = "fdg_products_nutrient_fats";
