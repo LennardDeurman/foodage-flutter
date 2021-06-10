@@ -1,10 +1,9 @@
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_web_admin/src/fdg_products_locale_keys.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fdg_web_admin/src/ui/products/editor/product_unit_textfield.dart';
+import 'package:fdg_web_admin/src/ui/products/editor/product_editor_quantity_info.dart';
+import 'package:fdg_web_admin/src/ui/products/product_unit.dart';
 import 'package:flutter/material.dart';
-
-//TODO: Choose units for product, and add unit textfield
 
 class ProductEditorDialog extends StatelessWidget {
   static const _maxHeight = 600.0;
@@ -95,7 +94,11 @@ class ProductEditorDialog extends StatelessWidget {
                       SizedBox(
                         height: _spacing,
                       ),
-                      _QuantityInfoSection(),
+                      ProductEditorQuantityInfo( //TODO: Load parameter values from the cubit
+                        initialUnitValue: ProductUnit.milliliters,
+                        portionSizeInitialValue: 0.0,
+                        totalQuantityInitialValue: 0.0,
+                      ),
                       SizedBox(
                         height: _spacing,
                       ),
@@ -117,55 +120,6 @@ class ProductEditorDialog extends StatelessWidget {
   }
 
   static void show(BuildContext context) => showDialog(context: context, builder: (context) => ProductEditorDialog());
-}
-
-enum ProductUnit {
-  milliliters,
-  liters,
-  grams,
-  kilograms,
-}
-
-class _QuantityInfoSection extends StatelessWidget {
-  static const _spacing = 20.0;
-
-  const _QuantityInfoSection({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: ProductUnitTextField(
-            label: Text(FDGProductsLocaleKeys.editorFieldTotalQuantity.tr()),
-            hintText: FDGProductsLocaleKeys.editorFieldTotalQuantityHint.tr(),
-            initialUnitValue: ProductUnit.milliliters, //TODO: Change to the cubit value
-          ),
-        ),
-        SizedBox(
-          width: _spacing,
-        ),
-        Expanded(
-          child: ProductUnitTextField(
-            label: Text(FDGProductsLocaleKeys.editorFieldPortionSize.tr()),
-            hintText: FDGProductsLocaleKeys.editorFieldPortionSizeHint.tr(),
-            initialUnitValue: ProductUnit.grams, //TODO: Change to the cubit value
-          ),
-        ),
-        SizedBox(
-          width: _spacing,
-        ),
-        Expanded(
-          child: FDGLabeledTextField(
-            label: Text(FDGProductsLocaleKeys.editorFieldUnits.tr()),
-            textField: TextFormField(
-              decoration: InputDecoration(),
-            ),
-          ),
-        )
-      ],
-    );
-  }
 }
 
 class _NutrientsInfoSection extends StatelessWidget {

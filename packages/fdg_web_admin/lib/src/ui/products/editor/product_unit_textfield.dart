@@ -1,17 +1,19 @@
+import 'package:fdg_web_admin/src/ui/products/product_unit.dart';
 import 'package:flutter/material.dart';
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_web_admin/src/product_unit_localization.dart';
-import 'package:fdg_web_admin/src/ui/products/editor/product_editor_dialog.dart';
 
 class ProductUnitTextField extends StatefulWidget {
   final ProductUnit initialUnitValue;
   final double? initialValue;
   final Widget label;
   final String? hintText;
+  final ValueChanged<ProductUnitResult>? onChanged;
 
   const ProductUnitTextField({
     required this.initialUnitValue,
     required this.label,
+    this.onChanged,
     this.initialValue,
     this.hintText,
     Key? key,
@@ -58,6 +60,18 @@ class ProductUnitTextFieldState extends State<ProductUnitTextField> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    _selectedUnitNotifier.addListener(() {
+      if (widget.onChanged != null) {
+        widget.onChanged!(value);
+      }
+    });
+  }
+
+  void resetToUnit(ProductUnit productUnit) =>  _selectedUnitNotifier.value = productUnit;
+
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ProductUnit>(
       valueListenable: _selectedUnitNotifier,
@@ -66,52 +80,58 @@ class ProductUnitTextFieldState extends State<ProductUnitTextField> {
         textField: TextFormField(
           controller: _textEditingController,
           keyboardType: TextInputType.numberWithOptions(decimal: true),
+          onChanged: (_) => widget.onChanged != null ? widget.onChanged!(value) : null,
           decoration: InputDecoration(
-              hintText: widget.hintText,
-              suffixIcon: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                  child: _UnitSuffix(
-                    ProductUnitLocalization.convertShorthand(context, selectedUnit),
-                  ),
-                  onTap: () async {
-                    final options = _unitsMap[selectedUnit]!;
-                    final localizedUnits = options
-                        .map(
-                          (unit) => MapEntry<ProductUnit, String>(
-                            unit,
-                            ProductUnitLocalization.convertShorthand(context, unit),
-                          ),
-                        )
-                        .toList();
-                    final selectedMapEntry = localizedUnits.firstWhere(
-                      (mapEntry) => mapEntry.key == selectedUnit,
-                    );
-
-                    final newSelectedOption = await showDialog<MapEntry<ProductUnit, String>>(
-                      context: context,
-                      builder: (context) => FDGOptionsDialog<MapEntry<ProductUnit, String>>(
-                        options: localizedUnits,
-                        value: selectedMapEntry,
-                        label: (mapEntry) => ProductUnitLocalization.convert(context, mapEntry.key),
-                      ),
-                    );
-
-                    if (newSelectedOption != null) {
-                      _selectedUnitNotifier.value = newSelectedOption.key;
-                    }
-                  },
+            hintText: widget.hintText,
+            suffixIcon: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                child: _UnitSuffix(
+                  ProductUnitLocalization.convertShorthand(context, selectedUnit),
                 ),
-              )),
+                onTap: () async {
+                  final options = _unitsMap[selectedUnit]!;
+                  final localizedUnits = options
+                      .map(
+                        (unit) => MapEntry<ProductUnit, String>(
+                          unit,
+                          ProductUnitLocalization.convertShorthand(context, unit),
+                        ),
+                      )
+                      .toList();
+                  final selectedMapEntry = localizedUnits.firstWhere(
+                    (mapEntry) => mapEntry.key == selectedUnit,
+                  );
+
+                  final newSelectedOption = await showDialog<MapEntry<ProductUnit, String>>(
+                    context: context,
+                    builder: (context) => FDGOptionsDialog<MapEntry<ProductUnit, String>>(
+                      options: localizedUnits,
+                      value: selectedMapEntry,
+                      label: (mapEntry) => ProductUnitLocalization.convert(context, mapEntry.key),
+                    ),
+                  );
+
+                  if (newSelectedOption != null) {
+                    _selectedUnitNotifier.value = newSelectedOption.key;
+                  }
+                },
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
-  ProductUnitResult get value => ProductUnitResult(
-    value: _conversionRates[_selectedUnitNotifier.value] ?? 1.0 * double.parse(_textEditingController.text),
-    type: _conversionTypes[_selectedUnitNotifier.value] ?? _selectedUnitNotifier.value,
-  );
+  ProductUnitResult get value {
+    final textValue = _textEditingController.text;
+    final numberValue = (double.tryParse(textValue) ?? int.tryParse(textValue)?.toDouble()) ?? 0.0;
+    return ProductUnitResult(
+      value: _conversionRates[_selectedUnitNotifier.value] ?? 1.0 * numberValue,
+      type: _conversionTypes[_selectedUnitNotifier.value] ?? _selectedUnitNotifier.value,
+    );
+  }
 }
 
 class _UnitSuffix extends StatelessWidget {

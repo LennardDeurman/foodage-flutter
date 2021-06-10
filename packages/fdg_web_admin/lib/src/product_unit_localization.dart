@@ -1,3 +1,4 @@
+import 'package:fdg_web_admin/src/ui/products/product_unit.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fdg_web_admin/src/ui/products/editor/product_editor_dialog.dart';
