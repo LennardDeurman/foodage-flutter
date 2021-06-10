@@ -1,7 +1,10 @@
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_web_admin/src/fdg_products_locale_keys.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:fdg_web_admin/src/ui/products/editor/product_unit_textfield.dart';
 import 'package:flutter/material.dart';
+
+//TODO: Choose units for product, and add unit textfield
 
 class ProductEditorDialog extends StatelessWidget {
   static const _maxHeight = 600.0;
@@ -28,7 +31,10 @@ class ProductEditorDialog extends StatelessWidget {
                 ),
                 child: Text(
                   FDGProductsLocaleKeys.editorTitle.tr(),
-                  style: Theme.of(context).textTheme.headline1,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline1,
                 ),
               ),
               Expanded(
@@ -77,6 +83,7 @@ class ProductEditorDialog extends StatelessWidget {
                                 FDGProductsLocaleKeys.editorFieldPrice.tr(),
                               ),
                               textField: TextFormField(
+                                keyboardType: TextInputType.numberWithOptions(decimal: true),
                                 decoration: InputDecoration(
                                   hintText: FDGProductsLocaleKeys.editorFieldPriceHint.tr(),
                                 ),
@@ -112,35 +119,11 @@ class ProductEditorDialog extends StatelessWidget {
   static void show(BuildContext context) => showDialog(context: context, builder: (context) => ProductEditorDialog());
 }
 
-class _UnitSuffix extends StatelessWidget {
-
-  static const _width = 50.0;
-  static const _height = 40.0;
-
-
-  final String unit;
-
-  const _UnitSuffix (this.unit, { Key? key }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return SizedBox(
-      height: _height,
-      width: _width,
-      child: Container(
-        child: Center(
-          child: Text(
-            unit,
-            style: theme.textTheme.subtitle2!.copyWith(
-              color: theme.primaryColor,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
+enum ProductUnit {
+  milliliters,
+  liters,
+  grams,
+  kilograms,
 }
 
 class _QuantityInfoSection extends StatelessWidget {
@@ -153,25 +136,20 @@ class _QuantityInfoSection extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: FDGLabeledTextField(
+          child: ProductUnitTextField(
             label: Text(FDGProductsLocaleKeys.editorFieldTotalQuantity.tr()),
-            textField: TextFormField(
-              decoration: InputDecoration(
-                hintText: FDGProductsLocaleKeys.editorFieldTotalQuantityHint.tr(),
-                suffixIcon: _UnitSuffix(),
-              ),
-            ),
+            hintText: FDGProductsLocaleKeys.editorFieldTotalQuantityHint.tr(),
+            initialUnitValue: ProductUnit.milliliters, //TODO: Change to the cubit value
           ),
         ),
         SizedBox(
           width: _spacing,
         ),
         Expanded(
-          child: FDGLabeledTextField(
+          child: ProductUnitTextField(
             label: Text(FDGProductsLocaleKeys.editorFieldPortionSize.tr()),
-            textField: TextFormField(
-              decoration: InputDecoration(hintText: FDGProductsLocaleKeys.editorFieldPortionSizeHint.tr()),
-            ),
+            hintText: FDGProductsLocaleKeys.editorFieldPortionSizeHint.tr(),
+            initialUnitValue: ProductUnit.grams, //TODO: Change to the cubit value
           ),
         ),
         SizedBox(
@@ -195,7 +173,10 @@ class _NutrientsInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTextStyle = Theme.of(context).textTheme.subtitle2!;
+    final defaultTextStyle = Theme
+        .of(context)
+        .textTheme
+        .subtitle2!;
     final nutrientLabelStyle = defaultTextStyle.copyWith(
       fontSize: 9,
     );
@@ -286,6 +267,7 @@ class _NutrientInfoTextField extends StatelessWidget {
           TextFormField(
             initialValue: initialValue,
             textAlign: TextAlign.center,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
             decoration: InputDecoration(
               hintText: hintText,
             ),

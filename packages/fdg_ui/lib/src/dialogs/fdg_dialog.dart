@@ -13,6 +13,7 @@ class FDGDialog extends StatelessWidget {
     return Dialog(
       child: Stack(
         clipBehavior: Clip.none,
+        alignment: Alignment.center,
         children: [
           Positioned(
             top: -12,
@@ -22,12 +23,11 @@ class FDGDialog extends StatelessWidget {
               icon: Icon(Icons.close),
               size: 25,
               onPressed: (context) => Navigator.pop(
-                context,
-                false,
+                context
               ),
             ),
           ),
-          Positioned.fill(child: child),
+          child,
         ],
       ),
     );
