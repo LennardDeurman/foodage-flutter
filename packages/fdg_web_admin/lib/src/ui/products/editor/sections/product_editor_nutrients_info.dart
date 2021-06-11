@@ -5,14 +5,13 @@ import 'package:fdg_web_admin/src/ui/products/editor/product_editor_validation.d
 import 'package:flutter/material.dart';
 
 class ProductEditorNutrientsInfo extends StatelessWidget {
+  static const _spacing = 10.0;
+
   const ProductEditorNutrientsInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final defaultTextStyle = Theme
-        .of(context)
-        .textTheme
-        .subtitle2!;
+    final defaultTextStyle = Theme.of(context).textTheme.subtitle2!;
     final nutrientLabelStyle = defaultTextStyle.copyWith(
       fontSize: 9,
     );
@@ -30,44 +29,51 @@ class ProductEditorNutrientsInfo extends StatelessWidget {
                 FDGProductsLocaleKeys.nutritionalValue.tr(),
                 style: defaultTextStyle,
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: _spacing,
+              ),
               Text(
-                FDGProductsLocaleKeys.unitPer100g.tr(),
+                FDGProductsLocaleKeys.unitPer100g.tr(), //TODO: This value should change when cubit unit changes
                 style: subtitleStyle.copyWith(
                   fontStyle: FontStyle.italic,
                 ),
               ),
             ],
           ),
-          Spacer(),
-          /*
-          _NutrientInfoTextField(
-            label: label,
-            initialValue: initialValue,
-            hintText: hintText,
-            onChanged: onChanged,
+          Spacer(), //TODO: initialValue + change events from the cubit
+          ProductEditorNutrientTextField(
+            label: Text(
+              FDGProductsLocaleKeys.nutrientCarbs.tr(),
+            ),
+            onChanged: (value) {},
           ),
-          SizedBox(width: 10,),
-          _NutrientInfoTextField(
-            label: label,
-            initialValue: initialValue,
-            hintText: hintText,
-            onChanged: onChanged,
+          SizedBox(
+            width: _spacing,
           ),
-          SizedBox(width: 10,),
-          _NutrientInfoTextField(
-            label: label,
-            initialValue: initialValue,
-            hintText: hintText,
-            onChanged: onChanged,
+          ProductEditorNutrientTextField(
+            label: Text(
+              FDGProductsLocaleKeys.nutrientProtein.tr(),
+            ),
+            onChanged: (value) {},
           ),
-          SizedBox(width: 10,),
-          _NutrientInfoTextField(
-            label: label,
-            initialValue: initialValue,
-            hintText: hintText,
-            onChanged: onChanged,
-          ), */
+          SizedBox(
+            width: _spacing,
+          ),
+          ProductEditorNutrientTextField(
+            label: Text(
+              FDGProductsLocaleKeys.nutrientFats.tr(),
+            ),
+            onChanged: (value) {},
+          ),
+          SizedBox(
+            width: _spacing,
+          ),
+          ProductEditorNutrientTextField(
+            label: Text(
+              FDGProductsLocaleKeys.nutrientEnergy.tr(),
+            ),
+            onChanged: (value) {},
+          ),
         ],
       ),
     );
@@ -75,19 +81,19 @@ class ProductEditorNutrientsInfo extends StatelessWidget {
 }
 
 class ProductEditorNutrientTextField extends StatelessWidget {
-  static const _width = 60.0;
+  static const _width = 70.0;
   static const _spacing = 10.0;
 
   final Widget label;
-  final String initialValue;
-  final String hintText;
+  final double initialValue;
+  final String? hintText;
   final ValueChanged<String> onChanged;
 
   const ProductEditorNutrientTextField({
     required this.label,
-    required this.initialValue,
-    required this.hintText,
     required this.onChanged,
+    this.hintText,
+    this.initialValue = 0.0,
     Key? key,
   }) : super(key: key);
 
@@ -104,10 +110,15 @@ class ProductEditorNutrientTextField extends StatelessWidget {
             height: _spacing,
           ),
           TextFormField(
-            initialValue: initialValue,
+            initialValue: initialValue.toString(),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.numberWithOptions(decimal: true),
-            validator: (value) => ProductEditorValidation.validateNutrient(context, value,) ? null : '',
+            validator: (value) => ProductEditorValidation.validateNutrient(
+              context,
+              value,
+            )
+                ? null
+                : '',
             decoration: InputDecoration(
               hintText: hintText,
             ),
