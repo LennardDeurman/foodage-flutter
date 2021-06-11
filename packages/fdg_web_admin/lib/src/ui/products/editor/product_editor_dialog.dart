@@ -36,9 +36,8 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
             maxWidth: _maxWidth,
           ),
           child: FDGDialog(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
+            child: ListView(
+              shrinkWrap: true,
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(
@@ -69,7 +68,7 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
                           value,
                         )
                             ? null
-                            : 'This should not be visible',
+                            : '',
                       ),
                     ),
                     SizedBox(
