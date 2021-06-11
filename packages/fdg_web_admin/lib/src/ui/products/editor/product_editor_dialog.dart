@@ -46,7 +46,7 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
                     horizontal: 20,
                   ),
                   child: Text(
-                    FDGProductsLocaleKeys.editorTitle.tr(),
+                    FDGProductsLocaleKeys.editorTitle.tr(), //TODO: Rename editor title if cubit indicator edit product
                     style: Theme.of(context).textTheme.headline1,
                   ),
                 ),
@@ -67,7 +67,9 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
                         validator: (value) => ProductEditorValidation.validateName(
                           context,
                           value,
-                        ) ? null : 'This should not be visible',
+                        )
+                            ? null
+                            : 'This should not be visible',
                       ),
                     ),
                     SizedBox(
@@ -88,7 +90,9 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
                               validator: (value) => ProductEditorValidation.validateProductUrl(
                                 context,
                                 value,
-                              ) ? null : '',
+                              )
+                                  ? null
+                                  : '',
                             ),
                           ),
                         ),
@@ -108,7 +112,9 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
                               validator: (value) => ProductEditorValidation.validatePrice(
                                 context,
                                 value,
-                              ) ? null : '',
+                              )
+                                  ? null
+                                  : '',
                             ),
                           ),
                         )
@@ -132,16 +138,57 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
                     ),
                   ],
                 ),
-                _BottomBar(onSubmitPressed: (context) {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                  }
-                }),
+                _BottomBar(
+                  onSubmitPressed: (context) {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                    }
+                  },
+                ),
               ],
             ),
           ),
         ),
         alignment: Alignment.center,
+      ),
+    );
+  }
+}
+
+class _Warning extends StatelessWidget {
+  final Color color;
+  final Widget icon;
+  final Widget label;
+
+  const _Warning({
+    Key? key,
+    required this.color,
+    required this.icon,
+    required this.label,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: 5,
+      ),
+      child: Row(
+        children: [
+          IconTheme(
+            data: IconThemeData(
+              color: color,
+            ),
+            child: icon,
+          ),
+          SizedBox(width: 10),
+          DefaultTextStyle(
+            style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                  color: color,
+                ),
+            child: label,
+          )
+        ],
       ),
     );
   }
@@ -169,7 +216,7 @@ class _BottomBar extends StatelessWidget {
       child: Row(
         children: [
           FDGPrimaryButton(
-            FDGProductsLocaleKeys.editorConfirm.tr(),
+            FDGProductsLocaleKeys.editorConfirm.tr(), //Todo: rename this to 'Aanpassen' if the cubit indicates to
             icon: Icon(Icons.done),
             onTap: onSubmitPressed,
           ),

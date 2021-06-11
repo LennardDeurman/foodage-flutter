@@ -20,60 +20,62 @@ class ProductEditorNutrientsInfo extends StatelessWidget {
     );
     return DefaultTextStyle(
       style: nutrientLabelStyle,
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
             children: [
               Text(
                 FDGProductsLocaleKeys.nutritionalValue.tr(),
                 style: defaultTextStyle,
               ),
-              SizedBox(
-                height: _spacing,
-              ),
+              Spacer(),
               Text(
                 FDGProductsLocaleKeys.unitPer100g.tr(), //TODO: This value should change when cubit unit changes
                 style: subtitleStyle.copyWith(
                   fontStyle: FontStyle.italic,
                 ),
-              ),
+              )
             ],
           ),
-          Spacer(), //TODO: initialValue + change events from the cubit
-          ProductEditorNutrientTextField(
-            label: Text(
-              FDGProductsLocaleKeys.nutrientCarbs.tr(),
-            ),
-            onChanged: (value) {},
-          ),
-          SizedBox(
-            width: _spacing,
-          ),
-          ProductEditorNutrientTextField(
-            label: Text(
-              FDGProductsLocaleKeys.nutrientProtein.tr(),
-            ),
-            onChanged: (value) {},
-          ),
-          SizedBox(
-            width: _spacing,
-          ),
-          ProductEditorNutrientTextField(
-            label: Text(
-              FDGProductsLocaleKeys.nutrientFats.tr(),
-            ),
-            onChanged: (value) {},
-          ),
-          SizedBox(
-            width: _spacing,
-          ),
-          ProductEditorNutrientTextField(
-            label: Text(
-              FDGProductsLocaleKeys.nutrientEnergy.tr(),
-            ),
-            onChanged: (value) {},
-          ),
+          SizedBox(height: 20,),
+          Row(
+            children: [
+              ProductEditorNutrientTextField(
+                label: Text(
+                  FDGProductsLocaleKeys.nutrientCarbs.tr(),
+                ),
+                onChanged: (value) {},
+              ),
+              SizedBox(
+                width: _spacing,
+              ),
+              ProductEditorNutrientTextField(
+                label: Text(
+                  FDGProductsLocaleKeys.nutrientProtein.tr(),
+                ),
+                onChanged: (value) {},
+              ),
+              SizedBox(
+                width: _spacing,
+              ),
+              ProductEditorNutrientTextField(
+                label: Text(
+                  FDGProductsLocaleKeys.nutrientFats.tr(),
+                ),
+                onChanged: (value) {},
+              ),
+              SizedBox(
+                width: _spacing,
+              ),
+              ProductEditorNutrientTextField(
+                label: Text(
+                  FDGProductsLocaleKeys.nutrientEnergy.tr(),
+                ),
+                onChanged: (value) {},
+              ),
+            ],
+          )
         ],
       ),
     );
