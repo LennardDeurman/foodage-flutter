@@ -38,6 +38,7 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
           child: FDGDialog(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(
@@ -49,92 +50,87 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
                     style: Theme.of(context).textTheme.headline1,
                   ),
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: _spacing,
+                ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: _spacing,
+                  ),
+                  children: [
+                    FDGLabeledTextField(
+                      label: Text(
+                        FDGProductsLocaleKeys.editorFieldName.tr(),
+                      ),
+                      textField: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: FDGProductsLocaleKeys.editorFieldNamePlaceholder.tr(),
+                        ),
+                        validator: (value) => ProductEditorValidation.validateName(
+                          context,
+                          value,
+                        ) ? null : 'This should not be visible',
+                      ),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                    SizedBox(
+                      height: _spacing,
+                    ),
+                    Row(
                       children: [
-                        FDGLabeledTextField(
-                          label: Text(
-                            FDGProductsLocaleKeys.editorFieldName.tr(),
-                          ),
-                          textField: TextFormField(
-                            decoration: InputDecoration(
-                              hintText: FDGProductsLocaleKeys.editorFieldNamePlaceholder.tr(),
+                        Expanded(
+                          flex: 2,
+                          child: FDGLabeledTextField(
+                            label: Text(
+                              FDGProductsLocaleKeys.editorFieldProductUrl.tr(),
                             ),
-                            validator: (value) => ProductEditorValidation.validateName(
-                              context,
-                              value,
-                            ) ? null : 'This should not be visible',
-                          ),
-                        ),
-                        SizedBox(
-                          height: _spacing,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: FDGLabeledTextField(
-                                label: Text(
-                                  FDGProductsLocaleKeys.editorFieldProductUrl.tr(),
-                                ),
-                                textField: TextFormField(
-                                  decoration: InputDecoration(
-                                    hintText: FDGProductsLocaleKeys.editorFieldProductUrlHint.tr(),
-                                  ),
-                                  validator: (value) => ProductEditorValidation.validateProductUrl(
-                                    context,
-                                    value,
-                                  ) ? null : '',
-                                ),
+                            textField: TextFormField(
+                              decoration: InputDecoration(
+                                hintText: FDGProductsLocaleKeys.editorFieldProductUrlHint.tr(),
                               ),
+                              validator: (value) => ProductEditorValidation.validateProductUrl(
+                                context,
+                                value,
+                              ) ? null : '',
                             ),
-                            SizedBox(
-                              width: _spacing,
+                          ),
+                        ),
+                        SizedBox(
+                          width: _spacing,
+                        ),
+                        Expanded(
+                          child: FDGLabeledTextField(
+                            label: Text(
+                              FDGProductsLocaleKeys.editorFieldPrice.tr(),
                             ),
-                            Expanded(
-                              child: FDGLabeledTextField(
-                                label: Text(
-                                  FDGProductsLocaleKeys.editorFieldPrice.tr(),
-                                ),
-                                textField: TextFormField(
-                                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                                  decoration: InputDecoration(
-                                    hintText: FDGProductsLocaleKeys.editorFieldPriceHint.tr(),
-                                  ),
-                                  validator: (value) => ProductEditorValidation.validatePrice(
-                                    context,
-                                    value,
-                                  ) ? null : '',
-                                ),
+                            textField: TextFormField(
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              decoration: InputDecoration(
+                                hintText: FDGProductsLocaleKeys.editorFieldPriceHint.tr(),
                               ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: _spacing,
-                        ),
-                        ProductEditorQuantityInfo(
-                          //TODO: Load parameter values from the cubit
-                          initialUnitValue: ProductUnit.milliliters,
-                          portionSizeInitialValue: 0.0,
-                          totalQuantityInitialValue: 0.0,
-                        ),
-                        SizedBox(
-                          height: _spacing,
-                        ),
-                        ProductEditorNutrientsInfo(),
-                        SizedBox(
-                          height: _spacing,
-                        ),
+                              validator: (value) => ProductEditorValidation.validatePrice(
+                                context,
+                                value,
+                              ) ? null : '',
+                            ),
+                          ),
+                        )
                       ],
                     ),
-                  ),
+                    SizedBox(
+                      height: _spacing,
+                    ),
+                    ProductEditorQuantityInfo(
+                      //TODO: Load parameter values from the cubit
+                      initialUnitValue: ProductUnit.milliliters,
+                      portionSizeInitialValue: 0.0,
+                      totalQuantityInitialValue: 0.0,
+                    ),
+                    SizedBox(
+                      height: _spacing,
+                    ),
+                    ProductEditorNutrientsInfo(),
+                    SizedBox(
+                      height: _spacing,
+                    ),
+                  ],
                 ),
                 _BottomBar(onSubmitPressed: (context) {
                   if (_formKey.currentState!.validate()) {

@@ -30,9 +30,12 @@ class ProductEditorNutrientsInfo extends StatelessWidget {
                 FDGProductsLocaleKeys.nutritionalValue.tr(),
                 style: defaultTextStyle,
               ),
+              SizedBox(height: 10,),
               Text(
                 FDGProductsLocaleKeys.unitPer100g.tr(),
-                style: subtitleStyle,
+                style: subtitleStyle.copyWith(
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ],
           ),
