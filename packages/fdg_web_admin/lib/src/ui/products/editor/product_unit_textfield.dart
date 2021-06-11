@@ -2,6 +2,7 @@ import 'package:fdg_web_admin/src/ui/products/product_unit.dart';
 import 'package:flutter/material.dart';
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_web_admin/src/product_unit_localization.dart';
+import 'package:flutter/services.dart';
 
 class ProductUnitTextField extends StatefulWidget {
   final ProductUnit initialUnitValue;
@@ -83,6 +84,9 @@ class ProductUnitTextFieldState extends State<ProductUnitTextField> {
           controller: _textEditingController,
           validator: widget.validator,
           keyboardType: TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
+          ],
           onChanged: (_) => widget.onChanged != null ? widget.onChanged!(value) : null,
           decoration: InputDecoration(
             hintText: widget.hintText,

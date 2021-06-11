@@ -3,6 +3,7 @@ import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_web_admin/src/fdg_products_locale_keys.dart';
 import 'package:fdg_web_admin/src/ui/products/editor/product_editor_validation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ProductEditorNutrientsInfo extends StatelessWidget {
   static const _spacing = 10.0;
@@ -115,6 +116,9 @@ class ProductEditorNutrientTextField extends StatelessWidget {
             initialValue: initialValue.toString(),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.numberWithOptions(decimal: true),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
+            ],
             validator: (value) => ProductEditorValidation.validateNutrient(
               context,
               value,

@@ -6,6 +6,7 @@ import 'package:fdg_web_admin/src/ui/products/editor/sections/product_editor_qua
 import 'package:fdg_web_admin/src/ui/products/editor/product_editor_validation.dart';
 import 'package:fdg_web_admin/src/ui/products/editor/sections/product_editor_nutrients_info.dart';
 import 'package:fdg_web_admin/src/ui/products/product_unit.dart';
+import 'package:flutter/services.dart';
 
 class ProductEditorDialog extends StatefulWidget {
   static void show(BuildContext context) => showDialog(
@@ -105,6 +106,9 @@ class _ProductEditorDialogState extends State<ProductEditorDialog> {
                             ),
                             textField: TextFormField(
                               keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
+                              ],
                               decoration: InputDecoration(
                                 hintText: FDGProductsLocaleKeys.editorFieldPriceHint.tr(),
                               ),

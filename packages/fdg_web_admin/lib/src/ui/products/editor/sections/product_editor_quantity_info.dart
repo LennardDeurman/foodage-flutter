@@ -6,6 +6,7 @@ import 'package:fdg_web_admin/src/ui/products/editor/product_unit_textfield.dart
 import 'package:fdg_web_admin/src/ui/products/product_unit.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/services.dart';
 
 class ProductEditorQuantityInfo extends StatefulWidget { //TODO: Be consise with the ProductEditorNutrientsInfo and load values directly from cubit
   final ProductUnit initialUnitValue;
@@ -96,6 +97,9 @@ class ProductEditorQuantityInfoState extends State<ProductEditorQuantityInfo> {
             child: FDGLabeledTextField(
               label: Text(FDGProductsLocaleKeys.editorFieldUnits.tr()),
               textField: TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.]'))
+                ],
                 decoration: InputDecoration(
                     hintText: ProductUnitLocalization.convert(context, _unitValueNotifier.value),
                     hintStyle: Theme.of(context).textTheme.subtitle1!.copyWith(
