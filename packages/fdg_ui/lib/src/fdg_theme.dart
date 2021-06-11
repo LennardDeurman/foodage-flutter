@@ -46,6 +46,7 @@ class FDGTheme {
       ),
     );
 
+
     return TextTheme(
       button: GoogleFonts.montserrat(
         textStyle: TextStyle(
@@ -100,6 +101,8 @@ class FDGTheme {
             fontSize: 12,
           ),
         ),
+        errorMaxLines: 1,
+        errorStyle: TextStyle(fontSize: 0.1, color: Colors.transparent),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(4)),
           borderSide: BorderSide.none,
@@ -112,6 +115,14 @@ class FDGTheme {
           borderRadius: BorderRadius.all(Radius.circular(4)),
           borderSide: BorderSide.none,
         ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: colors.mediumRed),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: colors.mediumRed),
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+        )
       ),
       dialogTheme: DialogTheme(
         shape: RoundedRectangleBorder(

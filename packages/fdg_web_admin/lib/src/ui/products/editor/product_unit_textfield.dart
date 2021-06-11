@@ -8,6 +8,7 @@ class ProductUnitTextField extends StatefulWidget {
   final double? initialValue;
   final Widget label;
   final String? hintText;
+  final FormFieldValidator<String>? validator;
   final ValueChanged<ProductUnitResult>? onChanged;
 
   const ProductUnitTextField({
@@ -16,6 +17,7 @@ class ProductUnitTextField extends StatefulWidget {
     this.onChanged,
     this.initialValue,
     this.hintText,
+    this.validator,
     Key? key,
   }) : super(key: key);
 
@@ -79,6 +81,7 @@ class ProductUnitTextFieldState extends State<ProductUnitTextField> {
         label: widget.label,
         textField: TextFormField(
           controller: _textEditingController,
+          validator: widget.validator,
           keyboardType: TextInputType.numberWithOptions(decimal: true),
           onChanged: (_) => widget.onChanged != null ? widget.onChanged!(value) : null,
           decoration: InputDecoration(
@@ -94,13 +97,13 @@ class ProductUnitTextFieldState extends State<ProductUnitTextField> {
                   final localizedUnits = options
                       .map(
                         (unit) => MapEntry<ProductUnit, String>(
-                          unit,
-                          ProductUnitLocalization.convertShorthand(context, unit),
-                        ),
-                      )
+                      unit,
+                      ProductUnitLocalization.convertShorthand(context, unit),
+                    ),
+                  )
                       .toList();
                   final selectedMapEntry = localizedUnits.firstWhere(
-                    (mapEntry) => mapEntry.key == selectedUnit,
+                        (mapEntry) => mapEntry.key == selectedUnit,
                   );
 
                   final newSelectedOption = await showDialog<MapEntry<ProductUnit, String>>(

@@ -1,232 +1,151 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_web_admin/src/fdg_products_locale_keys.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:fdg_web_admin/src/ui/products/editor/product_editor_quantity_info.dart';
+import 'package:fdg_web_admin/src/ui/products/editor/sections/product_editor_quantity_info.dart';
+import 'package:fdg_web_admin/src/ui/products/editor/product_editor_validation.dart';
+import 'package:fdg_web_admin/src/ui/products/editor/sections/product_editor_nutrients_info.dart';
 import 'package:fdg_web_admin/src/ui/products/product_unit.dart';
-import 'package:flutter/material.dart';
 
-class ProductEditorDialog extends StatelessWidget {
-  static const _maxHeight = 600.0;
-  static const _maxWidth = 800.0;
+class ProductEditorDialog extends StatefulWidget {
+  static void show(BuildContext context) => showDialog(
+        context: context,
+        builder: (context) => ProductEditorDialog(),
+      );
+
+  @override
+  State<StatefulWidget> createState() => _ProductEditorDialogState();
+}
+
+class _ProductEditorDialogState extends State<ProductEditorDialog> {
+  static const _maxHeight = 700.0;
+  static const _maxWidth = 850.0;
 
   static const _spacing = 20.0;
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: _maxHeight,
-          maxWidth: _maxWidth,
-        ),
-        child: FDGDialog(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 30,
-                  horizontal: 20,
-                ),
-                child: Text(
-                  FDGProductsLocaleKeys.editorTitle.tr(),
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline1,
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
+    return Form(
+      key: _formKey,
+      child: Container(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: _maxHeight,
+            maxWidth: _maxWidth,
+          ),
+          child: FDGDialog(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
                   padding: EdgeInsets.symmetric(
-                    horizontal: _spacing,
+                    vertical: 30,
+                    horizontal: 20,
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      FDGLabeledTextField(
-                        label: Text(
-                          FDGProductsLocaleKeys.editorFieldName.tr(),
-                        ),
-                        textField: TextFormField(
-                          decoration: InputDecoration(
-                            hintText: FDGProductsLocaleKeys.editorFieldNamePlaceholder.tr(),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: _spacing,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: FDGLabeledTextField(
-                              label: Text(
-                                FDGProductsLocaleKeys.editorFieldProductUrl.tr(),
-                              ),
-                              textField: TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: FDGProductsLocaleKeys.editorFieldProductUrlHint.tr(),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: _spacing,
-                          ),
-                          Expanded(
-                            child: FDGLabeledTextField(
-                              label: Text(
-                                FDGProductsLocaleKeys.editorFieldPrice.tr(),
-                              ),
-                              textField: TextFormField(
-                                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                                decoration: InputDecoration(
-                                  hintText: FDGProductsLocaleKeys.editorFieldPriceHint.tr(),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: _spacing,
-                      ),
-                      ProductEditorQuantityInfo( //TODO: Load parameter values from the cubit
-                        initialUnitValue: ProductUnit.milliliters,
-                        portionSizeInitialValue: 0.0,
-                        totalQuantityInitialValue: 0.0,
-                      ),
-                      SizedBox(
-                        height: _spacing,
-                      ),
-                      _NutrientsInfoSection(),
-                      SizedBox(
-                        height: _spacing,
-                      ),
-                    ],
+                  child: Text(
+                    FDGProductsLocaleKeys.editorTitle.tr(),
+                    style: Theme.of(context).textTheme.headline1,
                   ),
                 ),
-              ),
-              _BottomBar(),
-            ],
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: _spacing,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        FDGLabeledTextField(
+                          label: Text(
+                            FDGProductsLocaleKeys.editorFieldName.tr(),
+                          ),
+                          textField: TextFormField(
+                            decoration: InputDecoration(
+                              hintText: FDGProductsLocaleKeys.editorFieldNamePlaceholder.tr(),
+                            ),
+                            validator: (value) => ProductEditorValidation.validateName(
+                              context,
+                              value,
+                            ) ? null : 'This should not be visible',
+                          ),
+                        ),
+                        SizedBox(
+                          height: _spacing,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: FDGLabeledTextField(
+                                label: Text(
+                                  FDGProductsLocaleKeys.editorFieldProductUrl.tr(),
+                                ),
+                                textField: TextFormField(
+                                  decoration: InputDecoration(
+                                    hintText: FDGProductsLocaleKeys.editorFieldProductUrlHint.tr(),
+                                  ),
+                                  validator: (value) => ProductEditorValidation.validateProductUrl(
+                                    context,
+                                    value,
+                                  ) ? null : '',
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: _spacing,
+                            ),
+                            Expanded(
+                              child: FDGLabeledTextField(
+                                label: Text(
+                                  FDGProductsLocaleKeys.editorFieldPrice.tr(),
+                                ),
+                                textField: TextFormField(
+                                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                  decoration: InputDecoration(
+                                    hintText: FDGProductsLocaleKeys.editorFieldPriceHint.tr(),
+                                  ),
+                                  validator: (value) => ProductEditorValidation.validatePrice(
+                                    context,
+                                    value,
+                                  ) ? null : '',
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: _spacing,
+                        ),
+                        ProductEditorQuantityInfo(
+                          //TODO: Load parameter values from the cubit
+                          initialUnitValue: ProductUnit.milliliters,
+                          portionSizeInitialValue: 0.0,
+                          totalQuantityInitialValue: 0.0,
+                        ),
+                        SizedBox(
+                          height: _spacing,
+                        ),
+                        ProductEditorNutrientsInfo(),
+                        SizedBox(
+                          height: _spacing,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                _BottomBar(onSubmitPressed: (context) {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                  }
+                }),
+              ],
+            ),
           ),
         ),
-      ),
-      alignment: Alignment.center,
-    );
-  }
-
-  static void show(BuildContext context) => showDialog(context: context, builder: (context) => ProductEditorDialog());
-}
-
-class _NutrientsInfoSection extends StatelessWidget {
-  const _NutrientsInfoSection({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final defaultTextStyle = Theme
-        .of(context)
-        .textTheme
-        .subtitle2!;
-    final nutrientLabelStyle = defaultTextStyle.copyWith(
-      fontSize: 9,
-    );
-    final subtitleStyle = defaultTextStyle.copyWith(
-      color: FDGTheme().colors.lightGrey1,
-    );
-    return DefaultTextStyle(
-      style: nutrientLabelStyle,
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                FDGProductsLocaleKeys.nutritionalValue.tr(),
-                style: defaultTextStyle,
-              ),
-              Text(
-                FDGProductsLocaleKeys.unitPer100g.tr(),
-                style: subtitleStyle,
-              ),
-            ],
-          ),
-          Spacer(),
-          /*
-          _NutrientInfoTextField(
-            label: label,
-            initialValue: initialValue,
-            hintText: hintText,
-            onChanged: onChanged,
-          ),
-          SizedBox(width: 10,),
-          _NutrientInfoTextField(
-            label: label,
-            initialValue: initialValue,
-            hintText: hintText,
-            onChanged: onChanged,
-          ),
-          SizedBox(width: 10,),
-          _NutrientInfoTextField(
-            label: label,
-            initialValue: initialValue,
-            hintText: hintText,
-            onChanged: onChanged,
-          ),
-          SizedBox(width: 10,),
-          _NutrientInfoTextField(
-            label: label,
-            initialValue: initialValue,
-            hintText: hintText,
-            onChanged: onChanged,
-          ), */
-        ],
-      ),
-    );
-  }
-}
-
-class _NutrientInfoTextField extends StatelessWidget {
-  static const _width = 60.0;
-  static const _spacing = 10.0;
-
-  final Widget label;
-  final String initialValue;
-  final String hintText;
-  final ValueChanged<String> onChanged;
-
-  const _NutrientInfoTextField({
-    required this.label,
-    required this.initialValue,
-    required this.hintText,
-    required this.onChanged,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: _width,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          label,
-          SizedBox(
-            height: _spacing,
-          ),
-          TextFormField(
-            initialValue: initialValue,
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            decoration: InputDecoration(
-              hintText: hintText,
-            ),
-          )
-        ],
+        alignment: Alignment.center,
       ),
     );
   }
@@ -235,7 +154,9 @@ class _NutrientInfoTextField extends StatelessWidget {
 class _BottomBar extends StatelessWidget {
   static const _spacing = 10.0;
 
-  const _BottomBar({Key? key}) : super(key: key);
+  final WidgetTapCallback onSubmitPressed;
+
+  const _BottomBar({required this.onSubmitPressed, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -254,14 +175,14 @@ class _BottomBar extends StatelessWidget {
           FDGPrimaryButton(
             FDGProductsLocaleKeys.editorConfirm.tr(),
             icon: Icon(Icons.done),
-            onTap: (context) {},
+            onTap: onSubmitPressed,
           ),
           SizedBox(
             width: _spacing,
           ),
           FDGSecondaryButton(
             FDGProductsLocaleKeys.editorCancel.tr(),
-            onTap: (context) {},
+            onTap: (context) => Navigator.pop(context),
           )
         ],
       ),

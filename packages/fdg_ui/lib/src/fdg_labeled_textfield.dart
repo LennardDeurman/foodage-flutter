@@ -14,19 +14,20 @@ class FDGLabeledTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        DefaultTextStyle(
-          style: Theme.of(context).textTheme.subtitle2!,
-          child: label,
-        ),
-        SizedBox(
-          height: spacing,
-        ),
-        textField,
-      ],
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          DefaultTextStyle(
+            style: Theme.of(context).textTheme.subtitle2!,
+            child: label,
+          ),
+          SizedBox(
+            height: spacing,
+          ),
+          textField,
+        ]
     );
   }
 }
