@@ -13,6 +13,12 @@ class _Colors {
 }
 
 class FDGTheme {
+
+  static const defaultButtonInsetsWeb = EdgeInsets.symmetric(
+    vertical: 14,
+    horizontal: 20,
+  );
+
   static FDGTheme? _instance;
 
   late _Colors _colors;

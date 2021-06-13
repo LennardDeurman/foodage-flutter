@@ -1,8 +1,8 @@
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_web_admin/src/fdg_products_locale_keys.dart';
 import 'package:fdg_web_admin/src/product_unit_localization.dart';
-import 'package:fdg_web_admin/src/ui/products/editor/product_editor_validation.dart';
-import 'package:fdg_web_admin/src/ui/products/editor/product_unit_textfield.dart';
+import 'package:fdg_web_admin/src/ui/products/editor/form/product_editor_validation.dart';
+import 'package:fdg_web_admin/src/ui/products/product_unit_textfield.dart';
 import 'package:fdg_web_admin/src/ui/products/product_unit.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';

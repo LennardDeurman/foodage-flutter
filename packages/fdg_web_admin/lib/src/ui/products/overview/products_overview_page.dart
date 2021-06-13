@@ -1,4 +1,4 @@
-import 'package:fdg_web_admin/src/ui/products/editor/product_editor_dialog.dart';
+import 'package:fdg_web_admin/src/ui/products/editor/product_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_web_admin/src/fdg_web_admin_locale_keys.dart';
@@ -19,6 +19,12 @@ class ProductsOverviewPage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          Align(
+            child: _AddProductButton(
+              onPressed: (context) => ProductEditor.show(context),
+            ),
+            alignment: Alignment.center,
+          ),
           FDGWebAppBar(
             child: Row(
               children: [
@@ -38,9 +44,6 @@ class ProductsOverviewPage extends StatelessWidget {
                       )
                     ],
                   ),
-                ),
-                _AddProductButton(
-                  onPressed: (context) => ProductEditorDialog.show(context),
                 ),
               ],
             ),
