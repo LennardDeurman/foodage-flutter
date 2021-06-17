@@ -9,6 +9,8 @@ environment:
 
 dependencies:
   google_fonts: ^2.0.0
+  fdg_common:
+    path: ../../packages/fdg_common
   flutter:
     sdk: flutter
 

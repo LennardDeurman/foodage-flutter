@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fdg_common/fdg_common.dart';
 import 'package:fdg_ui/fdg_ui.dart';
 
-class PhotoContainer extends StatelessWidget {
+class FDGPhotoContainer extends StatelessWidget {
   final WidgetTapCallback? onRemovePressed;
   final WidgetTapCallback? onEditPressed;
   final double borderRadius;
@@ -10,7 +10,7 @@ class PhotoContainer extends StatelessWidget {
 
   static const _backgroundColor = Color.fromRGBO(100, 100, 100, 1);
 
-  PhotoContainer({
+  FDGPhotoContainer({
     required this.content,
     this.borderRadius = 10,
     this.onRemovePressed,
@@ -18,22 +18,22 @@ class PhotoContainer extends StatelessWidget {
   });
 
   Widget _actionButtonRemove(BuildContext context) => FDGBadgeActionButton(
-        color: Theme.of(context).primaryColor,
-        icon: Icon(Icons.close),
-        onPressed: onRemovePressed!,
-      );
+    color: Theme.of(context).primaryColor,
+    icon: Icon(Icons.close),
+    onPressed: onRemovePressed!,
+  );
 
   Widget _actionButtonEdit(BuildContext context) => FDGBadgeActionButton(
-        color: FDGTheme().colors.orange,
-        icon: Icon(Icons.edit),
-        onPressed: onEditPressed!,
-        buttonInnerMargin: 8,
-      );
+    color: FDGTheme().colors.orange,
+    icon: Icon(Icons.edit),
+    onPressed: onEditPressed!,
+    buttonInnerMargin: 8,
+  );
 
   List<Widget> _actionButtons(BuildContext context) => <Widget>[
-        if (onEditPressed != null) _actionButtonEdit(context),
-        if (onRemovePressed != null) _actionButtonRemove(context),
-      ];
+    if (onEditPressed != null) _actionButtonEdit(context),
+    if (onRemovePressed != null) _actionButtonRemove(context),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +48,7 @@ class PhotoContainer extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(borderRadius),
             child: FDGRatio(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: _backgroundColor,
-                ),
-                child: FittedBox(
-                  child: content,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              child: content,
             ),
           ),
         ),
@@ -66,10 +58,10 @@ class PhotoContainer extends StatelessWidget {
           child: Row(
             children: _actionButtons(context)
                 .intersperse(
-                  SizedBox(
-                    width: 8,
-                  ),
-                )
+              SizedBox(
+                width: 8,
+              ),
+            )
                 .toList(),
           ),
         ),
