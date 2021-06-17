@@ -16,6 +16,7 @@ class FDGProductsLocaleKeys {
   static const editorCancel = "fdg_products_editor_cancel";
   static const editorConfirm = "fdg_products_editor_confirm";
   static const editorPhotoPickerSelect = "fdg_products_editor_select";
+  static const editorStoreNotFound = "fdg_products_editor_store_not_found";
   static const unitGrams = "fdg_products_unit_grams";
   static const unitMls = "fdg_products_unit_mls";
   static const unitLiters = "fdg_products_unit_liters";

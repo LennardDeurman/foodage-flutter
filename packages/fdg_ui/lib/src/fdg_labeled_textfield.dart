@@ -8,7 +8,7 @@ class FDGLabeledTextField extends StatelessWidget {
   const FDGLabeledTextField({
     required this.label,
     required this.textField,
-    this.spacing = 20,
+    this.spacing = 15,
     Key? key,
   }) : super(key: key);
 

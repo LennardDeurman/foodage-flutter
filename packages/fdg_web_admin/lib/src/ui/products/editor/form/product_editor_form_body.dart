@@ -51,9 +51,7 @@ class ProductEditorFormBody extends StatelessWidget {
                 width: _spacing,
               ),
               ProductEditorPhotoPicker(
-                onEditPressed: (context) {
-
-                },
+                onEditPressed: (context) {},
                 onRemovePressed: (context) {},
                 image: Container(), //
               ),
@@ -64,12 +62,20 @@ class ProductEditorFormBody extends StatelessWidget {
           height: _spacing,
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
               flex: 2,
               child: FDGLabeledTextField(
-                label: Text(
-                  FDGProductsLocaleKeys.editorFieldProductUrl.tr(),
+                label: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      FDGProductsLocaleKeys.editorFieldProductUrl.tr(),
+                    ),
+                    Spacer(),
+                    _StoreSelectionButton.warning(context),
+                  ],
                 ),
                 textField: TextFormField(
                   decoration: InputDecoration(
@@ -126,6 +132,113 @@ class ProductEditorFormBody extends StatelessWidget {
           height: _spacing,
         ),
       ],
+    );
+  }
+}
+
+class _StoreSelectionButton extends StatelessWidget {
+  static const _iconSize = 14.0;
+  static const _fontSize = 10.0;
+  static const _borderRadius = 10.0;
+  static const _buttonInsets = EdgeInsets.symmetric(
+    vertical: 4,
+    horizontal: 8,
+  );
+
+  Widget _build(
+    BuildContext context, {
+    required Color color,
+    required List<Widget> children,
+    Color? textColor,
+    bool filled = false,
+  }) {
+    final textStyle = Theme.of(context).textTheme.subtitle2!.copyWith(
+          color: textColor ?? color,
+          fontSize: _fontSize,
+        );
+
+    return Material(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(_borderRadius),
+        child: DefaultTextStyle(
+          style: textStyle,
+          child: IconTheme(
+            data: IconThemeData(
+              color: textColor ?? color,
+              size: _iconSize,
+            ),
+            child: Container(
+              padding: _buttonInsets,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: color,
+                ),
+                color: filled ? color : Colors.transparent,
+                borderRadius: BorderRadius.circular(_borderRadius),
+              ),
+              child: Row(
+                children: children,
+              ),
+            ),
+          ),
+        ),
+        onTap: () => onPressed != null ? onPressed!(context) : null,
+      ),
+    );
+  }
+
+  final Widget? icon;
+  final Widget text;
+  final Color? color;
+  final WidgetTapCallback? onPressed;
+
+  _StoreSelectionButton({
+    this.icon,
+    this.color,
+    this.onPressed,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _build(
+      context,
+      color: color ?? Theme.of(context).primaryColor,
+      children: [
+        if (icon != null)
+          Padding(
+            child: icon!,
+            padding: EdgeInsets.only(
+              right: 8,
+            ),
+          ),
+        text,
+      ],
+    );
+  }
+
+  static Widget store(
+    BuildContext context, {
+    required String storeName,
+    WidgetTapCallback? onPressed,
+  }) {
+    return _StoreSelectionButton(
+      text: Text(storeName),
+      onPressed: onPressed,
+    );
+  }
+
+  static Widget warning(
+    BuildContext context, {
+    WidgetTapCallback? onPressed,
+  }) {
+    return _StoreSelectionButton(
+      text: Text(
+        FDGProductsLocaleKeys.editorStoreNotFound.tr(),
+      ),
+      icon: Icon(Icons.warning_rounded),
+      onPressed: onPressed,
+      color: FDGTheme().colors.orange,
     );
   }
 }
