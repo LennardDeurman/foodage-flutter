@@ -17,6 +17,9 @@ class FDGProductsLocaleKeys {
   static const editorConfirm = "fdg_products_editor_confirm";
   static const editorPhotoPickerSelect = "fdg_products_editor_select";
   static const editorStoreNotFound = "fdg_products_editor_store_not_found";
+  static const editorPortionSizes = "fdg_products_editor_portion_sizes";
+  static const editorPortionSizeDefault = "fdg_products_editor_portion_size_default";
+  static const editorPortionHint = "fdg_products_editor_portion_hint";
   static const unitGrams = "fdg_products_unit_grams";
   static const unitMls = "fdg_products_unit_mls";
   static const unitLiters = "fdg_products_unit_liters";

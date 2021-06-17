@@ -7,14 +7,14 @@ import 'package:flutter/services.dart';
 class ProductUnitTextField extends StatefulWidget {
   final ProductUnit initialUnitValue;
   final double? initialValue;
-  final Widget label;
+  final Widget? label;
   final String? hintText;
   final FormFieldValidator<String>? validator;
   final ValueChanged<ProductUnitResult>? onChanged;
 
   const ProductUnitTextField({
     required this.initialUnitValue,
-    required this.label,
+    this.label,
     this.onChanged,
     this.initialValue,
     this.hintText,
@@ -78,9 +78,8 @@ class ProductUnitTextFieldState extends State<ProductUnitTextField> {
   Widget build(BuildContext context) {
     return ValueListenableBuilder<ProductUnit>(
       valueListenable: _selectedUnitNotifier,
-      builder: (context, selectedUnit, innerWidget) => FDGLabeledTextField(
-        label: widget.label,
-        textField: TextFormField(
+      builder: (context, selectedUnit, innerWidget) {
+        final textField = TextFormField(
           controller: _textEditingController,
           validator: widget.validator,
           keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -126,8 +125,15 @@ class ProductUnitTextFieldState extends State<ProductUnitTextField> {
               ),
             ),
           ),
-        ),
-      ),
+        );
+        if (widget.label == null) {
+          return textField;
+        }
+        return FDGLabeledTextField(
+          label: widget.label!,
+          textField: textField,
+        );
+      },
     );
   }
 

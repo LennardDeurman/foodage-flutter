@@ -1,10 +1,9 @@
+import 'package:fdg_web_admin/src/ui/products/editor/form/input_sections/product_editor_portion_info.dart';
 import 'package:fdg_web_admin/src/ui/products/editor/form/product_editor_photo_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fdg_web_admin/src/ui/products/editor/form/input_sections/product_editor_nutrients_info.dart';
 import 'package:fdg_web_admin/src/ui/products/editor/form/input_sections/product_editor_quantity_info.dart';
 import 'package:fdg_web_admin/src/ui/products/editor/form/product_editor_validation.dart';
 import 'package:fdg_web_admin/src/ui/products/product_unit.dart';
@@ -18,6 +17,7 @@ class ProductEditorFormBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ListView(
       shrinkWrap: true,
       padding: EdgeInsets.symmetric(
@@ -121,16 +121,12 @@ class ProductEditorFormBody extends StatelessWidget {
         ProductEditorQuantityInfo(
           //TODO: Load parameter values from the cubit
           initialUnitValue: ProductUnit.milliliters,
-          portionSizeInitialValue: 0.0,
           totalQuantityInitialValue: 0.0,
         ),
         SizedBox(
           height: _spacing,
         ),
-        ProductEditorNutrientsInfo(),
-        SizedBox(
-          height: _spacing,
-        ),
+        ProductEditorPortionInfo(),
       ],
     );
   }
