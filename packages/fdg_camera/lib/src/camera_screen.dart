@@ -6,7 +6,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_common/fdg_common.dart';
 import 'package:fdg_camera/src/image_details.dart';
-import 'package:fdg_camera/src/photo_container.dart';
 import 'package:fdg_camera/src/camera_preview_frame.dart';
 import 'package:fdg_camera/src/main_camera_cubit/main_camera_cubit.dart';
 import 'package:fdg_camera/src/bar/camera_capture_bar.dart';
@@ -42,7 +41,7 @@ class _CameraScreenHeader extends StatelessWidget {
         final isGalleryImage = selectedImage is GalleryPickedImageDetails;
         return Container(
           margin: EdgeInsets.only(right: 5),
-          child: PhotoContainer(
+          child: FDGPhotoContainer(
             content: selectedImage.toWidget(
               context,
             ),

@@ -1,18 +1,22 @@
-name: fdg_ui
-description: Standard UI components for the Foodage APP.
+name: fdg_web_admin
+description: A new Flutter package project.
 version: 0.0.1
 publish_to: none
+homepage:
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
-  google_fonts: ^2.0.0
-  fdg_common:
-    path: ../../packages/fdg_common
   flutter:
     sdk: flutter
+  fdg_ui:
+    path: ../../packages/fdg_ui
+  easy_localization: ^3.0.0
+  image_picker: ^0.8.0+3
+  dotted_border: ^2.0.0
+  flutter_bloc: ^7.0.0
 
 dev_dependencies:
   flutter_test:

@@ -20,29 +20,32 @@ class FDGBadgeActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(_borderRadius),
-        child: Material(
-          color: color,
-          child: InkWell(
-            child: Container(
-              child: Center(
-                child: IconTheme(
-                  data: IconThemeData(
-                    color: Colors.white,
-                    size: size - buttonInnerMargin,
+    return GestureDetector(
+      child: Container(
+        width: size,
+        height: size,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(_borderRadius),
+          child: Material(
+            color: color,
+            child: InkWell(
+              child: Container(
+                child: Center(
+                  child: IconTheme(
+                    data: IconThemeData(
+                      color: Colors.white,
+                      size: size - buttonInnerMargin,
+                    ),
+                    child: icon,
                   ),
-                  child: icon,
                 ),
               ),
+              onTap: () => onPressed(context),
             ),
-            onTap: () => onPressed(context),
           ),
         ),
       ),
+      onTap: () => onPressed(context),
     );
   }
 }

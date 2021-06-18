@@ -6,8 +6,6 @@ import 'package:fdg_camera/src/image_details.dart';
 import 'package:fdg_common/fdg_common.dart';
 import 'package:flutter/material.dart';
 
-export 'src/photo_container.dart';
-
 class FDGCamera {
   static void ensureInitialized() async {
     sl.registerSingleton(PhotoGalleryRepository());
@@ -20,4 +18,5 @@ class FDGCamera {
       ),
     );
   }
+
 }
