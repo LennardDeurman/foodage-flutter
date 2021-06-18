@@ -1,16 +1,29 @@
 import 'package:fdg_web_admin/src/ui/products/editor/appearance/product_editor_dialog.dart';
 import 'package:fdg_web_admin/src/ui/products/editor/appearance/product_editor_page.dart';
+import 'package:fdg_web_admin/src/ui/products/store_picker/cubit/store_picker_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 //TODO: Create a full-screen dialog, and implement responsive sizing
 //TODO: Add image input
 
 class ProductEditor extends StatefulWidget {
   static void show(BuildContext context) {
-    Navigator.of(context).push(PageRouteBuilder(
-      opaque: false,
-        pageBuilder: (_, __, ___) => ProductEditor(),
-        fullscreenDialog: true),);
+    final storePickerCubit = context.read<StorePickerCubit>();
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (_, __, ___) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: storePickerCubit),
+          ],
+          child: Builder(
+            builder: (context) => ProductEditor(),
+          ),
+        ),
+        fullscreenDialog: true,
+      ),
+    );
   }
 
   @override

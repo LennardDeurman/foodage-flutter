@@ -6,12 +6,12 @@ class FDGOptionsDialog<T> extends StatelessWidget {
   static const _maxHeight = 600.0;
 
   final List<T> options;
-  final T value;
+  final T? value;
   final String Function(T)? label;
 
   FDGOptionsDialog({
     required this.options,
-    required this.value,
+    this.value,
     this.label,
   });
 
