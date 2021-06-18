@@ -74,7 +74,9 @@ class ProductEditorFormBody extends StatelessWidget {
                       FDGProductsLocaleKeys.editorFieldProductUrl.tr(),
                     ),
                     Spacer(),
-                    _StoreSelectionButton.warning(context),
+                    _StoreSelectionButton.warning(context, onPressed: (context) {
+
+                    }),
                   ],
                 ),
                 textField: TextFormField(

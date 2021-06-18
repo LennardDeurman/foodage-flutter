@@ -1,0 +1,1 @@
+class Product {} //TODO: Replace this with the Api Model product
