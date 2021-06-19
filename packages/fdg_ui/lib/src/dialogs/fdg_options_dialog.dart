@@ -1,3 +1,4 @@
+import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_ui/src/fdg_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -147,57 +148,132 @@ class FDGOptionsItemTile<T> extends StatelessWidget {
   }
 }
 
-class FDGOptionsAddTile extends StatelessWidget {
+class FDGOptionsAddTile extends StatefulWidget {
+  final String confirmationText;
   final Widget label;
   final Widget? icon;
+  final String? hintText;
+  final Function(String)? onSubmit;
 
-  static const _spacing = 20.0;
-  static const _iconSize = 24.0;
-
-  FDGOptionsAddTile({
+  const FDGOptionsAddTile({
     required this.label,
+    required this.confirmationText,
+    required this.onSubmit,
     this.icon,
+    this.hintText,
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  State<StatefulWidget> createState() => FDGOptionsAddTileState();
+}
 
+class FDGOptionsAddTileState extends State<FDGOptionsAddTile> {
+  static const _spacing = 20.0;
+  static const _iconSize = 24.0;
+
+  bool _isEditing = false;
+
+  TextEditingController _controller = TextEditingController();
+
+  Widget _cell(
+    BuildContext context, {
+    required List<Widget> children,
+    VoidCallback? onTap,
+  }) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         child: Container(
           child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  child: DefaultTextStyle(
-                    style: theme.textTheme.headline3!.copyWith(
-                      fontStyle: FontStyle.italic,
-                      color: FDGTheme().colors.lightGrey1,
-                    ),
-                    child: label,
-                  ),
-                  padding: EdgeInsets.all(_spacing),
-                ),
-              ),
-              if (icon != null)
-                Container(
-                  margin: EdgeInsets.only(right: _spacing),
-                  child: IconTheme(
-                    data: IconThemeData(
-                      size: _iconSize,
-                      color: theme.primaryColor,
-                    ),
-                    child: icon!,
-                  ),
-                ),
-            ],
+            children: children,
           ),
         ),
-        onTap: () {},
+        onTap: onTap,
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    if (_isEditing) {
+      return _cell(context, children: [
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.all(8),
+            child: TextFormField(
+              controller: _controller,
+              decoration: InputDecoration(
+                hintText: widget.hintText,
+                prefixIcon: SizedBox(
+                  width: 60,
+                  child: Center(
+                    child: RawMaterialButton(
+                      constraints: BoxConstraints.tight(
+                        Size(24, 24),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isEditing = false;
+                        });
+                      },
+                      child: Icon(Icons.arrow_back, color: theme.primaryColor, size: 18),
+                      shape: CircleBorder(
+                        side: BorderSide(
+                          color: theme.primaryColor,
+                        ),
+                      ),
+                      elevation: 0.0,
+                    ),
+                  ),
+                ),
+                suffixIcon: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: FDGPrimaryButton(
+                    widget.confirmationText,
+                    onTap: (context) => widget.onSubmit != null ? widget.onSubmit!(_controller.text) : null,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ]);
+    } else {
+      return _cell(
+        context,
+        onTap: () {
+          setState(() {
+            _isEditing = true;
+          });
+        },
+        children: [
+          Expanded(
+            child: Container(
+              child: DefaultTextStyle(
+                style: theme.textTheme.headline3!.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: FDGTheme().colors.lightGrey1,
+                ),
+                child: widget.label,
+              ),
+              padding: EdgeInsets.all(_spacing),
+            ),
+          ),
+          if (widget.icon != null)
+            Container(
+              margin: EdgeInsets.only(right: _spacing),
+              child: IconTheme(
+                data: IconThemeData(
+                  size: _iconSize,
+                  color: theme.primaryColor,
+                ),
+                child: widget.icon!,
+              ),
+            ),
+        ],
+      );
+    }
   }
 }
