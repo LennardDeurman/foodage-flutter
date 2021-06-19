@@ -52,7 +52,6 @@ class ProductEditorFormBody extends StatelessWidget {
               ),
               ProductEditorPhotoPicker(
                 onEditPressed: (context) {},
-                onRemovePressed: (context) {},
                 image: Container(), //
               ),
             ],

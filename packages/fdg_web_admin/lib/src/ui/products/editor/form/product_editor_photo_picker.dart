@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 
 class ProductEditorPhotoPicker extends StatelessWidget {
   final Widget? image;
-  final WidgetTapCallback? onEditPressed;
-  final WidgetTapCallback? onRemovePressed;
+  final WidgetTapCallback onEditPressed;
 
   const ProductEditorPhotoPicker({
     Key? key,
     this.image,
-    this.onEditPressed,
-    this.onRemovePressed,
+    required this.onEditPressed,
   }) : super(key: key);
 
   @override
@@ -21,8 +19,14 @@ class ProductEditorPhotoPicker extends StatelessWidget {
     if (image != null) {
       return FDGPhotoContainer(
         content: image!,
-        onRemovePressed: onRemovePressed,
-        onEditPressed: onEditPressed,
+        actionButtons: [
+          FDGBadgeActionButton(
+            color: FDGTheme().colors.orange,
+            icon: Icon(Icons.edit),
+            onPressed: onEditPressed,
+            buttonInnerMargin: 8,
+          ),
+        ],
       );
     }
     return _ProductEditorPhotoPickerPlaceholder(
