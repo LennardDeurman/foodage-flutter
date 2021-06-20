@@ -6,23 +6,60 @@ import 'package:flutter/material.dart';
 
 class ProductEditorPhotoPicker extends StatelessWidget {
   final Widget? image;
-  final WidgetTapCallback? onEditPressed;
-  final WidgetTapCallback? onRemovePressed;
+  final WidgetTapCallback onEditPressed;
+  final WidgetTapCallback onAddPressed;
 
   const ProductEditorPhotoPicker({
     Key? key,
     this.image,
-    this.onEditPressed,
-    this.onRemovePressed,
+    required this.onEditPressed,
+    required this.onAddPressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (image != null) {
-      return FDGPhotoContainer(
-        content: image!,
-        onRemovePressed: onRemovePressed,
-        onEditPressed: onEditPressed,
+      return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          FDGPhotoContainer(
+            content: Container(
+              child: Stack(
+                children: [
+                  image!,
+                  Container(
+                    color: Colors.black.withOpacity(0.5),
+                  )
+                ],
+              ),
+            ),
+            actionButtons: [
+              FDGBadgeActionButton(
+                color: FDGTheme().colors.darkRed,
+                icon: Icon(Icons.add),
+                onPressed: onAddPressed,
+                buttonInnerMargin: 8,
+              ),
+              FDGBadgeActionButton(
+                color: FDGTheme().colors.orange,
+                icon: Icon(Icons.edit),
+                onPressed: onEditPressed,
+                buttonInnerMargin: 8,
+              ),
+            ],
+          ),
+          Positioned(
+            left: 15,
+            bottom: 15,
+            child: Text(
+              '10',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          )
+        ],
       );
     }
     return _ProductEditorPhotoPickerPlaceholder(
@@ -92,5 +129,18 @@ class _ProductEditorPhotoPickerPlaceholder extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class ProductPickerPhotoPreviewDialog extends StatelessWidget {
+  const ProductPickerPhotoPreviewDialog({Key? key}) : super(key: key);
+
+  static void show(BuildContext context) {
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

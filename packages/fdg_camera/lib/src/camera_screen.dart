@@ -45,14 +45,25 @@ class _CameraScreenHeader extends StatelessWidget {
             content: selectedImage.toWidget(
               context,
             ),
-            onRemovePressed: (context) => mainCameraCubit.unSelectImage(selectedImage),
-            onEditPressed: () {
-              if (isGalleryImage) {
-                return (context) => mainCameraCubit.editGalleryPickedImage(
-                      selectedImage as GalleryPickedImageDetails,
-                    );
-              }
-            }(),
+            actionButtons: [
+              FDGBadgeActionButton(
+                color: Theme.of(context).primaryColor,
+                icon: Icon(Icons.close),
+                onPressed: (context) {
+                  mainCameraCubit.unSelectImage(selectedImage);
+                },
+              ),
+              if (selectedImage is GalleryPickedImageDetails) FDGBadgeActionButton(
+                color: FDGTheme().colors.orange,
+                icon: Icon(Icons.edit),
+                onPressed: (context) {
+                  mainCameraCubit.editGalleryPickedImage(
+                    selectedImage,
+                  );
+                },
+                buttonInnerMargin: 8,
+              ),
+            ],
           ),
         );
       },

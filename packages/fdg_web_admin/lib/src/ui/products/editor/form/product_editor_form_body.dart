@@ -51,8 +51,10 @@ class ProductEditorFormBody extends StatelessWidget {
                 width: _spacing,
               ),
               ProductEditorPhotoPicker(
-                onEditPressed: (context) {},
-                onRemovePressed: (context) {},
+                onEditPressed: (context) {
+                  ProductPickerPhotoPreviewDialog.show(context);
+                },
+                onAddPressed: (context) {},
                 image: Container(), //
               ),
             ],
