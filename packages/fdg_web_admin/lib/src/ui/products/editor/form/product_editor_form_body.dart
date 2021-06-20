@@ -1,5 +1,6 @@
 import 'package:fdg_web_admin/src/ui/products/editor/form/input_sections/product_editor_portion_info.dart';
 import 'package:fdg_web_admin/src/ui/products/editor/form/product_editor_photo_picker.dart';
+import 'package:fdg_web_admin/src/ui/products/store_picker/store_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -76,7 +77,9 @@ class ProductEditorFormBody extends StatelessWidget {
                       FDGProductsLocaleKeys.editorFieldProductUrl.tr(),
                     ),
                     Spacer(),
-                    _StoreSelectionButton.warning(context),
+                    _StoreSelectionButton.warning(context, onPressed: (context) {
+                      StorePicker.show(context);
+                    }),
                   ],
                 ),
                 textField: TextFormField(

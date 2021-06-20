@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   fdg_ui:
     path: ../../packages/fdg_ui
+  fdg_common:
+    path: ../../packages/fdg_common
   easy_localization: ^3.0.0
   image_picker: ^0.8.0+3
   dotted_border: ^2.0.0

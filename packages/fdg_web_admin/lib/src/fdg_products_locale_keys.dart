@@ -20,6 +20,10 @@ class FDGProductsLocaleKeys {
   static const editorPortionSizes = "fdg_products_editor_portion_sizes";
   static const editorPortionSizeDefault = "fdg_products_editor_portion_size_default";
   static const editorPortionHint = "fdg_products_editor_portion_hint";
+  static const storePickerAddNew = "fdg_products_store_picker_add_store";
+  static const storePickerSearchHint = "fdg_products_store_picker_search_hint";
+  static const storePickerInfoTitle = "fdg_products_store_picker_info_title";
+  static const storePickerInfoDescription = "fdg_products_store_picker_info_description";
   static const unitGrams = "fdg_products_unit_grams";
   static const unitMls = "fdg_products_unit_mls";
   static const unitLiters = "fdg_products_unit_liters";

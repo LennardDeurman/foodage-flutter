@@ -1,9 +1,11 @@
 import 'package:fdg_web_admin/src/ui/products/editor/product_editor.dart';
+import 'package:fdg_web_admin/src/ui/products/store_picker/cubit/store_picker_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:fdg_ui/fdg_ui.dart';
 import 'package:fdg_web_admin/src/fdg_web_admin_locale_keys.dart';
 import 'package:fdg_web_admin/src/ui/widgets/fdg_web_app_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductsOverviewPage extends StatelessWidget {
   @override
@@ -16,39 +18,46 @@ class ProductsOverviewPage extends StatelessWidget {
       color: FDGTheme().colors.lightGrey2,
       fontSize: 11,
     );
-    return Scaffold(
-      body: Stack(
-        children: [
-          Align(
-            child: _AddProductButton(
-              onPressed: (context) => ProductEditor.show(context),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<StorePickerCubit>(
+          create: (context) => StorePickerCubit(), //Implementation level store picker cubit
+        ),
+      ],
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Align(
+              child: _AddProductButton(
+                onPressed: (context) => ProductEditor.show(context),
+              ),
+              alignment: Alignment.center,
             ),
-            alignment: Alignment.center,
-          ),
-          FDGWebAppBar(
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        FDGTheme().appName,
-                        style: headlineTextStyle,
-                      ),
-                      Text(
-                        FDGWebAdminLocaleKeys.productsOverviewTitle.tr(),
-                        style: subTitleTextStyle,
-                      )
-                    ],
+            FDGWebAppBar(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          FDGTheme().appName,
+                          style: headlineTextStyle,
+                        ),
+                        Text(
+                          FDGWebAdminLocaleKeys.productsOverviewTitle.tr(),
+                          style: subTitleTextStyle,
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
